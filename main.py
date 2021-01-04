@@ -55,6 +55,8 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.show_what_in_pic = False
         self.what_in_pic = ''
         self.info=''
+        self.result=''
+
         self.gyro=None
         self.serial_bytes=''
         self.fps=0
@@ -63,9 +65,9 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.ori = None
         self.pro = None
         self.dataset = None
-        self.weights = 'yolov5s.pt'
+        #self.weights = 'yolov5s.pt'
         self.i = 0
-        #self.weights = 'best22.pt'
+        self.weights = 'best22.pt'
         self.timer_camera = QtCore.QTimer()  # 初始化定时器
         self.timer_camera.timeout.connect(self.show_image)
         #self.timer_camera.timeout.connect(self.receive_data)
@@ -165,6 +167,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
     def show_image(self):
         self.i+=1
         print(self.i)
+        #self.info_result.clear()
         t=time.time()
         with torch.no_grad():
             # # Second-stage classifier
@@ -235,15 +238,24 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         s += '%g %ss, ' % (n, names[int(c)])  # add to string
 
                     self.info=''
+
+                    self.result = ''
                     for *xyxy, conf, cls in det:
                     # Add bbox to image
                         label = '%s %.2f' % (names[int(cls)], conf)
                         plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=3)
+                        self.result+=str(label)
+                        print('xyxy',str(xyxy),len(xyxy))
+
 
                         self.info += names[int(cls)] + ':'
                         #self.info += str(round(depth.get_distance(int(xyxy[1].item()),int(xyxy[2].item())), 6)) + '\n'
                         x,y=int((xyxy[0].item()+xyxy[2].item())/2),int((xyxy[1].item()+xyxy[3])/2)
                         z=depth.get_distance(x,y)
+                        self.result+=str(z)+'\n'
+
+                        self.info_result.setText(self.result)
+
                         depth_point=rs.rs2_deproject_pixel_to_point(intrin,[x,y],z)
                         depth_point1 = rs.rs2_deproject_pixel_to_point(intrin, [x+10, y + 10], z)
                         depth_point2 = rs.rs2_deproject_pixel_to_point(intrin, [x+10, y - 10], z)

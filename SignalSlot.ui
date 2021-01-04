@@ -220,6 +220,25 @@
      </item>
     </layout>
    </widget>
+   <widget class="QLabel" name="info_result">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>816</y>
+      <width>311</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Suruma</family>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
