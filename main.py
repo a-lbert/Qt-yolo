@@ -87,6 +87,19 @@ class MainWin(QMainWindow,Ui_MainWindow):
         # self.yolo_thread.emit_pic.connect(self.update_ui)
         # self.yolo_thread.start()
         # self.yolo_thread.exec()
+    #调整图片以显示
+    def adapt_img(self,img):
+        RGB_pic = cv2.cvtColor(img.copy(), cv2.COLOR_BGR2RGB)
+        RGB_pic = QtGui.QImage(RGB_pic.data, RGB_pic.shape[1], RGB_pic.shape[0], QtGui.QImage.Format_RGB888)
+        return QtGui.QPixmap.fromImage(RGB_pic)
+    def show_pic(self,img,show):
+        RGB_pic = cv2.cvtColor(img.copy(), cv2.COLOR_BGR2RGB)
+        RGB_pic = QtGui.QImage(RGB_pic.data, RGB_pic.shape[1], RGB_pic.shape[0], QtGui.QImage.Format_RGB888)
+        show.setScaledContents(True)
+        show.setPixmap(QtGui.QPixmap.fromImage(RGB_pic))
+
+
+
 
     def receive_data(self):
         self.info_serial.setText('等待接受数据')
@@ -167,39 +180,23 @@ class MainWin(QMainWindow,Ui_MainWindow):
     def show_image(self):
         self.i+=1
         print(self.i)
-        #self.info_result.clear()
         t=time.time()
         with torch.no_grad():
-            # # Second-stage classifier
-            # classify = False
-            # if classify:
-            #     modelc = load_classifier(name='resnet101', n=2)  # initialize
-            #     modelc.load_state_dict(torch.load('weights/resnet101.pt', map_location=device)['model'])  # load weights
-            #     modelc.to(device).eval()
-
             path, img, im0s, img_depth,depth,self.gyro,intrin,vid_cap = next(self.dataset)
-            # print(img_depth)
-            #
-            # print('ok')
+
             img = torch.from_numpy(img).to(self.device)
             t0 = time.time()
             img = img.half() if self.device.type != 'cpu' else img.float()  # uint8 to fp16/32
             img /= 255.0  # 0 - 255 to 0.0 - 1.0
             if img.ndimension() == 3:
                 img = img.unsqueeze(0)
-
             # Inference
             t1 = time_synchronized()
-
             pred = self.model(img, augment=False)[0]
 
             # Apply NMS
             pred = non_max_suppression(pred, 0.4, 0.5, classes=None, agnostic=False)
             t2 = time_synchronized()
-
-            # Apply Classifier
-            # if classify:
-            #     pred = apply_classifier(pred, modelc, img, im0s)
 
             names = self.model.module.names if hasattr(self.model, 'module') else self.model.names
             colors = [[random.randint(0, 255) for _ in range(3)] for _ in range(len(names))]
@@ -215,19 +212,13 @@ class MainWin(QMainWindow,Ui_MainWindow):
                 txt_path = str(Path('inference/output') / Path(p).stem) + ('_%g' % self.dataset.frame if self.dataset.mode == 'video' else '')
                 s += '%gx%g ' % img.shape[2:]  # print string
                 gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
+
                 #显示原图
-                img_ori = im0.copy()
-                RGB_pic = cv2.cvtColor(img_ori, cv2.COLOR_BGR2RGB)
-                RGB_pic = QtGui.QImage(RGB_pic.data, RGB_pic.shape[1], RGB_pic.shape[0], QtGui.QImage.Format_RGB888)
-                self.ShowLabel.setPixmap(QtGui.QPixmap.fromImage(RGB_pic))
-
+                self.show_pic(im0,self.ShowLabel)
                 depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(img_depth, alpha=0.03), cv2.COLORMAP_JET)
+                self.show_pic(depth_colormap,self.depth_label)
 
-                depth_rgb = cv2.cvtColor(depth_colormap, cv2.COLOR_BGR2RGB)
-                #print(depth_rgb.get_distance(200, 200))
-                depth_rgb=QtGui.QImage(depth_rgb.data, depth_rgb.shape[1], depth_rgb.shape[0], QtGui.QImage.Format_RGB888)
-                self.depth_label.setPixmap(QtGui.QPixmap.fromImage(depth_rgb))
-                #self.send_data()
+
                 if det is not None and len(det):
                     # Rescale boxes from img_size to im0 size
                     det[:, :4] = scale_coords(img.shape[2:], det[:, :4], im0.shape).round()
@@ -238,7 +229,6 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         s += '%g %ss, ' % (n, names[int(c)])  # add to string
 
                     self.info=''
-
                     self.result = ''
                     for *xyxy, conf, cls in det:
                     # Add bbox to image
@@ -246,7 +236,6 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=3)
                         self.result += names[int(cls)]+':'
                         print('xyxy',str(xyxy),len(xyxy))
-
 
                         self.info += names[int(cls)] + ':'
                         #self.info += str(round(depth.get_distance(int(xyxy[1].item()),int(xyxy[2].item())), 6)) + '\n'
@@ -292,22 +281,16 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         # #self.serial_bytes=bytes(self.data_to_send)
                         # #print(self.data_to_send)
 
-                # Print time (inference + NMS)
-                # print('%sDone. (%.3fs)' % (s, t2 - t1))
                 self.fps=1/(t2 - t1)
                 print('%sDone. (%.3ffps)' % (s, self.fps))
-                # self.info_lab.setText(str(int(self.fps)))
-                # self.imu_label.setText(str(self.gyro))
                 #显示处理结果
                 #cv2.putText(im0,'%.3ffps' % (1/(t2 - t1)),(0,25),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),3)
-                im0 = cv2.cvtColor(im0, cv2.COLOR_BGR2RGB)
-                #img_ori = cv2.cvtColor(img_ori, cv2.COLOR_BGR2RGB)
-                showImage = QtGui.QImage(im0.data, im0.shape[1], im0.shape[0], QtGui.QImage.Format_RGB888)
-                self.yolo_label.setPixmap(QtGui.QPixmap.fromImage(showImage))
-                self.yolo_label.setScaledContents(True)
+                self.show_pic(im0,self.yolo_label)
+                self.info_lab.setText(str(int(self.fps)))
+                self.imu_label.setText(str(self.gyro))
+
                 if cv2.waitKey(1) == ord('q'):  # q to quit
                     raise StopIteration
-
 
             print('Done. (%.3fs)' % (time.time() - t0))
     def detect(self,save_img=False):
