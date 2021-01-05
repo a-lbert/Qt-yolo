@@ -305,8 +305,9 @@ class LoadStreams:  # multiple IP or RTSP cameras
                 sources = [x.strip() for x in f.read().splitlines() if len(x.strip())]
         else:
             sources = [sources]
-
+        #此处sources=1
         n = len(sources)
+        #print('n,sources',n)
         self.imgs = [None] * n
         self.imgs_depth = [None] * n
         self.depth=[None] * n
@@ -343,6 +344,7 @@ class LoadStreams:  # multiple IP or RTSP cameras
             color_image = np.asanyarray(color_frame.get_data())
             self.imgs[i] = color_image
             thread = Thread(target=self.update, args=([i, self.pipeline]), daemon=True)
+
             print(' success (%gx%g at %.2f FPS).' % (w, h, fps))
             thread.start()
 
@@ -365,22 +367,19 @@ class LoadStreams:  # multiple IP or RTSP cameras
 
             aligned_frames = self.align.process(frames)
 
-            depth_frame = aligned_frames.get_depth_frame()
+            depth_frame = aligned_frames.get_depth_frame().as_depth_frame()
+            #2D和3D之间的转换矩阵,intrinsics内部参数，extrinsics外部参数
             depth_intrin = depth_frame.profile.as_video_stream_profile().intrinsics
             color_frame = aligned_frames.get_color_frame()
             #print(depth_frame.get_distance(200, 200))
+            #内参矩阵与深度图
             self.intrin[index]=depth_intrin
             self.depth[index]=depth_frame
-
-
-
-
+            #彩色图
             color_image = np.asanyarray(color_frame.get_data())
             self.imgs[index] = color_image
-
+            #深度图像
             depth_image = np.asanyarray(depth_frame.get_data())
-
-
             self.imgs_depth[index]=depth_image
 
             time.sleep(0.01)
@@ -398,20 +397,16 @@ class LoadStreams:  # multiple IP or RTSP cameras
 
             cv2.destroyAllWindows()
             raise StopIteration
-
         # Letterbox
         img = [letterbox(x, new_shape=self.img_size, auto=self.rect)[0] for x in img0]
-
         # Stack
         img = np.stack(img, 0)
-
         # Convert
         img = img[:, :, :, ::-1].transpose(0, 3, 1, 2)  # BGR to RGB, to bsx3x416x416
         img = np.ascontiguousarray(img)
         #img_dep=np.ascontiguousarray(img_dep)
-
-
         return self.sources, img, img0,self.imgs_depth,self.depth[0],self.gyro[0],self.intrin[0], None
+        #return self.sources, self.imgs, self.imgs, self.imgs_depth, self.depth, self.gyro, self.intrin, None
 
     def __len__(self):
         return 0  # 1E12 frames = 32 streams at 30 FPS for 30 years

@@ -65,9 +65,9 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.ori = None
         self.pro = None
         self.dataset = None
-        #self.weights = 'yolov5s.pt'
+        self.weights = 'yolov5s.pt'
         self.i = 0
-        self.weights = 'best22.pt'
+        self.weights = 'best14.pt'
         self.timer_camera = QtCore.QTimer()  # 初始化定时器
         self.timer_camera.timeout.connect(self.show_image)
         #self.timer_camera.timeout.connect(self.receive_data)
@@ -152,8 +152,8 @@ class MainWin(QMainWindow,Ui_MainWindow):
         print(type(self.data_to_send))
         self.send_data_label.setText(str(self.data_to_send))
         #self.send_data_label.setText(str(self.data_to_send))
-        self.imu_label.setText(str(self.gyro))
-        self.info_lab.setText(str(int(self.fps)))
+        #self.imu_label.setText(str(self.gyro))
+        #self.info_lab.setText(str(int(self.fps)))
         if self.serial.isOpen():
             #self.info_serial.setText(self.data_to_send)
 
@@ -244,7 +244,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
                     # Add bbox to image
                         label = '%s %.2f' % (names[int(cls)], conf)
                         plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=3)
-                        self.result+=str(label)
+                        self.result += names[int(cls)]+':'
                         print('xyxy',str(xyxy),len(xyxy))
 
 
@@ -252,50 +252,52 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         #self.info += str(round(depth.get_distance(int(xyxy[1].item()),int(xyxy[2].item())), 6)) + '\n'
                         x,y=int((xyxy[0].item()+xyxy[2].item())/2),int((xyxy[1].item()+xyxy[3])/2)
                         z=depth.get_distance(x,y)
-                        self.result+=str(z)+'\n'
+                        self.result+=str('%.3f'%z)+'\n'
 
                         self.info_result.setText(self.result)
 
-                        depth_point=rs.rs2_deproject_pixel_to_point(intrin,[x,y],z)
-                        depth_point1 = rs.rs2_deproject_pixel_to_point(intrin, [x+10, y + 10], z)
-                        depth_point2 = rs.rs2_deproject_pixel_to_point(intrin, [x+10, y - 10], z)
-
-                        p1 = np.array(depth_point) - np.array(depth_point1)
-                        p2 = np.array(depth_point) - np.array(depth_point2)
-                        c = np.cross(p1, p2)
-                        c /= np.linalg.norm(c)
-                        d = np.array([0, 0, 1])
-                        coscd = -c.dot(d) / (np.linalg.norm(c) * np.linalg.norm(d))
-                        print(np.arccos(coscd) * 180 / np.pi)
-                        print('depth_point:%s'%str(depth_point))
-                        print('depth_point:%s' % str(depth_point1))
-                        print('depth_point:%s' % str(depth_point2))
-
-
-                        self.info += str(z)+'米'+'\n'
-                        self.data_to_send = ''
-                        li=[3.2,4.3,z,49,99,5]
-                        for i in li:
-                            i=int(i*100)
-                            low=hex(i%256)
-                            low= "{:02X}".format(int(low,16))
-                            high=hex(int(i/256))
-                            high= "{:02X}".format(int(high,16))
-                            self.data_to_send +=low
-                            self.data_to_send += high
-                        for i in range(len(self.data_to_send)):
-                            print(self.data_to_send[i])
-
-                        #self.send_data()
-                        crc=binascii.crc32(binascii.a2b_hex(self.data_to_send)) & 0xffffffff
-                        print('crc:%d'%crc)
-                        #self.serial_bytes=bytes(self.data_to_send)
-                        #print(self.data_to_send)
+                        # depth_point=rs.rs2_deproject_pixel_to_point(intrin,[x,y],z)
+                        # depth_point1 = rs.rs2_deproject_pixel_to_point(intrin, [x+10, y + 10], z)
+                        # depth_point2 = rs.rs2_deproject_pixel_to_point(intrin, [x+10, y - 10], z)
+                        #
+                        # p1 = np.array(depth_point) - np.array(depth_point1)
+                        # p2 = np.array(depth_point) - np.array(depth_point2)
+                        # c = np.cross(p1, p2)
+                        # c /= np.linalg.norm(c)
+                        # d = np.array([0, 0, 1])
+                        # coscd = -c.dot(d) / (np.linalg.norm(c) * np.linalg.norm(d))
+                        # print(np.arccos(coscd) * 180 / np.pi)
+                        # print('depth_point:%s'%str(depth_point))
+                        # print('depth_point:%s' % str(depth_point1))
+                        # print('depth_point:%s' % str(depth_point2))
+                        #
+                        #
+                        # self.info += str(z)+'米'+'\n'
+                        # self.data_to_send = ''
+                        # li=[3.2,4.3,z,49,99,5]
+                        # for i in li:
+                        #     i=int(i*100)
+                        #     low=hex(i%256)
+                        #     low= "{:02X}".format(int(low,16))
+                        #     high=hex(int(i/256))
+                        #     high= "{:02X}".format(int(high,16))
+                        #     self.data_to_send +=low
+                        #     self.data_to_send += high
+                        # for i in range(len(self.data_to_send)):
+                        #     print(self.data_to_send[i])
+                        #
+                        # #self.send_data()
+                        # crc=binascii.crc32(binascii.a2b_hex(self.data_to_send)) & 0xffffffff
+                        # print('crc:%d'%crc)
+                        # #self.serial_bytes=bytes(self.data_to_send)
+                        # #print(self.data_to_send)
 
                 # Print time (inference + NMS)
                 # print('%sDone. (%.3fs)' % (s, t2 - t1))
                 self.fps=1/(t2 - t1)
                 print('%sDone. (%.3ffps)' % (s, self.fps))
+                # self.info_lab.setText(str(int(self.fps)))
+                # self.imu_label.setText(str(self.gyro))
                 #显示处理结果
                 #cv2.putText(im0,'%.3ffps' % (1/(t2 - t1)),(0,25),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),3)
                 im0 = cv2.cvtColor(im0, cv2.COLOR_BGR2RGB)
