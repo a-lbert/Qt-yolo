@@ -67,7 +67,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.dataset = None
         self.weights = 'yolov5s.pt'
         self.i = 0
-        self.weights = 'best14.pt'
+        #self.weights = 'best14.pt'
         self.timer_camera = QtCore.QTimer()  # 初始化定时器
         self.timer_camera.timeout.connect(self.show_image)
         #self.timer_camera.timeout.connect(self.receive_data)
@@ -92,10 +92,10 @@ class MainWin(QMainWindow,Ui_MainWindow):
         RGB_pic = cv2.cvtColor(img.copy(), cv2.COLOR_BGR2RGB)
         RGB_pic = QtGui.QImage(RGB_pic.data, RGB_pic.shape[1], RGB_pic.shape[0], QtGui.QImage.Format_RGB888)
         return QtGui.QPixmap.fromImage(RGB_pic)
-    def show_pic(self,img,show):
+    def show_pic(self,img,show,Scaled=True):
         RGB_pic = cv2.cvtColor(img.copy(), cv2.COLOR_BGR2RGB)
         RGB_pic = QtGui.QImage(RGB_pic.data, RGB_pic.shape[1], RGB_pic.shape[0], QtGui.QImage.Format_RGB888)
-        show.setScaledContents(True)
+        show.setScaledContents(Scaled)
         show.setPixmap(QtGui.QPixmap.fromImage(RGB_pic))
 
 
@@ -212,12 +212,10 @@ class MainWin(QMainWindow,Ui_MainWindow):
                 txt_path = str(Path('inference/output') / Path(p).stem) + ('_%g' % self.dataset.frame if self.dataset.mode == 'video' else '')
                 s += '%gx%g ' % img.shape[2:]  # print string
                 gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
-
                 #显示原图
                 self.show_pic(im0,self.ShowLabel)
-                depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(img_depth, alpha=0.03), cv2.COLORMAP_JET)
-                self.show_pic(depth_colormap,self.depth_label)
-
+                # depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(img_depth, alpha=0.03), cv2.COLORMAP_JET)
+                # self.show_pic(depth_colormap,self.depth_label)
 
                 if det is not None and len(det):
                     # Rescale boxes from img_size to im0 size
@@ -234,8 +232,21 @@ class MainWin(QMainWindow,Ui_MainWindow):
                     # Add bbox to image
                         label = '%s %.2f' % (names[int(cls)], conf)
                         plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=3)
+                        print('im0.shape',im0.shape)
+                        obj_1=im0[int(xyxy[1].item()):int(xyxy[3].item()),int(xyxy[0].item()):int(xyxy[2].item()),:]
+                        self.show_pic(obj_1, self.depth_label, False)
+                        # if(self.i%10==10):
+                        #     img_to_region=Image.fromarray(im0)
+                        #     box = (int(xyxy[0]),int(xyxy[1]),int(xyxy[2]),int(xyxy[3]))
+                        #     #box = (100, 100, 400, 400)
+                        #     region_1=img_to_region.crop(box)
+                        #     region_1=np.array(region_1)
+                        #     self.show_pic(region_1, self.depth_label,False)
+
+
                         self.result += names[int(cls)]+':'
-                        print('xyxy',str(xyxy),len(xyxy))
+
+                        #print('xyxy',str(xyxy),len(xyxy))
 
                         self.info += names[int(cls)] + ':'
                         #self.info += str(round(depth.get_distance(int(xyxy[1].item()),int(xyxy[2].item())), 6)) + '\n'
@@ -243,7 +254,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         z=depth.get_distance(x,y)
                         self.result+=str('%.3f'%z)+'\n'
 
-                        self.info_result.setText(self.result)
+
 
                         # depth_point=rs.rs2_deproject_pixel_to_point(intrin,[x,y],z)
                         # depth_point1 = rs.rs2_deproject_pixel_to_point(intrin, [x+10, y + 10], z)
@@ -285,9 +296,11 @@ class MainWin(QMainWindow,Ui_MainWindow):
                 print('%sDone. (%.3ffps)' % (s, self.fps))
                 #显示处理结果
                 #cv2.putText(im0,'%.3ffps' % (1/(t2 - t1)),(0,25),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),3)
-                self.show_pic(im0,self.yolo_label)
+
+                self.show_pic(im0, self.yolo_label)
                 self.info_lab.setText(str(int(self.fps)))
                 self.imu_label.setText(str(self.gyro))
+                self.info_result.setText(self.result)
 
                 if cv2.waitKey(1) == ord('q'):  # q to quit
                     raise StopIteration
