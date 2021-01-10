@@ -67,7 +67,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.dataset = None
         self.weights = 'yolov5s.pt'
         self.i = 0
-        #self.weights = 'best14.pt'
+        self.weights = 'best14.pt'
         self.timer_camera = QtCore.QTimer()  # 初始化定时器
         self.timer_camera.timeout.connect(self.show_image)
         #self.timer_camera.timeout.connect(self.receive_data)
@@ -78,6 +78,11 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.serial_timer = QTimer(self)
         self.serial_timer.timeout.connect(self.receive_data)
         self.is_hex = 1 #16jinzhi
+        #选择显示控件
+        self.label_obj = [self.label_obj1, self.label_obj2, self.label_obj3,
+                          self.label_obj4, self.label_obj5]
+        self.info_obj = [self.info_obj1,self.info_obj2,self.info_obj3,
+                         self.info_obj4,self.info_obj5]
 
         self.detect()
         self.open_serial()
@@ -214,8 +219,8 @@ class MainWin(QMainWindow,Ui_MainWindow):
                 gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
                 #显示原图
                 self.show_pic(im0,self.ShowLabel)
-                # depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(img_depth, alpha=0.03), cv2.COLORMAP_JET)
-                # self.show_pic(depth_colormap,self.depth_label)
+                depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(img_depth, alpha=0.03), cv2.COLORMAP_JET)
+                self.show_pic(depth_colormap,self.depth_label)
 
                 if det is not None and len(det):
                     # Rescale boxes from img_size to im0 size
@@ -227,14 +232,20 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         s += '%g %ss, ' % (n, names[int(c)])  # add to string
 
                     self.info=''
-                    self.result = ''
+
+                    obj_i=0;
                     for *xyxy, conf, cls in det:
                     # Add bbox to image
                         label = '%s %.2f' % (names[int(cls)], conf)
+
                         plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=3)
                         print('im0.shape',im0.shape)
-                        obj_1=im0[int(xyxy[1].item()):int(xyxy[3].item()),int(xyxy[0].item()):int(xyxy[2].item()),:]
-                        self.show_pic(obj_1, self.depth_label, False)
+                        _c1 = (int(xyxy[1]) // 8+1) * 8
+                        _c3 = (int(xyxy[3]) // 8+1) * 8
+                        _c0 = (int(xyxy[0]) // 8+1) * 8
+                        _c2 = (int(xyxy[2]) // 8+1) * 8
+                        obj_1=im0[_c1:_c3,_c0:_c2]
+                        self.show_pic(obj_1, self.label_obj[obj_i], True)
                         # if(self.i%10==10):
                         #     img_to_region=Image.fromarray(im0)
                         #     box = (int(xyxy[0]),int(xyxy[1]),int(xyxy[2]),int(xyxy[3]))
@@ -242,20 +253,16 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         #     region_1=img_to_region.crop(box)
                         #     region_1=np.array(region_1)
                         #     self.show_pic(region_1, self.depth_label,False)
-
-
-                        self.result += names[int(cls)]+':'
-
-                        #print('xyxy',str(xyxy),len(xyxy))
-
                         self.info += names[int(cls)] + ':'
                         #self.info += str(round(depth.get_distance(int(xyxy[1].item()),int(xyxy[2].item())), 6)) + '\n'
                         x,y=int((xyxy[0].item()+xyxy[2].item())/2),int((xyxy[1].item()+xyxy[3])/2)
                         z=depth.get_distance(x,y)
+                        self.result = ''
+                        self.result += names[int(cls)] + ':'
                         self.result+=str('%.3f'%z)+'\n'
-
-
-
+                        self.info_obj[obj_i].setText(self.result)
+                        #选择下一个控件显示
+                        obj_i+=1
                         # depth_point=rs.rs2_deproject_pixel_to_point(intrin,[x,y],z)
                         # depth_point1 = rs.rs2_deproject_pixel_to_point(intrin, [x+10, y + 10], z)
                         # depth_point2 = rs.rs2_deproject_pixel_to_point(intrin, [x+10, y - 10], z)

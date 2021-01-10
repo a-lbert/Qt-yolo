@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="text">
-     <string/>
+     <string>color</string>
     </property>
    </widget>
    <widget class="QLabel" name="yolo_label">
@@ -37,7 +37,7 @@
      </rect>
     </property>
     <property name="text">
-     <string/>
+     <string>yolo</string>
     </property>
    </widget>
    <widget class="QLabel" name="depth_label">
@@ -50,7 +50,7 @@
      </rect>
     </property>
     <property name="text">
-     <string/>
+     <string>depth</string>
     </property>
    </widget>
    <widget class="QWidget" name="layoutWidget">
@@ -237,6 +237,136 @@
     </property>
     <property name="text">
      <string>识别结果及距离</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_obj1">
+    <property name="geometry">
+     <rect>
+      <x>1280</x>
+      <y>430</y>
+      <width>120</width>
+      <height>120</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>           obj1</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_obj2">
+    <property name="geometry">
+     <rect>
+      <x>1400</x>
+      <y>430</y>
+      <width>120</width>
+      <height>120</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>           obj2</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_obj3">
+    <property name="geometry">
+     <rect>
+      <x>1520</x>
+      <y>430</y>
+      <width>120</width>
+      <height>120</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>            obj3</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_obj4">
+    <property name="geometry">
+     <rect>
+      <x>1640</x>
+      <y>430</y>
+      <width>120</width>
+      <height>120</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>           obj4</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_obj5">
+    <property name="geometry">
+     <rect>
+      <x>1760</x>
+      <y>430</y>
+      <width>120</width>
+      <height>120</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>            obj5</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="info_obj1">
+    <property name="geometry">
+     <rect>
+      <x>1280</x>
+      <y>550</y>
+      <width>120</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>       info_obj1</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="info_obj2">
+    <property name="geometry">
+     <rect>
+      <x>1400</x>
+      <y>550</y>
+      <width>120</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>       info_obj2</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="info_obj3">
+    <property name="geometry">
+     <rect>
+      <x>1520</x>
+      <y>550</y>
+      <width>120</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>       info_obj3</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="info_obj4">
+    <property name="geometry">
+     <rect>
+      <x>1640</x>
+      <y>550</y>
+      <width>120</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>       info_obj4</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="info_obj5">
+    <property name="geometry">
+     <rect>
+      <x>1760</x>
+      <y>550</y>
+      <width>120</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>       info_obj5</string>
     </property>
    </widget>
   </widget>
