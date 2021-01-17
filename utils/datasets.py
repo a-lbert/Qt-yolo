@@ -314,6 +314,7 @@ class LoadStreams:  # multiple IP or RTSP cameras
         self.gyro=[None]*3
         self.sources = sources
         self.intrin = [None] * n
+        self.get_intrin=1
 
         for i, s in enumerate(sources):
             # Start the thread to read frames from the video stream
@@ -369,11 +370,26 @@ class LoadStreams:  # multiple IP or RTSP cameras
 
             depth_frame = aligned_frames.get_depth_frame().as_depth_frame()
             #2D和3D之间的转换矩阵,intrinsics内部参数，extrinsics外部参数
-            depth_intrin = depth_frame.profile.as_video_stream_profile().intrinsics
+            #depth_intrin = depth_frame.profile.as_video_stream_profile().intrinsics
+
             color_frame = aligned_frames.get_color_frame()
-            #print(depth_frame.get_distance(200, 200))
-            #内参矩阵与深度图
-            self.intrin[index]=depth_intrin
+            #初运行获取内参
+            if self.get_intrin==1:
+                color_profile = color_frame.get_profile()
+                cvsprofile = rs.video_stream_profile(color_profile)
+                color_intrin = cvsprofile.get_intrinsics()
+                #color_intrin <class 'pyrealsense2.pyrealsense2.intrinsics'>
+                #depth_intrin [ 1280x720  p[649.443 364.288]  f[918.361 918.693]  Inverse Brown Conrady [0 0 0 0 0] ]
+                #color_intrin [ 1280x720  p[649.443 364.288]  f[918.361 918.693]  Inverse Brown Conrady [0 0 0 0 0] ]
+
+                color_intrin_part = [color_intrin.ppx, color_intrin.ppy, color_intrin.fx, color_intrin.fy]
+
+                #print(depth_frame.get_distance(200, 200))
+                #内参矩阵与深度图
+                #self.intrin[index]=depth_intrin
+                self.intrin[index]=color_intrin_part
+                self.get_intrin=0
+                print('获取内参矩阵')
             self.depth[index]=depth_frame
             #彩色图
             color_image = np.asanyarray(color_frame.get_data())
@@ -546,7 +562,7 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
                 cache_path, nf, nm, ne, nd, n)
         if nf == 0:
             s = 'WARNING: No labels found in %s. See %s' % (os.path.dirname(file) + os.sep, help_url)
-            print(s)
+            #print(s)
             assert not augment, '%s. Can not train without labels.' % s
 
         # Cache images into memory for faster training (WARNING: large datasets may exceed system RAM)

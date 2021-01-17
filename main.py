@@ -67,7 +67,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.dataset = None
         self.weights = 'yolov5s.pt'
         self.i = 0
-        self.weights = 'best14.pt'
+        #self.weights = '2_1.pt'
         self.timer_camera = QtCore.QTimer()  # 初始化定时器
         self.timer_camera.timeout.connect(self.show_image)
         #self.timer_camera.timeout.connect(self.receive_data)
@@ -83,6 +83,11 @@ class MainWin(QMainWindow,Ui_MainWindow):
                           self.label_obj4, self.label_obj5]
         self.info_obj = [self.info_obj1,self.info_obj2,self.info_obj3,
                          self.info_obj4,self.info_obj5]
+        self.update_intrin = 1
+        self.ppx = 0
+        self.ppy = 0
+        self.fx = 0
+        self.fy = 0
 
         self.detect()
         self.open_serial()
@@ -184,10 +189,18 @@ class MainWin(QMainWindow,Ui_MainWindow):
 
     def show_image(self):
         self.i+=1
-        print(self.i)
+        print('当前获取第{}帧'.format(self.i))
         t=time.time()
         with torch.no_grad():
             path, img, im0s, img_depth,depth,self.gyro,intrin,vid_cap = next(self.dataset)
+
+            if self.update_intrin == 1:
+                self.ppx = intrin[0]
+                self.ppy = intrin[1]
+                self.fx = intrin[2]
+                self.fy = intrin[3]
+                self.update_intrin=0
+                print('更新内参')
 
             img = torch.from_numpy(img).to(self.device)
             t0 = time.time()
@@ -245,6 +258,9 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         _c0 = (int(xyxy[0]) // 8+1) * 8
                         _c2 = (int(xyxy[2]) // 8+1) * 8
                         obj_1=im0[_c1:_c3,_c0:_c2]
+                        if(obj_i>4):
+                            obj_i=4
+                        
                         self.show_pic(obj_1, self.label_obj[obj_i], True)
                         # if(self.i%10==10):
                         #     img_to_region=Image.fromarray(im0)
@@ -255,11 +271,19 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         #     self.show_pic(region_1, self.depth_label,False)
                         self.info += names[int(cls)] + ':'
                         #self.info += str(round(depth.get_distance(int(xyxy[1].item()),int(xyxy[2].item())), 6)) + '\n'
-                        x,y=int((xyxy[0].item()+xyxy[2].item())/2),int((xyxy[1].item()+xyxy[3])/2)
-                        z=depth.get_distance(x,y)
+                        pixel_x, pixel_y = int((xyxy[0].item()+xyxy[2].item())/2), int((xyxy[1].item()+xyxy[3])/2)
+                        #z为深度，x指向双目相机，y向下，右手坐标系
+                        z = depth.get_distance(pixel_x, pixel_y)
+                        x, y = [(pixel_x-self.ppx)*z/self.fx, (pixel_y-self.ppy)*z/self.fy]
+                        print('识别出目标：{} 像素坐标：（{},{}）实际坐标（mm）：({:.3f},{:.3f},{:.3f})'.format(
+                            names[int(cls)],pixel_x,pixel_y,x*1000,y*1000,z*1000
+                        ))
+
                         self.result = ''
-                        self.result += names[int(cls)] + ':'
-                        self.result+=str('%.3f'%z)+'\n'
+                        self.result += names[int(cls)] + ':'+'\n'
+                        self.result+=str('({:.0f},{:.0f},{:.0f})'.format(
+                            x * 1000, y * 1000, z * 1000
+                        ))+'\n'
                         self.info_obj[obj_i].setText(self.result)
                         #选择下一个控件显示
                         obj_i+=1
@@ -300,7 +324,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         # #print(self.data_to_send)
 
                 self.fps=1/(t2 - t1)
-                print('%sDone. (%.3ffps)' % (s, self.fps))
+                print('处理完成，当前帧率(%.3ffps)' % self.fps)
                 #显示处理结果
                 #cv2.putText(im0,'%.3ffps' % (1/(t2 - t1)),(0,25),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),3)
 
@@ -312,7 +336,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
                 if cv2.waitKey(1) == ord('q'):  # q to quit
                     raise StopIteration
 
-            print('Done. (%.3fs)' % (time.time() - t0))
+
     def detect(self,save_img=False):
         out, source, weights, view_img, save_txt, imgsz = \
             'inference/output', '0',self.weights, False, False, 640
