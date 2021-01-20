@@ -67,7 +67,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.dataset = None
         self.weights = 'yolov5s.pt'
         self.i = 0
-        #self.weights = '2_1.pt'
+        self.weights = '2_1.pt'
         self.timer_camera = QtCore.QTimer()  # 初始化定时器
         self.timer_camera.timeout.connect(self.show_image)
         #self.timer_camera.timeout.connect(self.receive_data)
@@ -193,6 +193,8 @@ class MainWin(QMainWindow,Ui_MainWindow):
         t=time.time()
         with torch.no_grad():
             path, img, im0s, img_depth,depth,self.gyro,intrin,vid_cap = next(self.dataset)
+            #cv2.imwrite('./test.jpg', img)
+
 
             if self.update_intrin == 1:
                 self.ppx = intrin[0]
@@ -201,6 +203,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
                 self.fy = intrin[3]
                 self.update_intrin=0
                 print('更新内参')
+                #cv2.imwrite('./test.jpg', img)
 
             img = torch.from_numpy(img).to(self.device)
             t0 = time.time()
@@ -228,10 +231,14 @@ class MainWin(QMainWindow,Ui_MainWindow):
 
                 save_path = str(Path('inference/output') / Path(p).name)
                 txt_path = str(Path('inference/output') / Path(p).stem) + ('_%g' % self.dataset.frame if self.dataset.mode == 'video' else '')
+
                 s += '%gx%g ' % img.shape[2:]  # print string
                 gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
                 #显示原图
+                print('保存图片')
+                cv2.imwrite('./a-color.jpg', im0)
                 self.show_pic(im0,self.ShowLabel)
+                cv2.imwrite('./a-depth.jpg', img_depth)
                 depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(img_depth, alpha=0.03), cv2.COLORMAP_JET)
                 self.show_pic(depth_colormap,self.depth_label)
 

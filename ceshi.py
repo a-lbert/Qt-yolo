@@ -1,26 +1,22 @@
-class LoadStreams:  # multiple IP or RTSP cameras
-    # sources='0'
-    def __init__(self, sources='streams.txt', img_size=640):
-        self.i=0
-    def update(self):
-        self.i+=1
+# coding=utf-8
+import cv2
+import numpy as np
 
-    def __iter__(self):
+img = cv2.imread("/home/limeng/Pictures/data/3.png")
 
-        return self
+img = cv2.GaussianBlur(img, (3, 3), 0)
+edges = cv2.Canny(img, 50, 150, apertureSize=3)
 
-    def __next__(self):
+lines = cv2.HoughLines(edges, 1, np.pi / 180, 118)
+result = img.copy()
 
-        self.i+=1
+# 经验参数
+minLineLength = 20
+maxLineGap = 15
+lines = cv2.HoughLinesP(edges, 1, np.pi / 180, 80, minLineLength, maxLineGap)
+for x1, y1, x2, y2 in lines[0]:
+    cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
-        return self.i
-
-    def __len__(self):
-        return 0  # 1E12 frames = 32 streams at 30 FPS for 30 years
-
-a = LoadStreams()
-print(next(a))
-print(next(a))
-print(next(a))
-print(next(a))
-
+cv2.imshow('Result', img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
