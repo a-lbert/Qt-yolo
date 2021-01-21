@@ -35,7 +35,7 @@ from utils.datasets import LoadStreams, LoadImages
 from utils.general import (
     check_img_size, non_max_suppression, apply_classifier, scale_coords, xyxy2xywh, plot_one_box, strip_optimizer)
 from utils.torch_utils import select_device, load_classifier, time_synchronized
-
+from tttt import cal_angel
 
 def accel_data(accel):
     return np.asarray([accel.x, accel.y, accel.z])
@@ -67,7 +67,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.dataset = None
         self.weights = 'yolov5s.pt'
         self.i = 0
-        self.weights = '2_1.pt'
+        self.weights = '/home/limeng/Qt-yolo/3_1.pt'
         self.timer_camera = QtCore.QTimer()  # 初始化定时器
         self.timer_camera.timeout.connect(self.show_image)
         #self.timer_camera.timeout.connect(self.receive_data)
@@ -265,10 +265,18 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         _c0 = (int(xyxy[0]) // 8+1) * 8
                         _c2 = (int(xyxy[2]) // 8+1) * 8
                         obj_1=im0[_c1:_c3,_c0:_c2]
-                        if(obj_i>4):
-                            obj_i=4
-                        
-                        self.show_pic(obj_1, self.label_obj[obj_i], True)
+                        print('names',names[int(cls)])
+                        if (obj_i > 4):
+                            obj_i = 4
+                        if names[int(cls)] == 'fire':
+                            obj_fire=obj_i+3
+                            if (obj_fire > 4):
+                                obj_fire=4
+                            self.show_pic(obj_1, self.label_obj[obj_fire], True)
+                        else:
+                            self.show_pic(obj_1, self.label_obj[obj_i], True)
+
+
                         # if(self.i%10==10):
                         #     img_to_region=Image.fromarray(im0)
                         #     box = (int(xyxy[0]),int(xyxy[1]),int(xyxy[2]),int(xyxy[3]))
@@ -291,6 +299,10 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         self.result+=str('({:.0f},{:.0f},{:.0f})'.format(
                             x * 1000, y * 1000, z * 1000
                         ))+'\n'
+                        if names[int(cls)] == 'pipe':
+                            print('计算角度')
+                            thela = cal_angel(obj_1)
+                            self.result += str(thela)
                         self.info_obj[obj_i].setText(self.result)
                         #选择下一个控件显示
                         obj_i+=1

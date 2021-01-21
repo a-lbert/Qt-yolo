@@ -26,7 +26,6 @@ def test():
     ]
     while True:
 
-
         path, img, im0s, img_depth, depth, sgyro, intrin, vid_cap = next(dataset)
         print('保存图片')
         cv2.imwrite('./a-color.jpg', im0s[0])
@@ -38,12 +37,10 @@ def test():
             fy = intrin[3]
             update=0
 
-
         #pixel_x, pixel_y=650,360
         for co in coor2:
             pixel_x, pixel_y=co
             print(pixel_x, pixel_y)
-
             z = depth.get_distance(pixel_x, pixel_y)
             x, y = [(pixel_x - ppx) * z / fx, (pixel_y - ppy) * z / fy]
             print('像素坐标：（{},{}）实际坐标（mm）：({:.3f},{:.3f},{:.3f})'.format(
