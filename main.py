@@ -70,6 +70,8 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.weights = '/home/limeng/Qt-yolo/3_1.pt'
         self.timer_camera = QtCore.QTimer()  # 初始化定时器
         self.timer_camera.timeout.connect(self.show_image)
+        self.timer_video = QtCore.QTimer()  # 初始化定时器
+        self.timer_video.timeout.connect(self.show_video)
         #self.timer_camera.timeout.connect(self.receive_data)
         self.serial = serial.Serial()
         self.data_to_send = ''
@@ -187,12 +189,14 @@ class MainWin(QMainWindow,Ui_MainWindow):
                 self.info_serial.setText(str(num))
         #self.data_to_send = ''
 
+
     def show_image(self):
         self.i+=1
         print('当前获取第{}帧'.format(self.i))
         t=time.time()
         with torch.no_grad():
             path, img, im0s, img_depth,depth,self.gyro,intrin,vid_cap = next(self.dataset)
+            self.show_pic(im0s[0], self.ShowLabel)
             #cv2.imwrite('./test.jpg', img)
 
 
@@ -236,9 +240,9 @@ class MainWin(QMainWindow,Ui_MainWindow):
                 gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
                 #显示原图
                 print('保存图片')
-                cv2.imwrite('./a-color.jpg', im0)
-                self.show_pic(im0,self.ShowLabel)
-                cv2.imwrite('./a-depth.jpg', img_depth)
+                #cv2.imwrite('./a-color.jpg', im0)
+                #self.show_pic(im0,self.ShowLabel)
+                #cv2.imwrite('./a-depth.jpg', img_depth)
                 depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(img_depth, alpha=0.03), cv2.COLORMAP_JET)
                 self.show_pic(depth_colormap,self.depth_label)
 
@@ -354,6 +358,9 @@ class MainWin(QMainWindow,Ui_MainWindow):
 
                 if cv2.waitKey(1) == ord('q'):  # q to quit
                     raise StopIteration
+    def show_video(self):
+        path, img, im0s, img_depth, depth, self.gyro, intrin, vid_cap = next(self.dataset)
+        self.show_pic(im0s[0], self.ShowLabel)
 
 
     def detect(self,save_img=False):
@@ -391,7 +398,8 @@ class MainWin(QMainWindow,Ui_MainWindow):
         # Run inference
         img = torch.zeros((1, 3, imgsz, imgsz), device=self.device)  # init img
         _ = self.model(img.half() if half else img) if self.device.type != 'cpu' else None  # run once
-        self.timer_camera.start(30)
+        self.timer_camera.start(50)
+        self.timer_video.start(30)
 
     def closeEvent(self, event):
         ok = QtWidgets.QPushButton()
