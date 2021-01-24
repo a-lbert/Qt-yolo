@@ -194,9 +194,8 @@ class MainWin(QMainWindow,Ui_MainWindow):
 
         while self.run_thread:
 
-
             t1 = time_synchronized()
-            time.sleep(0.2)
+            time.sleep(0.05)
             path, img, im0s, img_depth, depth, self.gyro, intrin, vid_cap = next(self.dataset)
             self.show_pic(im0s[0], self.ShowLabel)
             t2 = time_synchronized()

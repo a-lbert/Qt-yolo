@@ -26,9 +26,33 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="权重文件说明">
+    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="多线程显示图像">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/Qt-yolo.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1_1.pt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1_2.pt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1_3.pt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2_1.pt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platforms/libqeglfs.so" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platforms/libqlinuxfb.so" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platforms/libqminimal.so" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platforms/libqminimalegl.so" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platforms/libqoffscreen.so" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platforms/libqvnc.so" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platforms/libqwayland-egl.so" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platforms/libqwayland-generic.so" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platforms/libqwayland-xcomposite-egl.so" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platforms/libqwayland-xcomposite-glx.so" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platforms/libqwebgl.so" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platforms/libqxcb.so" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/权重文件说明.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a-color.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/a-depth.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/a-depth.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/datasets.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/datasets.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +67,7 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="master" />
@@ -322,7 +347,21 @@
       <option name="project" value="LOCAL" />
       <updated>1611221783280</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="多线程显示图像">
+      <created>1611489191243</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1611489191243</updated>
+    </task>
+    <task id="LOCAL-00018" summary="多线程显示图像">
+      <created>1611489267191</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1611489267191</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -362,7 +401,9 @@
     <MESSAGE value="显示顺序调整" />
     <MESSAGE value="提高原视频流显示帧率" />
     <MESSAGE value="权重文件说明" />
-    <option name="LAST_COMMIT_MESSAGE" value="权重文件说明" />
+    <MESSAGE value="多线程显示图像" />
+    <option name="LAST_COMMIT_MESSAGE" value="多线程显示图像" />
+    <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="418" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1610890543077">
@@ -373,44 +414,52 @@
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
     <state x="743" y="312" width="526" height="480" key="FileChooserDialogImpl/0.28.1920.1052@0.28.1920.1052" timestamp="1610784720328" />
-    <state width="1895" height="229" key="GridCell.Tab.0.bottom" timestamp="1611488989035">
+    <state width="1895" height="229" key="GridCell.Tab.0.bottom" timestamp="1611489327690">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1895" height="229" key="GridCell.Tab.0.bottom/0.28.1920.1052@0.28.1920.1052" timestamp="1611488989035" />
+    <state width="1895" height="229" key="GridCell.Tab.0.bottom/0.28.1920.1052@0.28.1920.1052" timestamp="1611489327690" />
     <state width="1896" height="184" key="GridCell.Tab.0.bottom/0.28.3000.1892@0.28.3000.1892" timestamp="1609762961078" />
     <state width="1896" height="278" key="GridCell.Tab.0.bottom/0.306.3000.1614@0.306.3000.1614" timestamp="1609761794281" />
     <state width="1896" height="184" key="GridCell.Tab.0.bottom/1080.0.1920.1080/0.28.1080.1892@1080.0.1920.1080" timestamp="1609824760410" />
-    <state width="1895" height="229" key="GridCell.Tab.0.center" timestamp="1611488989034">
+    <state width="1895" height="229" key="GridCell.Tab.0.center" timestamp="1611489327690">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1895" height="229" key="GridCell.Tab.0.center/0.28.1920.1052@0.28.1920.1052" timestamp="1611488989034" />
+    <state width="1895" height="229" key="GridCell.Tab.0.center/0.28.1920.1052@0.28.1920.1052" timestamp="1611489327690" />
     <state width="1896" height="184" key="GridCell.Tab.0.center/0.28.3000.1892@0.28.3000.1892" timestamp="1609762961077" />
     <state width="1896" height="278" key="GridCell.Tab.0.center/0.306.3000.1614@0.306.3000.1614" timestamp="1609761794280" />
     <state width="1896" height="184" key="GridCell.Tab.0.center/1080.0.1920.1080/0.28.1080.1892@1080.0.1920.1080" timestamp="1609824760410" />
-    <state width="1895" height="229" key="GridCell.Tab.0.left" timestamp="1611488989033">
+    <state width="1895" height="229" key="GridCell.Tab.0.left" timestamp="1611489327689">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1895" height="229" key="GridCell.Tab.0.left/0.28.1920.1052@0.28.1920.1052" timestamp="1611488989033" />
+    <state width="1895" height="229" key="GridCell.Tab.0.left/0.28.1920.1052@0.28.1920.1052" timestamp="1611489327689" />
     <state width="1896" height="184" key="GridCell.Tab.0.left/0.28.3000.1892@0.28.3000.1892" timestamp="1609762961076" />
     <state width="1896" height="278" key="GridCell.Tab.0.left/0.306.3000.1614@0.306.3000.1614" timestamp="1609761794280" />
     <state width="1896" height="184" key="GridCell.Tab.0.left/1080.0.1920.1080/0.28.1080.1892@1080.0.1920.1080" timestamp="1609824760409" />
-    <state width="1895" height="229" key="GridCell.Tab.0.right" timestamp="1611488989034">
+    <state width="1895" height="229" key="GridCell.Tab.0.right" timestamp="1611489327690">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1895" height="229" key="GridCell.Tab.0.right/0.28.1920.1052@0.28.1920.1052" timestamp="1611488989034" />
+    <state width="1895" height="229" key="GridCell.Tab.0.right/0.28.1920.1052@0.28.1920.1052" timestamp="1611489327690" />
     <state width="1896" height="184" key="GridCell.Tab.0.right/0.28.3000.1892@0.28.3000.1892" timestamp="1609762961077" />
     <state width="1896" height="278" key="GridCell.Tab.0.right/0.306.3000.1614@0.306.3000.1614" timestamp="1609761794281" />
     <state width="1896" height="184" key="GridCell.Tab.0.right/1080.0.1920.1080/0.28.1080.1892@1080.0.1920.1080" timestamp="1609824760410" />
+    <state x="182" y="117" width="1536" height="869" key="MergeDialog" timestamp="1611489298689">
+      <screen x="0" y="28" width="1920" height="1052" />
+    </state>
+    <state x="182" y="117" width="1536" height="869" key="MergeDialog/0.28.1920.1052@0.28.1920.1052" timestamp="1611489298689" />
+    <state x="587" y="314" width="736" height="477" key="MultipleFileMergeDialog" timestamp="1611489306557">
+      <screen x="0" y="28" width="1920" height="1052" />
+    </state>
+    <state x="587" y="314" width="736" height="477" key="MultipleFileMergeDialog/0.28.1920.1052@0.28.1920.1052" timestamp="1611489306557" />
     <state x="1254" y="146" key="SettingsEditor" timestamp="1609762943291">
       <screen x="0" y="28" width="3000" height="1892" />
     </state>
     <state x="634" y="245" key="SettingsEditor/0.28.1920.1052@0.28.1920.1052" timestamp="1609678416917" />
     <state x="1254" y="146" key="SettingsEditor/0.28.3000.1892@0.28.3000.1892" timestamp="1609762943291" />
     <state x="1287" y="586" key="SettingsEditor/0.306.3000.1614@0.306.3000.1614" timestamp="1609761707361" />
-    <state x="555" y="290" width="800" height="526" key="Vcs.Push.Dialog.v2" timestamp="1611221787467">
+    <state x="555" y="290" width="800" height="526" key="Vcs.Push.Dialog.v2" timestamp="1611489272224">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state x="555" y="290" width="800" height="526" key="Vcs.Push.Dialog.v2/0.28.1920.1052@0.28.1920.1052" timestamp="1611221787467" />
+    <state x="555" y="290" width="800" height="526" key="Vcs.Push.Dialog.v2/0.28.1920.1052@0.28.1920.1052" timestamp="1611489272224" />
     <state x="1080" y="551" key="Vcs.Push.Dialog.v2/0.306.3000.1614@0.306.3000.1614" timestamp="1609761662675" />
     <state x="745" y="469" width="429" height="170" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1609830635787">
       <screen x="0" y="28" width="1920" height="1052" />
@@ -431,12 +480,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>117</line>
+          <line>115</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>104</line>
+          <line>102</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
