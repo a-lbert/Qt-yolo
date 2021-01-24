@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:origin/V1.0" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="权重文件说明">
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/datasets.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/datasets.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="ProjectId" id="1mKYvFRsvbx2t6F2BMgTvoN5xkv" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="RunManager" selected="Python.main">
+    <configuration name="Coordinate-test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Qt-yolo" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/../miniconda3/envs/torch/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Coordinate-test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="Qt-yolo" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/../miniconda3/envs/torch/bin/python" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="ceshi" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Qt-yolo" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/../miniconda3/envs/torch/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ceshi.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/../miniconda3/envs/torch/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="post_process" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Qt-yolo" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/../miniconda3/envs/torch/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/post_process.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="tttt" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Qt-yolo" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/../miniconda3/envs/torch/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tttt.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.main" />
+        <item itemvalue="Python.tttt" />
+        <item itemvalue="Python.ceshi" />
+        <item itemvalue="Python.post_process" />
+        <item itemvalue="Python.Coordinate-test" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="" />
+      <created>1609243977715</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1609243977715</updated>
+    </task>
+    <task id="LOCAL-00001" summary="hah">
+      <created>1609245270503</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1609245270503</updated>
+    </task>
+    <task id="LOCAL-00002" summary="main test">
+      <created>1609245451809</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1609245451809</updated>
+    </task>
+    <task id="LOCAL-00003" summary="解决“xcb”">
+      <created>1609761601242</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1609761601243</updated>
+    </task>
+    <task id="LOCAL-00004" summary="解决“xcb”">
+      <created>1609761645916</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1609761645916</updated>
+    </task>
+    <task id="LOCAL-00005" summary="解决距离问题">
+      <created>1609831548562</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1609831548562</updated>
+    </task>
+    <task id="LOCAL-00006" summary="更新了更新UI的机制">
+      <created>1609848730128</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1609848730128</updated>
+    </task>
+    <task id="LOCAL-00007" summary="初步截取图像">
+      <created>1609895424224</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1609895424224</updated>
+    </task>
+    <task id="LOCAL-00008" summary="更新UI，截取识别区图像区域并显示。">
+      <created>1610264979246</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1610264979246</updated>
+    </task>
+    <task id="LOCAL-00009" summary="更新UI，截取识别区图像区域并显示。">
+      <created>1610265068279</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1610265068279</updated>
+    </task>
+    <task id="LOCAL-00010" summary="更新UI，截取识别区图像区域并显示。">
+      <created>1610265111459</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1610265111459</updated>
+    </task>
+    <task id="LOCAL-00011" summary="三维重建">
+      <created>1610888249372</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1610888249372</updated>
+    </task>
+    <task id="LOCAL-00012" summary="直线角度分析初试">
+      <created>1611113642532</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1611113642532</updated>
+    </task>
+    <task id="LOCAL-00013" summary="显示顺序调整">
+      <created>1611218283930</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1611218283930</updated>
+    </task>
+    <task id="LOCAL-00014" summary="提高原视频流显示帧率">
+      <created>1611220091133</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1611220091133</updated>
+    </task>
+    <task id="LOCAL-00015" summary="提高原视频流显示帧率">
+      <created>1611221040775</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1611221040775</updated>
+    </task>
+    <task id="LOCAL-00016" summary="权重文件说明">
+      <created>1611221783280</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1611221783280</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/V1.0" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="hah" />
+    <MESSAGE value="main test" />
+    <MESSAGE value="解决“xcb”" />
+    <MESSAGE value="解决距离问题" />
+    <MESSAGE value="更新了更新UI的机制" />
+    <MESSAGE value="初步截取图像" />
+    <MESSAGE value="更新UI，截取识别区图像区域并显示。" />
+    <MESSAGE value="三维重建" />
+    <MESSAGE value="直线角度分析初试" />
+    <MESSAGE value="显示顺序调整" />
+    <MESSAGE value="提高原视频流显示帧率" />
+    <MESSAGE value="权重文件说明" />
+    <option name="LAST_COMMIT_MESSAGE" value="权重文件说明" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="418" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1610890543077">
+      <screen x="0" y="28" width="1920" height="1052" />
+    </state>
+    <state x="418" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.28.1920.1052@0.28.1920.1052" timestamp="1610890543077" />
+    <state x="743" y="312" width="526" height="480" key="FileChooserDialogImpl" timestamp="1610784720328">
+      <screen x="0" y="28" width="1920" height="1052" />
+    </state>
+    <state x="743" y="312" width="526" height="480" key="FileChooserDialogImpl/0.28.1920.1052@0.28.1920.1052" timestamp="1610784720328" />
+    <state width="1895" height="229" key="GridCell.Tab.0.bottom" timestamp="1611488989035">
+      <screen x="0" y="28" width="1920" height="1052" />
+    </state>
+    <state width="1895" height="229" key="GridCell.Tab.0.bottom/0.28.1920.1052@0.28.1920.1052" timestamp="1611488989035" />
+    <state width="1896" height="184" key="GridCell.Tab.0.bottom/0.28.3000.1892@0.28.3000.1892" timestamp="1609762961078" />
+    <state width="1896" height="278" key="GridCell.Tab.0.bottom/0.306.3000.1614@0.306.3000.1614" timestamp="1609761794281" />
+    <state width="1896" height="184" key="GridCell.Tab.0.bottom/1080.0.1920.1080/0.28.1080.1892@1080.0.1920.1080" timestamp="1609824760410" />
+    <state width="1895" height="229" key="GridCell.Tab.0.center" timestamp="1611488989034">
+      <screen x="0" y="28" width="1920" height="1052" />
+    </state>
+    <state width="1895" height="229" key="GridCell.Tab.0.center/0.28.1920.1052@0.28.1920.1052" timestamp="1611488989034" />
+    <state width="1896" height="184" key="GridCell.Tab.0.center/0.28.3000.1892@0.28.3000.1892" timestamp="1609762961077" />
+    <state width="1896" height="278" key="GridCell.Tab.0.center/0.306.3000.1614@0.306.3000.1614" timestamp="1609761794280" />
+    <state width="1896" height="184" key="GridCell.Tab.0.center/1080.0.1920.1080/0.28.1080.1892@1080.0.1920.1080" timestamp="1609824760410" />
+    <state width="1895" height="229" key="GridCell.Tab.0.left" timestamp="1611488989033">
+      <screen x="0" y="28" width="1920" height="1052" />
+    </state>
+    <state width="1895" height="229" key="GridCell.Tab.0.left/0.28.1920.1052@0.28.1920.1052" timestamp="1611488989033" />
+    <state width="1896" height="184" key="GridCell.Tab.0.left/0.28.3000.1892@0.28.3000.1892" timestamp="1609762961076" />
+    <state width="1896" height="278" key="GridCell.Tab.0.left/0.306.3000.1614@0.306.3000.1614" timestamp="1609761794280" />
+    <state width="1896" height="184" key="GridCell.Tab.0.left/1080.0.1920.1080/0.28.1080.1892@1080.0.1920.1080" timestamp="1609824760409" />
+    <state width="1895" height="229" key="GridCell.Tab.0.right" timestamp="1611488989034">
+      <screen x="0" y="28" width="1920" height="1052" />
+    </state>
+    <state width="1895" height="229" key="GridCell.Tab.0.right/0.28.1920.1052@0.28.1920.1052" timestamp="1611488989034" />
+    <state width="1896" height="184" key="GridCell.Tab.0.right/0.28.3000.1892@0.28.3000.1892" timestamp="1609762961077" />
+    <state width="1896" height="278" key="GridCell.Tab.0.right/0.306.3000.1614@0.306.3000.1614" timestamp="1609761794281" />
+    <state width="1896" height="184" key="GridCell.Tab.0.right/1080.0.1920.1080/0.28.1080.1892@1080.0.1920.1080" timestamp="1609824760410" />
+    <state x="1254" y="146" key="SettingsEditor" timestamp="1609762943291">
+      <screen x="0" y="28" width="3000" height="1892" />
+    </state>
+    <state x="634" y="245" key="SettingsEditor/0.28.1920.1052@0.28.1920.1052" timestamp="1609678416917" />
+    <state x="1254" y="146" key="SettingsEditor/0.28.3000.1892@0.28.3000.1892" timestamp="1609762943291" />
+    <state x="1287" y="586" key="SettingsEditor/0.306.3000.1614@0.306.3000.1614" timestamp="1609761707361" />
+    <state x="555" y="290" width="800" height="526" key="Vcs.Push.Dialog.v2" timestamp="1611221787467">
+      <screen x="0" y="28" width="1920" height="1052" />
+    </state>
+    <state x="555" y="290" width="800" height="526" key="Vcs.Push.Dialog.v2/0.28.1920.1052@0.28.1920.1052" timestamp="1611221787467" />
+    <state x="1080" y="551" key="Vcs.Push.Dialog.v2/0.306.3000.1614@0.306.3000.1614" timestamp="1609761662675" />
+    <state x="745" y="469" width="429" height="170" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1609830635787">
+      <screen x="0" y="28" width="1920" height="1052" />
+    </state>
+    <state x="745" y="469" width="429" height="170" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.28.1920.1052@0.28.1920.1052" timestamp="1609830635787" />
+    <state x="1064" y="260" width="672" height="678" key="search.everywhere.popup" timestamp="1610763272369">
+      <screen x="0" y="28" width="1920" height="1052" />
+    </state>
+    <state x="1064" y="260" width="672" height="678" key="search.everywhere.popup/0.28.1920.1052@0.28.1920.1052" timestamp="1610763272369" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/post_process.py</url>
+          <line>45</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>117</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>104</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
