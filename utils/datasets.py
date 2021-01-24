@@ -293,6 +293,9 @@ class LoadWebcam:  # for inference
 
 def accel_data(accel):
     return np.asarray([accel.x, accel.y, accel.z])
+
+
+
 class LoadStreams:  # multiple IP or RTSP cameras
     # sources='0'
     def __init__(self, sources='streams.txt', img_size=640):

@@ -24,7 +24,7 @@ from pathlib import Path
 from SignalSlot import *
 import serial
 import serial.tools.list_ports
-
+from threading import Thread
 import cv2
 import torch
 import torch.backends.cudnn as cudnn
@@ -77,6 +77,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.close_serial_button.clicked.connect(self.close_serial)
         self.serial_timer = QTimer(self)
         self.serial_timer.timeout.connect(self.receive_data)
+
         self.is_hex = 1 #16jinzhi
         #选择显示控件
         self.label_obj = [self.label_obj1, self.label_obj2, self.label_obj3,
@@ -88,9 +89,12 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.ppy = 0
         self.fx = 0
         self.fy = 0
+        self.run_thread = 1
 
         self.detect()
         self.open_serial()
+        up_thread = Thread(target=self.update_video, args=([]), daemon=True)
+        up_thread.start()
 
         #self.show_image()
         # self.yolo_thread=YoloThread()
@@ -186,6 +190,21 @@ class MainWin(QMainWindow,Ui_MainWindow):
                 num=self.serial.write(data)
                 self.info_serial.setText(str(num))
         #self.data_to_send = ''
+    def update_video(self):
+
+        while self.run_thread:
+
+
+            t1 = time_synchronized()
+            time.sleep(0.2)
+            path, img, im0s, img_depth, depth, self.gyro, intrin, vid_cap = next(self.dataset)
+            self.show_pic(im0s[0], self.ShowLabel)
+            t2 = time_synchronized()
+            self.fps = 1 / (t2 - t1)
+            self.fps = (self.fps//2)*2
+            self.info_lab.setText(str(int(self.fps)))
+            print('子线程显示图像')
+
 
     def show_image(self):
         self.i+=1
@@ -237,7 +256,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
                 #显示原图
                 print('保存图片')
                 cv2.imwrite('./a-color.jpg', im0)
-                self.show_pic(im0,self.ShowLabel)
+                #self.show_pic(im0,self.ShowLabel)
                 cv2.imwrite('./a-depth.jpg', img_depth)
                 depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(img_depth, alpha=0.03), cv2.COLORMAP_JET)
                 self.show_pic(depth_colormap,self.depth_label)
@@ -301,8 +320,8 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         ))+'\n'
                         if names[int(cls)] == 'pipe':
                             print('计算角度')
-                            thela = cal_angel(obj_1)
-                            self.result += str(thela)
+                            #thela = cal_angel(obj_1)
+                            #self.result += str(thela)
                         self.info_obj[obj_i].setText(self.result)
                         #选择下一个控件显示
                         obj_i+=1
@@ -342,13 +361,13 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         # #self.serial_bytes=bytes(self.data_to_send)
                         # #print(self.data_to_send)
 
-                self.fps=1/(t2 - t1)
+                #self.fps=1/(t2 - t1)
                 print('处理完成，当前帧率(%.3ffps)' % self.fps)
                 #显示处理结果
                 #cv2.putText(im0,'%.3ffps' % (1/(t2 - t1)),(0,25),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),3)
 
                 self.show_pic(im0, self.yolo_label)
-                self.info_lab.setText(str(int(self.fps)))
+                #self.info_lab.setText(str(int(self.fps)))
                 self.imu_label.setText(str(self.gyro))
                 self.info_result.setText(self.result)
 
@@ -393,6 +412,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
         _ = self.model(img.half() if half else img) if self.device.type != 'cpu' else None  # run once
         self.timer_camera.start(30)
 
+
     def closeEvent(self, event):
         ok = QtWidgets.QPushButton()
         cancel = QtWidgets.QPushButton()
@@ -406,11 +426,17 @@ class MainWin(QMainWindow,Ui_MainWindow):
         else:
             # if self.cap.isOpened():
             #     self.cap.release()
+            #sys.exit(app.exec_())
+
+
             event.accept()
+
 
 if __name__=='__main__':
     app=QApplication(sys.argv)
+
     mainWindow=MainWin()
+
     mainWindow.show()
     sys.exit(app.exec_())
 
