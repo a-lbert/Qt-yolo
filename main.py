@@ -191,6 +191,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
                 self.info_serial.setText(str(num))
         #self.data_to_send = ''
     def update_video(self):
+        print('进入子线程')
 
         while self.run_thread:
 
