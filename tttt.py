@@ -9,7 +9,7 @@ def cal_angel(img):
 
     # blur = cv2.GaussianBlur(gray, (5,5), 0)
     # 二值化
-    ret, thresh = cv2.threshold(gray, 40, 255, cv2.THRESH_BINARY)
+    ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
     cv2.imshow('thresh',thresh)
 
     contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)

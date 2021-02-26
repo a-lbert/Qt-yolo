@@ -1,7 +1,7 @@
 import sys
 import os
 import cv2
-#git test
+# git test
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -37,11 +37,12 @@ from utils.general import (
 from utils.torch_utils import select_device, load_classifier, time_synchronized
 from tttt import cal_angel
 
+
 def accel_data(accel):
     return np.asarray([accel.x, accel.y, accel.z])
 
 
-class MainWin(QMainWindow,Ui_MainWindow):
+class MainWin(QMainWindow, Ui_MainWindow):
 
     def __init__(self):
         super(MainWin, self).__init__()
@@ -54,12 +55,12 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.is_show_fps = False
         self.show_what_in_pic = False
         self.what_in_pic = ''
-        self.info=''
-        self.result=''
+        self.info = ''
+        self.result = ''
 
-        self.gyro=None
-        self.serial_bytes=''
-        self.fps=0
+        self.gyro = None
+        self.serial_bytes = ''
+        self.fps = 0
         self.ori_num = 0
         self.pro_num = 0
         self.ori = None
@@ -70,7 +71,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.weights = '/home/limeng/Qt-yolo/3_1.pt'
         self.timer_camera = QtCore.QTimer()  # 初始化定时器
         self.timer_camera.timeout.connect(self.show_image)
-        #self.timer_camera.timeout.connect(self.receive_data)
+        # self.timer_camera.timeout.connect(self.receive_data)
         self.serial = serial.Serial()
         self.data_to_send = ''
         self.open_serial_button.clicked.connect(self.open_serial)
@@ -78,12 +79,12 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.serial_timer = QTimer(self)
         self.serial_timer.timeout.connect(self.receive_data)
 
-        self.is_hex = 1 #16jinzhi
-        #选择显示控件
+        self.is_hex = 1  # 16jinzhi
+        # 选择显示控件
         self.label_obj = [self.label_obj1, self.label_obj2, self.label_obj3,
                           self.label_obj4, self.label_obj5]
-        self.info_obj = [self.info_obj1,self.info_obj2,self.info_obj3,
-                         self.info_obj4,self.info_obj5]
+        self.info_obj = [self.info_obj1, self.info_obj2, self.info_obj3,
+                         self.info_obj4, self.info_obj5]
         self.update_intrin = 1
         self.ppx = 0
         self.ppy = 0
@@ -96,46 +97,45 @@ class MainWin(QMainWindow,Ui_MainWindow):
         up_thread = Thread(target=self.update_video, args=([]), daemon=True)
         up_thread.start()
 
-        #self.show_image()
+        # self.show_image()
         # self.yolo_thread=YoloThread()
         # self.yolo_thread.emit_pic.connect(self.update_ui)
         # self.yolo_thread.start()
         # self.yolo_thread.exec()
-    #调整图片以显示
-    def adapt_img(self,img):
+
+    # 调整图片以显示
+    def adapt_img(self, img):
         RGB_pic = cv2.cvtColor(img.copy(), cv2.COLOR_BGR2RGB)
         RGB_pic = QtGui.QImage(RGB_pic.data, RGB_pic.shape[1], RGB_pic.shape[0], QtGui.QImage.Format_RGB888)
         return QtGui.QPixmap.fromImage(RGB_pic)
-    def show_pic(self,img,show,Scaled=True):
+
+    def show_pic(self, img, show, Scaled=True):
         RGB_pic = cv2.cvtColor(img.copy(), cv2.COLOR_BGR2RGB)
         RGB_pic = QtGui.QImage(RGB_pic.data, RGB_pic.shape[1], RGB_pic.shape[0], QtGui.QImage.Format_RGB888)
         show.setScaledContents(Scaled)
         show.setPixmap(QtGui.QPixmap.fromImage(RGB_pic))
 
-
-
-
     def receive_data(self):
         self.info_serial.setText('等待接受数据')
         try:
-            num=self.serial.inWaiting()
+            num = self.serial.inWaiting()
         except:
             self.close_serial()
             return None
         if num > 0:
             data = self.serial.read(num)
-            #print('SHUJU%s'%type(data))
-            if self.is_hex==1:
-                out_s=''
-                for i in range(0,len(data)):
-                    out_s=out_s + '{:02X}'.format(data[i])
+            # print('SHUJU%s'%type(data))
+            if self.is_hex == 1:
+                out_s = ''
+                for i in range(0, len(data)):
+                    out_s = out_s + '{:02X}'.format(data[i])
                 # for i in range(0, len(out_s)):
                 #     print(out_s[i])
-                if out_s[:4]=='55AA':
-                    if out_s[4:6]=='01':
+                if out_s[:4] == '55AA':
+                    if out_s[4:6] == '01':
                         print('01')
                         self.send_data()
-                    elif out_s[4:6]=='02':
+                    elif out_s[4:6] == '02':
                         print('02')
                     print('ok')
                 print(out_s)
@@ -145,12 +145,13 @@ class MainWin(QMainWindow,Ui_MainWindow):
                 self.receive_data_label.setText(str(data.decode('iso-8859-1')))
 
         pass
+
     def open_serial(self):
-        self.serial.port=str('/dev/ttyTHS0')
-        self.serial.baudrate=int(9600)
-        self.serial.bytesize=int(8)
-        self.serial.stopbits=int(1)
-        self.serial.parity=str('N')
+        self.serial.port = str('/dev/ttyTHS0')
+        self.serial.baudrate = int(9600)
+        self.serial.bytesize = int(8)
+        self.serial.stopbits = int(1)
+        self.serial.parity = str('N')
         try:
             self.serial.open()
             self.info_serial.setText('串口已经打开')
@@ -161,6 +162,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
         if self.serial.isOpen():
             self.open_serial_button.setEnabled(False)
             self.close_serial_button.setEnabled(True)
+
     def close_serial(self):
         self.serial_timer.stop()
         try:
@@ -172,57 +174,56 @@ class MainWin(QMainWindow,Ui_MainWindow):
             pass
         self.open_serial_button.setEnabled(True)
         self.close_serial_button.setEnabled(False)
+
     def send_data(self):
         print('检测结果')
         # print(self.info)
         print(self.data_to_send)
         print(type(self.data_to_send))
         self.send_data_label.setText(str(self.data_to_send))
-        #self.send_data_label.setText(str(self.data_to_send))
-        #self.imu_label.setText(str(self.gyro))
-        #self.info_lab.setText(str(int(self.fps)))
+        # self.send_data_label.setText(str(self.data_to_send))
+        # self.imu_label.setText(str(self.gyro))
+        # self.info_lab.setText(str(int(self.fps)))
         if self.serial.isOpen():
-            #self.info_serial.setText(self.data_to_send)
+            # self.info_serial.setText(self.data_to_send)
 
-            if self.data_to_send!='':
+            if self.data_to_send != '':
                 self.send_data_label.setText(str(self.data_to_send))
-                data=(self.data_to_send+'\r\n').encode('utf-8')
-                num=self.serial.write(data)
+                data = (self.data_to_send + '\r\n').encode('utf-8')
+                num = self.serial.write(data)
                 self.info_serial.setText(str(num))
-        #self.data_to_send = ''
+        # self.data_to_send = ''
+
     def update_video(self):
         print('进入子线程')
 
         while self.run_thread:
-
             t1 = time_synchronized()
             time.sleep(0.05)
             path, img, im0s, img_depth, depth, self.gyro, intrin, vid_cap = next(self.dataset)
             self.show_pic(im0s[0], self.ShowLabel)
             t2 = time_synchronized()
             self.fps = 1 / (t2 - t1)
-            self.fps = (self.fps//2)*2
+            self.fps = (self.fps // 2) * 2
             self.info_lab.setText(str(int(self.fps)))
             print('子线程显示图像')
 
-
     def show_image(self):
-        self.i+=1
+        self.i += 1
         print('当前获取第{}帧'.format(self.i))
-        t=time.time()
+        t = time.time()
         with torch.no_grad():
-            path, img, im0s, img_depth,depth,self.gyro,intrin,vid_cap = next(self.dataset)
-            #cv2.imwrite('./test.jpg', img)
-
+            path, img, im0s, img_depth, depth, self.gyro, intrin, vid_cap = next(self.dataset)
+            # cv2.imwrite('./test.jpg', img)
 
             if self.update_intrin == 1:
                 self.ppx = intrin[0]
                 self.ppy = intrin[1]
                 self.fx = intrin[2]
                 self.fy = intrin[3]
-                self.update_intrin=0
+                self.update_intrin = 0
                 print('更新内参')
-                #cv2.imwrite('./test.jpg', img)
+                # cv2.imwrite('./test.jpg', img)
 
             img = torch.from_numpy(img).to(self.device)
             t0 = time.time()
@@ -244,22 +245,23 @@ class MainWin(QMainWindow,Ui_MainWindow):
             # Process detections
             for i, det in enumerate(pred):  # detections per image
                 if self.webcam:  # batch_size >= 1
-                    p, s, im0 ,img_depth= path[i], '%g: ' % i, im0s[i].copy(),img_depth[i].copy()
+                    p, s, im0, img_depth = path[i], '%g: ' % i, im0s[i].copy(), img_depth[i].copy()
                 else:
-                    p, s, im0 ,img_depth= path, '', im0s,img_depth
+                    p, s, im0, img_depth = path, '', im0s, img_depth
 
                 save_path = str(Path('inference/output') / Path(p).name)
-                txt_path = str(Path('inference/output') / Path(p).stem) + ('_%g' % self.dataset.frame if self.dataset.mode == 'video' else '')
+                txt_path = str(Path('inference/output') / Path(p).stem) + (
+                    '_%g' % self.dataset.frame if self.dataset.mode == 'video' else '')
 
                 s += '%gx%g ' % img.shape[2:]  # print string
                 gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
-                #显示原图
+                # 显示原图
                 print('保存图片')
                 cv2.imwrite('./a-color.jpg', im0)
-                #self.show_pic(im0,self.ShowLabel)
+                # self.show_pic(im0,self.ShowLabel)
                 cv2.imwrite('./a-depth.jpg', img_depth)
                 depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(img_depth, alpha=0.03), cv2.COLORMAP_JET)
-                self.show_pic(depth_colormap,self.depth_label)
+                self.show_pic(depth_colormap, self.depth_label)
 
                 if det is not None and len(det):
                     # Rescale boxes from img_size to im0 size
@@ -270,31 +272,30 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         n = (det[:, -1] == c).sum()  # detections per class
                         s += '%g %ss, ' % (n, names[int(c)])  # add to string
 
-                    self.info=''
+                    self.info = ''
 
-                    obj_i=0;
+                    obj_i = 0;
                     for *xyxy, conf, cls in det:
-                    # Add bbox to image
+                        # Add bbox to image
                         label = '%s %.2f' % (names[int(cls)], conf)
 
                         plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=3)
-                        print('im0.shape',im0.shape)
-                        _c1 = (int(xyxy[1]) // 8+1) * 8
-                        _c3 = (int(xyxy[3]) // 8+1) * 8
-                        _c0 = (int(xyxy[0]) // 8+1) * 8
-                        _c2 = (int(xyxy[2]) // 8+1) * 8
-                        obj_1=im0[_c1:_c3,_c0:_c2]
-                        print('names',names[int(cls)])
+                        print('im0.shape', im0.shape)
+                        _c1 = (int(xyxy[1]) // 8 + 1) * 8
+                        _c3 = (int(xyxy[3]) // 8 + 1) * 8
+                        _c0 = (int(xyxy[0]) // 8 + 1) * 8
+                        _c2 = (int(xyxy[2]) // 8 + 1) * 8
+                        obj_1 = im0[_c1:_c3, _c0:_c2]
+                        print('names', names[int(cls)])
                         if (obj_i > 4):
                             obj_i = 4
                         if names[int(cls)] == 'fire':
-                            obj_fire=obj_i+3
+                            obj_fire = obj_i + 3
                             if (obj_fire > 4):
-                                obj_fire=4
+                                obj_fire = 4
                             self.show_pic(obj_1, self.label_obj[obj_fire], True)
                         else:
                             self.show_pic(obj_1, self.label_obj[obj_i], True)
-
 
                         # if(self.i%10==10):
                         #     img_to_region=Image.fromarray(im0)
@@ -304,27 +305,28 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         #     region_1=np.array(region_1)
                         #     self.show_pic(region_1, self.depth_label,False)
                         self.info += names[int(cls)] + ':'
-                        #self.info += str(round(depth.get_distance(int(xyxy[1].item()),int(xyxy[2].item())), 6)) + '\n'
-                        pixel_x, pixel_y = int((xyxy[0].item()+xyxy[2].item())/2), int((xyxy[1].item()+xyxy[3])/2)
-                        #z为深度，x指向双目相机，y向下，右手坐标系
+                        # self.info += str(round(depth.get_distance(int(xyxy[1].item()),int(xyxy[2].item())), 6)) + '\n'
+                        pixel_x, pixel_y = int((xyxy[0].item() + xyxy[2].item()) / 2), int(
+                            (xyxy[1].item() + xyxy[3]) / 2)
+                        # z为深度，x指向双目相机，y向下，右手坐标系
                         z = depth.get_distance(pixel_x, pixel_y)
-                        x, y = [(pixel_x-self.ppx)*z/self.fx, (pixel_y-self.ppy)*z/self.fy]
+                        x, y = [(pixel_x - self.ppx) * z / self.fx, (pixel_y - self.ppy) * z / self.fy]
                         print('识别出目标：{} 像素坐标：（{},{}）实际坐标（mm）：({:.3f},{:.3f},{:.3f})'.format(
-                            names[int(cls)],pixel_x,pixel_y,x*1000,y*1000,z*1000
+                            names[int(cls)], pixel_x, pixel_y, x * 1000, y * 1000, z * 1000
                         ))
 
                         self.result = ''
-                        self.result += names[int(cls)] + ':'+'\n'
-                        self.result+=str('({:.0f},{:.0f},{:.0f})'.format(
+                        self.result += names[int(cls)] + ':' + '\n'
+                        self.result += str('({:.0f},{:.0f},{:.0f})'.format(
                             x * 1000, y * 1000, z * 1000
-                        ))+'\n'
+                        )) + '\n'
                         if names[int(cls)] == 'pipe':
                             print('计算角度')
-                            #thela = cal_angel(obj_1)
-                            #self.result += str(thela)
+                            # thela = cal_angel(obj_1)
+                            # self.result += str(thela)
                         self.info_obj[obj_i].setText(self.result)
-                        #选择下一个控件显示
-                        obj_i+=1
+                        # 选择下一个控件显示
+                        obj_i += 1
                         # depth_point=rs.rs2_deproject_pixel_to_point(intrin,[x,y],z)
                         # depth_point1 = rs.rs2_deproject_pixel_to_point(intrin, [x+10, y + 10], z)
                         # depth_point2 = rs.rs2_deproject_pixel_to_point(intrin, [x+10, y - 10], z)
@@ -361,23 +363,22 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         # #self.serial_bytes=bytes(self.data_to_send)
                         # #print(self.data_to_send)
 
-                #self.fps=1/(t2 - t1)
+                # self.fps=1/(t2 - t1)
                 print('处理完成，当前帧率(%.3ffps)' % self.fps)
-                #显示处理结果
-                #cv2.putText(im0,'%.3ffps' % (1/(t2 - t1)),(0,25),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),3)
+                # 显示处理结果
+                # cv2.putText(im0,'%.3ffps' % (1/(t2 - t1)),(0,25),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),3)
 
                 self.show_pic(im0, self.yolo_label)
-                #self.info_lab.setText(str(int(self.fps)))
+                # self.info_lab.setText(str(int(self.fps)))
                 self.imu_label.setText(str(self.gyro))
                 self.info_result.setText(self.result)
 
                 if cv2.waitKey(1) == ord('q'):  # q to quit
                     raise StopIteration
 
-
-    def detect(self,save_img=False):
+    def detect(self, save_img=False):
         out, source, weights, view_img, save_txt, imgsz = \
-            'inference/output', '0',self.weights, False, False, 640
+            'inference/output', '0', self.weights, False, False, 640
         self.webcam = source == '0' or source.startswith('rtsp') or source.startswith('http') or source.endswith('.txt')
 
         # Initialize
@@ -412,7 +413,6 @@ class MainWin(QMainWindow,Ui_MainWindow):
         _ = self.model(img.half() if half else img) if self.device.type != 'cpu' else None  # run once
         self.timer_camera.start(30)
 
-
     def closeEvent(self, event):
         ok = QtWidgets.QPushButton()
         cancel = QtWidgets.QPushButton()
@@ -426,20 +426,18 @@ class MainWin(QMainWindow,Ui_MainWindow):
         else:
             # if self.cap.isOpened():
             #     self.cap.release()
-            #sys.exit(app.exec_())
-
+            # sys.exit(app.exec_())
 
             event.accept()
 
 
-if __name__=='__main__':
-    app=QApplication(sys.argv)
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
 
-    mainWindow=MainWin()
+    mainWindow = MainWin()
 
     mainWindow.show()
     sys.exit(app.exec_())
-
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 # import PySide2

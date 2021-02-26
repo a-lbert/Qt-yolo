@@ -27,7 +27,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="多线程显示图像">
+      <change afterPath="$PROJECT_DIR$/TuXiangChuLi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a-color.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/a-color.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a-depth.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/a-depth.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tttt.py" beforeDir="false" afterPath="$PROJECT_DIR$/tttt.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,8 +69,8 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
-  <component name="RunManager" selected="Python.main">
-    <configuration name="Coordinate-test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.TuXiangChuLi">
+    <configuration name="TuXiangChuLi" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Qt-yolo" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -74,10 +79,10 @@
       </envs>
       <option name="SDK_HOME" value="$PROJECT_DIR$/../miniconda3/envs/torch/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Coordinate-test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/TuXiangChuLi.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -171,7 +176,6 @@
       <method v="2" />
     </configuration>
     <configuration name="tttt" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="Qt-yolo" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -179,9 +183,10 @@
       </envs>
       <option name="SDK_HOME" value="$PROJECT_DIR$/../miniconda3/envs/torch/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tttt.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -193,11 +198,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
+        <item itemvalue="Python.TuXiangChuLi" />
         <item itemvalue="Python.tttt" />
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.ceshi" />
         <item itemvalue="Python.post_process" />
-        <item itemvalue="Python.Coordinate-test" />
       </list>
     </recent_temporary>
   </component>
@@ -396,31 +401,31 @@
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
     <state x="743" y="312" width="526" height="480" key="FileChooserDialogImpl/0.28.1920.1052@0.28.1920.1052" timestamp="1610784720328" />
-    <state width="1895" height="229" key="GridCell.Tab.0.bottom" timestamp="1611489573940">
+    <state width="1895" height="229" key="GridCell.Tab.0.bottom" timestamp="1612768171160">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1895" height="229" key="GridCell.Tab.0.bottom/0.28.1920.1052@0.28.1920.1052" timestamp="1611489573940" />
+    <state width="1895" height="229" key="GridCell.Tab.0.bottom/0.28.1920.1052@0.28.1920.1052" timestamp="1612768171160" />
     <state width="1896" height="184" key="GridCell.Tab.0.bottom/0.28.3000.1892@0.28.3000.1892" timestamp="1609762961078" />
     <state width="1896" height="278" key="GridCell.Tab.0.bottom/0.306.3000.1614@0.306.3000.1614" timestamp="1609761794281" />
     <state width="1896" height="184" key="GridCell.Tab.0.bottom/1080.0.1920.1080/0.28.1080.1892@1080.0.1920.1080" timestamp="1609824760410" />
-    <state width="1895" height="229" key="GridCell.Tab.0.center" timestamp="1611489573938">
+    <state width="1895" height="229" key="GridCell.Tab.0.center" timestamp="1612768171159">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1895" height="229" key="GridCell.Tab.0.center/0.28.1920.1052@0.28.1920.1052" timestamp="1611489573938" />
+    <state width="1895" height="229" key="GridCell.Tab.0.center/0.28.1920.1052@0.28.1920.1052" timestamp="1612768171159" />
     <state width="1896" height="184" key="GridCell.Tab.0.center/0.28.3000.1892@0.28.3000.1892" timestamp="1609762961077" />
     <state width="1896" height="278" key="GridCell.Tab.0.center/0.306.3000.1614@0.306.3000.1614" timestamp="1609761794280" />
     <state width="1896" height="184" key="GridCell.Tab.0.center/1080.0.1920.1080/0.28.1080.1892@1080.0.1920.1080" timestamp="1609824760410" />
-    <state width="1895" height="229" key="GridCell.Tab.0.left" timestamp="1611489573937">
+    <state width="1895" height="229" key="GridCell.Tab.0.left" timestamp="1612768171158">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1895" height="229" key="GridCell.Tab.0.left/0.28.1920.1052@0.28.1920.1052" timestamp="1611489573937" />
+    <state width="1895" height="229" key="GridCell.Tab.0.left/0.28.1920.1052@0.28.1920.1052" timestamp="1612768171158" />
     <state width="1896" height="184" key="GridCell.Tab.0.left/0.28.3000.1892@0.28.3000.1892" timestamp="1609762961076" />
     <state width="1896" height="278" key="GridCell.Tab.0.left/0.306.3000.1614@0.306.3000.1614" timestamp="1609761794280" />
     <state width="1896" height="184" key="GridCell.Tab.0.left/1080.0.1920.1080/0.28.1080.1892@1080.0.1920.1080" timestamp="1609824760409" />
-    <state width="1895" height="229" key="GridCell.Tab.0.right" timestamp="1611489573939">
+    <state width="1895" height="229" key="GridCell.Tab.0.right" timestamp="1612768171159">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1895" height="229" key="GridCell.Tab.0.right/0.28.1920.1052@0.28.1920.1052" timestamp="1611489573939" />
+    <state width="1895" height="229" key="GridCell.Tab.0.right/0.28.1920.1052@0.28.1920.1052" timestamp="1612768171159" />
     <state width="1896" height="184" key="GridCell.Tab.0.right/0.28.3000.1892@0.28.3000.1892" timestamp="1609762961077" />
     <state width="1896" height="278" key="GridCell.Tab.0.right/0.306.3000.1614@0.306.3000.1614" timestamp="1609761794281" />
     <state width="1896" height="184" key="GridCell.Tab.0.right/1080.0.1920.1080/0.28.1080.1892@1080.0.1920.1080" timestamp="1609824760410" />
@@ -462,12 +467,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>113</line>
+          <line>117</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>100</line>
+          <line>106</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
