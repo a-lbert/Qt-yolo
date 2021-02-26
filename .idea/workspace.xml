@@ -26,14 +26,7 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="多线程显示图像">
-      <change afterPath="$PROJECT_DIR$/TuXiangChuLi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/a-color.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/a-color.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/a-depth.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/a-depth.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tttt.py" beforeDir="false" afterPath="$PROJECT_DIR$/tttt.py" afterDir="false" />
-    </list>
+    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="系列变换检测直线" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -348,7 +341,14 @@
       <option name="project" value="LOCAL" />
       <updated>1611489645581</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="系列变换检测直线">
+      <created>1614324033134</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1614324033134</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -389,7 +389,8 @@
     <MESSAGE value="提高原视频流显示帧率" />
     <MESSAGE value="权重文件说明" />
     <MESSAGE value="多线程显示图像" />
-    <option name="LAST_COMMIT_MESSAGE" value="多线程显示图像" />
+    <MESSAGE value="系列变换检测直线" />
+    <option name="LAST_COMMIT_MESSAGE" value="系列变换检测直线" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
   <component name="WindowStateProjectService">
@@ -443,10 +444,10 @@
     <state x="634" y="245" key="SettingsEditor/0.28.1920.1052@0.28.1920.1052" timestamp="1609678416917" />
     <state x="1254" y="146" key="SettingsEditor/0.28.3000.1892@0.28.3000.1892" timestamp="1609762943291" />
     <state x="1287" y="586" key="SettingsEditor/0.306.3000.1614@0.306.3000.1614" timestamp="1609761707361" />
-    <state x="555" y="290" width="800" height="526" key="Vcs.Push.Dialog.v2" timestamp="1611489652099">
+    <state x="555" y="290" width="800" height="526" key="Vcs.Push.Dialog.v2" timestamp="1614324188359">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state x="555" y="290" width="800" height="526" key="Vcs.Push.Dialog.v2/0.28.1920.1052@0.28.1920.1052" timestamp="1611489652099" />
+    <state x="555" y="290" width="800" height="526" key="Vcs.Push.Dialog.v2/0.28.1920.1052@0.28.1920.1052" timestamp="1614324188359" />
     <state x="1080" y="551" key="Vcs.Push.Dialog.v2/0.306.3000.1614@0.306.3000.1614" timestamp="1609761662675" />
     <state x="745" y="469" width="429" height="170" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1609830635787">
       <screen x="0" y="28" width="1920" height="1052" />
