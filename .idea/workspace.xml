@@ -193,8 +193,8 @@
     </configuration>
     <list>
       <item itemvalue="Python.TuXiangChuLi" />
-      <item itemvalue="Python.ceshi" />
       <item itemvalue="Python.main" />
+      <item itemvalue="Python.ceshi" />
       <item itemvalue="Python.post_process" />
       <item itemvalue="Python.tttt" />
     </list>
