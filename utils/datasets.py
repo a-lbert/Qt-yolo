@@ -406,7 +406,13 @@ class LoadStreams:  # multiple IP or RTSP cameras
     def __iter__(self):
         return self
 
+    def video(self):
+
+        img0 = self.imgs.copy()
+        return img0
+
     def __next__(self):
+
         img0 = self.imgs.copy()
         #img_dep=self.imgs_depth
         #Rgb_img = self.imgs.copy()
@@ -429,6 +435,8 @@ class LoadStreams:  # multiple IP or RTSP cameras
 
     def __len__(self):
         return 0  # 1E12 frames = 32 streams at 30 FPS for 30 years
+        # img0 = self.imgs.copy()
+        # return img0
 
 
 class LoadImagesAndLabels(Dataset):  # for training/testing
