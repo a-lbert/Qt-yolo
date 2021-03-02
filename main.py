@@ -68,7 +68,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.dataset = None
         self.weights = 'yolov5s.pt'
         self.i = 0
-        self.weights = '/home/limeng/Qt-yolo/3_1.pt'
+        self.weights = '3_1.pt'
         self.timer_camera = QtCore.QTimer()  # 初始化定时器
         self.timer_camera.timeout.connect(self.show_image)
         # self.timer_camera.timeout.connect(self.receive_data)
@@ -94,8 +94,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
         self.detect()
         self.open_serial()
-        up_thread = Thread(target=self.update_video, args=([]), daemon=True)
-        up_thread.start()
+        #up_thread = Thread(target=self.update_video, args=([]), daemon=True)
+        #up_thread.start()
 
         # self.show_image()
         # self.yolo_thread=YoloThread()
@@ -195,18 +195,25 @@ class MainWin(QMainWindow, Ui_MainWindow):
         # self.data_to_send = ''
 
     def update_video(self):
-        print('进入子线程')
 
-        while self.run_thread:
+        i=0
+
+        while True:
             t1 = time_synchronized()
-            time.sleep(0.05)
-            path, img, im0s, img_depth, depth, self.gyro, intrin, vid_cap = next(self.dataset)
-            self.show_pic(im0s[0], self.ShowLabel)
+            if i==0:
+                time.sleep(0.5)
+            elif i==1:
+                time.sleep(0.03)
+                self.show_pic(img_video[0], self.ShowLabel)
+
+            img_video=LoadStreams.video(self.dataset)
+
+            i=1
             t2 = time_synchronized()
             self.fps = 1 / (t2 - t1)
             self.fps = (self.fps // 2) * 2
             self.info_lab.setText(str(int(self.fps)))
-            print('子线程显示图像')
+            #print('子线程显示图像')
 
     def show_image(self):
         self.i += 1
@@ -412,6 +419,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
         img = torch.zeros((1, 3, imgsz, imgsz), device=self.device)  # init img
         _ = self.model(img.half() if half else img) if self.device.type != 'cpu' else None  # run once
         self.timer_camera.start(30)
+        up_thread = Thread(target=self.update_video, args=(), daemon=True)
+        up_thread.start()
 
     def closeEvent(self, event):
         ok = QtWidgets.QPushButton()
