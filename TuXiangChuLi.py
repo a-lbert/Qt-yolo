@@ -106,5 +106,5 @@ def func(img):
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    img = cv2.imread('/home/limeng/Pictures/data/9.png')
+    img = cv2.imread('pics/7.png')
     func(img)
