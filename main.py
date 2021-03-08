@@ -81,8 +81,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
         self.is_hex = 1  # 16jinzhi
         # 选择显示控件
-        self.label_obj = [self.label_obj1, self.label_obj2, self.label_obj3,
-                          self.label_obj4, self.label_obj5]
+        self.label_obj = [self.label_obj1, self.label_obj2, self.label_obj3
+                          ]
+        self.fire = [self.fire1,self.fire2
+                      ]
         self.info_obj = [self.info_obj1, self.info_obj2, self.info_obj3,
                          self.info_obj4, self.info_obj5]
         self.update_intrin = 1
@@ -280,8 +282,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         s += '%g %ss, ' % (n, names[int(c)])  # add to string
 
                     self.info = ''
-
+                    #xuanzekongjian
                     obj_i = 0;
+                    fire_i=0;
                     for *xyxy, conf, cls in det:
                         # Add bbox to image
                         label = '%s %.2f' % (names[int(cls)], conf)
@@ -294,13 +297,13 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         _c2 = (int(xyxy[2]) // 8 + 1) * 8
                         obj_1 = im0[_c1:_c3, _c0:_c2]
                         print('names', names[int(cls)])
-                        if (obj_i > 4):
-                            obj_i = 4
+                        if (obj_i > 3):
+                            obj_i = obj_i%3
                         if names[int(cls)] == 'fire':
-                            obj_fire = obj_i + 3
-                            if (obj_fire > 4):
-                                obj_fire = 4
-                            self.show_pic(obj_1, self.label_obj[obj_fire], True)
+                            if (fire_i > 2):
+                                fire_i = fire_i%2
+                            self.show_pic(obj_1, self.fire[fire_i], True)
+                            fire_i+=1
                         else:
                             self.show_pic(obj_1, self.label_obj[obj_i], True)
 
@@ -331,9 +334,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
                             print('计算角度')
                             # thela = cal_angel(obj_1)
                             # self.result += str(thela)
-                        self.info_obj[obj_i].setText(self.result)
+                            self.info_obj[obj_i].setText(self.result)
                         # 选择下一个控件显示
-                        obj_i += 1
+                            obj_i += 1
                         # depth_point=rs.rs2_deproject_pixel_to_point(intrin,[x,y],z)
                         # depth_point1 = rs.rs2_deproject_pixel_to_point(intrin, [x+10, y + 10], z)
                         # depth_point2 = rs.rs2_deproject_pixel_to_point(intrin, [x+10, y - 10], z)

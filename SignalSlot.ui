@@ -278,7 +278,7 @@
      <string>            obj3</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_obj4">
+   <widget class="QLabel" name="fire1">
     <property name="geometry">
      <rect>
       <x>1640</x>
@@ -288,10 +288,10 @@
      </rect>
     </property>
     <property name="text">
-     <string>           obj4</string>
+     <string>           fire1</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_obj5">
+   <widget class="QLabel" name="fire2">
     <property name="geometry">
      <rect>
       <x>1760</x>
@@ -301,7 +301,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>            obj5</string>
+     <string>fire2</string>
     </property>
    </widget>
    <widget class="QLabel" name="info_obj1">
@@ -353,7 +353,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>       info_obj4</string>
+     <string>       fire_obj1</string>
     </property>
    </widget>
    <widget class="QLabel" name="info_obj5">
@@ -366,7 +366,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>       info_obj5</string>
+     <string>       fire_obj2</string>
     </property>
    </widget>
   </widget>
@@ -376,7 +376,7 @@
      <x>0</x>
      <y>0</y>
      <width>1931</width>
-     <height>23</height>
+     <height>28</height>
     </rect>
    </property>
   </widget>
