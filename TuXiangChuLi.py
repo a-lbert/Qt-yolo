@@ -32,6 +32,7 @@ def find_mode(thela):
     return mode,counts
 
 def func(img):
+    cv2.imshow('img', img)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     # 中值滤波
     blur = cv2.medianBlur(gray, 3)  # 模板大小3*3
@@ -104,6 +105,48 @@ def func(img):
     # #print(max(theta, key=lambda v: theta.count(v)))
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
+def cal_angel(img):
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # 中值滤波
+    blur = cv2.medianBlur(gray, 3)  # 模板大小3*3
+    # blur = cv2.GaussianBlur(gray, (5,5), 0)
+    # 二值化
+    ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (9, 9))
+    kernel2 = cv2.getStructuringElement(cv2.MORPH_RECT, (7, 7))
+    # 膨胀
+    dilate = cv2.dilate(thresh, kernel2)
+    # 腐蚀
+    dst = cv2.erode(dilate, kernel)
+    # dst = cv2.dilate(dst, kernel)
+    edges = cv2.Canny(dst, ret - 10, ret + 10)
+    try:
+        minLineLength = 200
+        maxLineGap = 15
+        lines = cv2.HoughLinesP(edges, 1, np.pi / 180, 100, minLineLength, maxLineGap)
+        # lines = cv2.HoughLines(edges, 1, np.pi / 180, 100)
+        print('直线数量', len(lines))
+    except TypeError:
+        minLineLength = 20
+        maxLineGap = 10
+        lines = cv2.HoughLinesP(edges, 1, np.pi / 180, 50, minLineLength, maxLineGap)
+        # lines = cv2.HoughLines(edges, 1, np.pi / 180, 100)
+    thela = []
+    try:
+        for i in range(len(lines)):
+            for x1, y1, x2, y2 in lines[i]:
+                # if x1 == x2:
+                #     _thela = 0
+                _thela = math.atan((y2 - y1) / (x2 - x1 + 1))
+                thela.append(_thela)
+
+        mode, counts = find_mode(thela)
+        return mode, counts
+    except TypeError:
+        return 99,99
+
+
 
 if __name__ == "__main__":
     img = cv2.imread('pics/7.png')

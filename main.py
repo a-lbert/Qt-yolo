@@ -35,7 +35,8 @@ from utils.datasets import LoadStreams, LoadImages
 from utils.general import (
     check_img_size, non_max_suppression, apply_classifier, scale_coords, xyxy2xywh, plot_one_box, strip_optimizer)
 from utils.torch_utils import select_device, load_classifier, time_synchronized
-from tttt import cal_angel
+
+from TuXiangChuLi import cal_angel
 
 
 def accel_data(accel):
@@ -219,6 +220,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
     def show_image(self):
         self.i += 1
+        Save_path = 'inference/output'
         print('当前获取第{}帧'.format(self.i))
         t = time.time()
         with torch.no_grad():
@@ -306,6 +308,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
                             fire_i+=1
                         else:
                             self.show_pic(obj_1, self.label_obj[obj_i], True)
+                            cv2.imwrite(os.path.join(path, str(self.i)+'.jpg'), obj_1)
+
+
 
                         # if(self.i%10==10):
                         #     img_to_region=Image.fromarray(im0)
@@ -326,14 +331,14 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         ))
 
                         self.result = ''
-                        self.result += names[int(cls)] + ':' + '\n'
+                        self.result += names[int(cls)] + ':'
                         self.result += str('({:.0f},{:.0f},{:.0f})'.format(
                             x * 1000, y * 1000, z * 1000
                         )) + '\n'
                         if names[int(cls)] == 'pipe':
                             print('计算角度')
-                            # thela = cal_angel(obj_1)
-                            # self.result += str(thela)
+                            thela , count= cal_angel(obj_1)
+                            self.result += str(thela)
                             self.info_obj[obj_i].setText(self.result)
                         # 选择下一个控件显示
                             obj_i += 1
