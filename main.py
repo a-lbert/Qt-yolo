@@ -69,7 +69,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.dataset = None
         self.weights = 'yolov5s.pt'
         self.i = 0
-        self.weights = '3_1.pt'
+        self.weights = '/home/sz2/work/Qt-yolo/3_1.pt'
         self.timer_camera = QtCore.QTimer()  # 初始化定时器
         self.timer_camera.timeout.connect(self.show_image)
         # self.timer_camera.timeout.connect(self.receive_data)
