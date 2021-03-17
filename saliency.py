@@ -18,8 +18,12 @@ def saliency(path):
 	# print(np.median(saliencyMap))
 	#
 	# print(saliencyMap > np.median(saliencyMap))
-	_saliencyMap = saliencyMap < 0.25 * np.median(saliencyMap)
-	saliencyMap = (_saliencyMap * 255).astype("uint8")
+	median = np.median(saliencyMap)
+	_saliencyMap =  saliencyMap >  0.1 * median
+	_saliencyMap_ = saliencyMap < 0.2 * median
+	#print(type(_saliencyMap))
+	saliencyMap = (_saliencyMap*_saliencyMap_ * 255).astype("uint8")
+
 
 	# if we would like a *binary* map that we could process for contours,
 	# compute convex hull's, extract bounding boxes, etc., we can
@@ -30,26 +34,33 @@ def saliency(path):
 	lines = cv2.HoughLines(threshMap, 1, np.pi / 180, 10)
 	print('直线数量', len(lines))
 
+	for i in range(50):
+		r, theta = lines[i][0]
+		if -0.5 < theta < 0.5:
+			a = np.cos(theta)
+			b = np.sin(theta)
+			x0 = a * r
+			y0 = b * r
+			x1 = int(x0 + 1000 * (-b))
+			y1 = int(y0 + 1000 * (a))
+			x2 = int(x0 - 1000 * (-b))
+			y2 = int(y0 - 1000 * (a))
+			cv2.line(image, (x1, y1), (x2, y2), (0, 0, 255), 1)
+			#break
+		else:
+			#print('pass')
+			continue
 
-	for r, theta in lines[0]:
-		a = np.cos(theta)
-		b = np.sin(theta)
-		x0 = a * r
-		y0 = b * r
-		x1 = int(x0 + 1000 * (-b))
-		y1 = int(y0 + 1000 * (a))
-		x2 = int(x0 - 1000 * (-b))
-		y2 = int(y0 - 1000 * (a))
-		cv2.line(image, (x1, y1), (x2, y2), (0, 0, 255), 1)
+		# save_path = '/home/sz2/bbb/'+path[-6:]
+		# print(save_path)
+		# cv2.imwrite(save_path,image)
 
-		save_path = '/home/sz2/bbb/'+path[-6:]
-		print(save_path)
-		cv2.imwrite(save_path,image)
 
-	# cv2.imshow("Output", saliencyMap)
-	# cv2.imshow("Thresh", threshMap)
-	# cv2.imshow("Image", image)
-	# cv2.waitKey(0)
+	cv2.imshow("Thresh", threshMap)
+
+	cv2.imshow("Output", saliencyMap)
+	cv2.imshow("Image", image)
+	cv2.waitKey(0)
 
 def init():
 	# construct the argument parser and parse the arguments
@@ -155,4 +166,6 @@ if __name__ == "__main__":
     #img = cv2.imread('pics/7.png')
 
     # func(img)
-    bianli('/home/sz2/aaa')
+    #bianli('/home/sz2/aaa')
+	#saliency('/home/sz2/aaa/pipe1.jpg')
+	saliency('pics/7.png')
