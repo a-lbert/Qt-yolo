@@ -26,14 +26,12 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="shunxutiaozheng">
-      <change afterPath="$PROJECT_DIR$/objectness_saliency.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/saliency.py" afterDir="false" />
+    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="saliency">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TuXiangChuLi.py" beforeDir="false" afterPath="$PROJECT_DIR$/TuXiangChuLi.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/a-color.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/a-color.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/a-depth.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/a-depth.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/saliency.py" beforeDir="false" afterPath="$PROJECT_DIR$/saliency.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -201,15 +199,15 @@
     <list>
       <item itemvalue="Python.TuXiangChuLi" />
       <item itemvalue="Python.main" />
-      <item itemvalue="Python.tttt" />
-      <item itemvalue="Python.saliency" />
       <item itemvalue="Python.objectness_saliency" />
+      <item itemvalue="Python.saliency" />
+      <item itemvalue="Python.tttt" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.saliency" />
-        <item itemvalue="Python.objectness_saliency" />
         <item itemvalue="Python.TuXiangChuLi" />
+        <item itemvalue="Python.objectness_saliency" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.tttt" />
       </list>
@@ -406,7 +404,21 @@
       <option name="project" value="LOCAL" />
       <updated>1615192780809</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="saliency">
+      <created>1615881514796</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1615881514796</updated>
+    </task>
+    <task id="LOCAL-00028" summary="saliency">
+      <created>1615950205031</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1615950205031</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -451,7 +463,8 @@
     <MESSAGE value="dsghd" />
     <MESSAGE value="show" />
     <MESSAGE value="shunxutiaozheng" />
-    <option name="LAST_COMMIT_MESSAGE" value="shunxutiaozheng" />
+    <MESSAGE value="saliency" />
+    <option name="LAST_COMMIT_MESSAGE" value="saliency" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
   <component name="WindowStateProjectService">
@@ -468,46 +481,47 @@
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
     <state x="743" y="312" width="526" height="480" key="FileChooserDialogImpl/0.28.1920.1052@0.28.1920.1052" timestamp="1610784720328" />
-    <state width="1828" height="284" key="GridCell.Tab.0.bottom" timestamp="1615881423039">
+    <state width="1828" height="339" key="GridCell.Tab.0.bottom" timestamp="1616156870758">
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
     <state width="1895" height="229" key="GridCell.Tab.0.bottom/0.28.1920.1052@0.28.1920.1052" timestamp="1612768171160" />
     <state width="1896" height="184" key="GridCell.Tab.0.bottom/0.28.3000.1892@0.28.3000.1892" timestamp="1609762961078" />
     <state width="1896" height="278" key="GridCell.Tab.0.bottom/0.306.3000.1614@0.306.3000.1614" timestamp="1609761794281" />
     <state width="1896" height="184" key="GridCell.Tab.0.bottom/1080.0.1920.1080/0.28.1080.1892@1080.0.1920.1080" timestamp="1609824760410" />
-    <state width="1828" height="284" key="GridCell.Tab.0.bottom/65.24.1855.1056@65.24.1855.1056" timestamp="1615881423039" />
-    <state width="1828" height="284" key="GridCell.Tab.0.center" timestamp="1615881423038">
+    <state width="1828" height="339" key="GridCell.Tab.0.bottom/65.24.1855.1056@65.24.1855.1056" timestamp="1616156870758" />
+    <state width="1828" height="339" key="GridCell.Tab.0.center" timestamp="1616156870756">
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
     <state width="1895" height="229" key="GridCell.Tab.0.center/0.28.1920.1052@0.28.1920.1052" timestamp="1612768171159" />
     <state width="1896" height="184" key="GridCell.Tab.0.center/0.28.3000.1892@0.28.3000.1892" timestamp="1609762961077" />
     <state width="1896" height="278" key="GridCell.Tab.0.center/0.306.3000.1614@0.306.3000.1614" timestamp="1609761794280" />
     <state width="1896" height="184" key="GridCell.Tab.0.center/1080.0.1920.1080/0.28.1080.1892@1080.0.1920.1080" timestamp="1609824760410" />
-    <state width="1828" height="284" key="GridCell.Tab.0.center/65.24.1855.1056@65.24.1855.1056" timestamp="1615881423038" />
-    <state width="1828" height="284" key="GridCell.Tab.0.left" timestamp="1615881423037">
+    <state width="1828" height="339" key="GridCell.Tab.0.center/65.24.1855.1056@65.24.1855.1056" timestamp="1616156870756" />
+    <state width="1828" height="339" key="GridCell.Tab.0.left" timestamp="1616156870755">
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
     <state width="1895" height="229" key="GridCell.Tab.0.left/0.28.1920.1052@0.28.1920.1052" timestamp="1612768171158" />
     <state width="1896" height="184" key="GridCell.Tab.0.left/0.28.3000.1892@0.28.3000.1892" timestamp="1609762961076" />
     <state width="1896" height="278" key="GridCell.Tab.0.left/0.306.3000.1614@0.306.3000.1614" timestamp="1609761794280" />
     <state width="1896" height="184" key="GridCell.Tab.0.left/1080.0.1920.1080/0.28.1080.1892@1080.0.1920.1080" timestamp="1609824760409" />
-    <state width="1828" height="284" key="GridCell.Tab.0.left/65.24.1855.1056@65.24.1855.1056" timestamp="1615881423037" />
-    <state width="1828" height="284" key="GridCell.Tab.0.right" timestamp="1615881423038">
+    <state width="1828" height="339" key="GridCell.Tab.0.left/65.24.1855.1056@65.24.1855.1056" timestamp="1616156870755" />
+    <state width="1828" height="339" key="GridCell.Tab.0.right" timestamp="1616156870757">
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
     <state width="1895" height="229" key="GridCell.Tab.0.right/0.28.1920.1052@0.28.1920.1052" timestamp="1612768171159" />
     <state width="1896" height="184" key="GridCell.Tab.0.right/0.28.3000.1892@0.28.3000.1892" timestamp="1609762961077" />
     <state width="1896" height="278" key="GridCell.Tab.0.right/0.306.3000.1614@0.306.3000.1614" timestamp="1609761794281" />
     <state width="1896" height="184" key="GridCell.Tab.0.right/1080.0.1920.1080/0.28.1080.1892@1080.0.1920.1080" timestamp="1609824760410" />
-    <state width="1828" height="284" key="GridCell.Tab.0.right/65.24.1855.1056@65.24.1855.1056" timestamp="1615881423038" />
+    <state width="1828" height="339" key="GridCell.Tab.0.right/65.24.1855.1056@65.24.1855.1056" timestamp="1616156870757" />
     <state x="182" y="117" width="1536" height="869" key="MergeDialog" timestamp="1611489440119">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
     <state x="182" y="117" width="1536" height="869" key="MergeDialog/0.28.1920.1052@0.28.1920.1052" timestamp="1611489440119" />
-    <state x="587" y="314" width="736" height="477" key="MultipleFileMergeDialog" timestamp="1611489642563">
-      <screen x="0" y="28" width="1920" height="1052" />
+    <state x="632" y="339" width="736" height="477" key="MultipleFileMergeDialog" timestamp="1615881591992">
+      <screen x="65" y="24" width="1855" height="1056" />
     </state>
     <state x="587" y="314" width="736" height="477" key="MultipleFileMergeDialog/0.28.1920.1052@0.28.1920.1052" timestamp="1611489642563" />
+    <state x="632" y="339" key="MultipleFileMergeDialog/65.24.1855.1056@65.24.1855.1056" timestamp="1615881591992" />
     <state x="840" y="146" key="SettingsEditor" timestamp="1615779996247">
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
@@ -515,12 +529,16 @@
     <state x="1254" y="146" key="SettingsEditor/0.28.3000.1892@0.28.3000.1892" timestamp="1609762943291" />
     <state x="1287" y="586" key="SettingsEditor/0.306.3000.1614@0.306.3000.1614" timestamp="1609761707361" />
     <state x="840" y="146" key="SettingsEditor/65.24.1855.1056@65.24.1855.1056" timestamp="1615779996247" />
-    <state x="601" y="511" width="800" height="501" key="Vcs.Push.Dialog.v2" timestamp="1615192787281">
+    <state x="601" y="579" width="800" height="501" key="Vcs.Push.Dialog.v2" timestamp="1615950636788">
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
     <state x="555" y="290" width="800" height="526" key="Vcs.Push.Dialog.v2/0.28.1920.1052@0.28.1920.1052" timestamp="1614324188359" />
     <state x="1080" y="551" key="Vcs.Push.Dialog.v2/0.306.3000.1614@0.306.3000.1614" timestamp="1609761662675" />
-    <state x="601" y="511" width="800" height="501" key="Vcs.Push.Dialog.v2/65.24.1855.1056@65.24.1855.1056" timestamp="1615192787281" />
+    <state x="601" y="579" width="800" height="501" key="Vcs.Push.Dialog.v2/65.24.1855.1056@65.24.1855.1056" timestamp="1615950636788" />
+    <state x="385" y="151" width="1205" height="828" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1616156182085">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state x="385" y="151" width="1205" height="828" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/65.24.1855.1056@65.24.1855.1056" timestamp="1616156182085" />
     <state x="785" y="579" width="441" height="180" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1614653304751">
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
@@ -541,12 +559,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>119</line>
+          <line>120</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>108</line>
+          <line>109</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>

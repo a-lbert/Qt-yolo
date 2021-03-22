@@ -7,22 +7,63 @@ import cv2
 import numpy as np
 import math
 import os
+def find_mode(thela):
 
+    #print(thela)
+    mode = max(thela, key=lambda v: thela.count(v))
+    counts = thela.count(mode)
+    #限制小数位
+    mode = int(mode*100)/100
+    #众数个数为1,继续扩展
+    if thela.count(mode) == 1:
+        # 数据乘10,寻找众数
+        thela = list(np.multiply(10, thela))
+        thela = list(map(int, thela))
+        print('qqqqq',thela)
+        mode = max(thela, key=lambda v: thela.count(v))
+        #print(mode, thela.count(mode))
+        counts = thela.count(mode)
+        mode = mode / 10
+        #print('aaa')
+        if thela.count(mode) == 1:
+            thela = list(np.multiply(10, thela))
+            mode = max(thela, key=lambda v: thela.count(v))
+            print('aaaaaa', thela)
+            #print(mode, thela.count(mode))
+            counts = thela.count(mode)
+            mode = mode / 10
+            #print('bbb')
+    return mode,counts
 def saliency(path):
 	image = cv2.imread(path)
 
 
 	saliency = cv2.saliency.StaticSaliencyFineGrained_create()
 	(success, saliencyMap) = saliency.computeSaliency(image)
+	# saliency = cv2.saliency.StaticSaliencySpectralResidual_create()
+	# (success, saliencyMap) = saliency.computeSaliency(image)
 	# print(type(saliencyMap))
 	# print(np.median(saliencyMap))
 	#
 	# print(saliencyMap > np.median(saliencyMap))
 	median = np.median(saliencyMap)
-	_saliencyMap =  saliencyMap >  0.1 * median
-	_saliencyMap_ = saliencyMap < 0.2 * median
+	_saliencyMap =  saliencyMap <  0.25 * median
+	#_saliencyMap_ = saliencyMap > 0.2 * median
 	#print(type(_saliencyMap))
-	saliencyMap = (_saliencyMap*_saliencyMap_ * 255).astype("uint8")
+	saliencyMap = (_saliencyMap * 255).astype("uint8")
+
+	_, labels, stats, centroids = cv2.connectedComponentsWithStats(saliencyMap)
+	print(len(stats))
+	for i in range(len(stats)):
+		print(i,stats[i])
+	print(type(stats))
+	mask=~(labels == 166)
+	mask2=~(labels == 124)
+	saliencyMap = saliencyMap*mask*mask2
+	print(stats)
+	#saliencyMap[84:84+67,212:212+30] = 0
+	#print(saliencyMap == (_saliencyMap*_saliencyMap_ * 255).astype("uint8"))
+
 
 
 	# if we would like a *binary* map that we could process for contours,
@@ -33,10 +74,13 @@ def saliency(path):
 	cv2.imshow('edges', edges)
 	lines = cv2.HoughLines(threshMap, 1, np.pi / 180, 10)
 	print('直线数量', len(lines))
+	thela = []
 
-	for i in range(50):
+	for i in range(10):
 		r, theta = lines[i][0]
+		thela.append(theta)
 		if -0.5 < theta < 0.5:
+
 			a = np.cos(theta)
 			b = np.sin(theta)
 			x0 = a * r
@@ -160,12 +204,53 @@ def bianli(file):
 		for f in files:
 			path=os.path.join(root, f)
 			#print(path)
-			saliency(path)
+			#saliency(path)
+			cal_moments(path)
+
+def cal_moments(path):
+	font = cv2.FONT_HERSHEY_DUPLEX  # 设置字体
+	img = cv2.imread(path)
+	print(path)
+	gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+	blur = cv2.medianBlur(gray, 3)  # 模板大小3*3
+	cv2.imshow("gray",gray)
+	ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+	thresh = cv2.putText(thresh, str(ret), (30, 30), font, 1.2, (0, 0, 255), 1)
+	cv2.imshow("thresh",thresh)
+	blur = cv2.medianBlur(thresh, 5)  # 模板大小3*3
+	cv2.imshow("blur",blur)
+	moment=cv2.moments(blur)
+	w_x,w_y = moment['m10']/moment['m00'],moment['m01']/moment['m00']
+	a = moment['m20']/moment['m00']-w_x*w_x
+	b = moment['m11']/moment['m00']-w_x*w_y
+	c = moment['m02']/moment['m00']-w_y*w_y
+	theta = cv2.fastAtan2(2*b,(a-c))/2
+
+	res=str(int(theta))
+
+	# 图片对象、文本、像素、字体、字体大小、颜色、字体粗细
+	#img = cv2.putText(img, res, (1100, 1164), font, 5.5, (0, 0, 255), 2, )
+	img = cv2.putText(img, res, (50, 30), font, 1.2, (0, 0, 255), 1)
+	cv2.imshow("result",img)
+
+	# save_path = '/home/sz2/ccc/'+path[-6:]
+	# print(save_path)
+	# cv2.imwrite(save_path,img)
+
+	#print(theta)
+	#
+	#
+	# #theta = fastAtan2(2 * b, (a - c)) / 2; /
+	#print(moment)
+	cv2.waitKey(0)
+
+
 
 if __name__ == "__main__":
     #img = cv2.imread('pics/7.png')
 
     # func(img)
-    #bianli('/home/sz2/aaa')
+    bianli('/home/sz2/aaa')
 	#saliency('/home/sz2/aaa/pipe1.jpg')
-	saliency('pics/7.png')
+	#saliency('pics/7.png')
+	#cal_moments('/home/sz2/aaa/pipe_76.jpg')
