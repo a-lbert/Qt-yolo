@@ -231,18 +231,18 @@ def cal_moments(path):
 	# 图片对象、文本、像素、字体、字体大小、颜色、字体粗细
 	#img = cv2.putText(img, res, (1100, 1164), font, 5.5, (0, 0, 255), 2, )
 	img = cv2.putText(img, res, (50, 30), font, 1.2, (0, 0, 255), 1)
-	cv2.imshow("result",img)
+	#cv2.imshow("result",img)
 
-	# save_path = '/home/sz2/ccc/'+path[-6:]
-	# print(save_path)
-	# cv2.imwrite(save_path,img)
+	save_path = '../bbb/'+path[-6:]
+	print(save_path)
+	cv2.imwrite(save_path,img)
 
 	#print(theta)
 	#
 	#
 	# #theta = fastAtan2(2 * b, (a - c)) / 2; /
 	#print(moment)
-	cv2.waitKey(0)
+	#cv2.waitKey(0)
 
 
 
@@ -250,7 +250,7 @@ if __name__ == "__main__":
     #img = cv2.imread('pics/7.png')
 
     # func(img)
-    bianli('/home/sz2/aaa')
+    bianli('../aaa')
 	#saliency('/home/sz2/aaa/pipe1.jpg')
 	#saliency('pics/7.png')
-	#cal_moments('/home/sz2/aaa/pipe_76.jpg')
+	#cal_moments('pics/7.png')

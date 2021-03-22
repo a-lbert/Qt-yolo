@@ -36,7 +36,8 @@ from utils.general import (
     check_img_size, non_max_suppression, apply_classifier, scale_coords, xyxy2xywh, plot_one_box, strip_optimizer)
 from utils.torch_utils import select_device, load_classifier, time_synchronized
 
-from TuXiangChuLi import cal_angel
+#from TuXiangChuLi import cal_angel
+from moment import cal_angel
 
 
 def accel_data(accel):
@@ -69,7 +70,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.dataset = None
         self.weights = 'yolov5s.pt'
         self.i = 0
-        self.weights = '/home/sz2/work/Qt-yolo/3_1.pt'
+        self.weights = './3_1.pt'
         self.timer_camera = QtCore.QTimer()  # 初始化定时器
         self.timer_camera.timeout.connect(self.show_image)
         # self.timer_camera.timeout.connect(self.receive_data)
@@ -220,7 +221,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
     def show_image(self):
         self.i += 1
-        Save_path = 'inference/output'
+        #Save_path = './inference/output'
+        S_path = '/home/limeng/Qt-yolo/data_to-cal'
         print('当前获取第{}帧'.format(self.i))
         t = time.time()
         with torch.no_grad():
@@ -290,28 +292,30 @@ class MainWin(QMainWindow, Ui_MainWindow):
                     for *xyxy, conf, cls in det:
                         # Add bbox to image
                         label = '%s %.2f' % (names[int(cls)], conf)
-
-                        plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=3)
-                        print('im0.shape', im0.shape)
                         _c1 = (int(xyxy[1]) // 8 + 1) * 8
                         _c3 = (int(xyxy[3]) // 8 + 1) * 8
                         _c0 = (int(xyxy[0]) // 8 + 1) * 8
                         _c2 = (int(xyxy[2]) // 8 + 1) * 8
-                        obj_1 = im0[_c1:_c3, _c0:_c2]
+                        obj_1 = im0s[0][_c1:_c3, _c0:_c2]
+
+                        plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=3)
+                        print('im0.shape', im0.shape)
+
+
                         print('names', names[int(cls)])
-                        if (obj_i > 3):
-                            obj_i = obj_i%3
+
                         if names[int(cls)] == 'fire':
                             if (fire_i > 2):
                                 fire_i = fire_i%2
                             self.show_pic(obj_1, self.fire[fire_i], True)
                             fire_i+=1
                         else:
-                            self.show_pic(obj_1, self.label_obj[obj_i], True)
-                            cv2.imwrite(os.path.join(path, str(self.i)+'.jpg'), obj_1)
-
-
-
+                            if (obj_i > 3):
+                                obj_i = obj_i % 3
+                                self.show_pic(obj_1, self.label_obj[obj_i], True)
+                            if self.i%5 == 0:
+                                cv2.imwrite(os.path.join(S_path, 'pipe_'+str(int(self.i/5))+'.jpg'), obj_1)
+                                print('保存图片')
                         # if(self.i%10==10):
                         #     img_to_region=Image.fromarray(im0)
                         #     box = (int(xyxy[0]),int(xyxy[1]),int(xyxy[2]),int(xyxy[3]))
@@ -337,8 +341,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         )) + '\n'
                         if names[int(cls)] == 'pipe':
                             print('计算角度')
-                            thela , count= cal_angel(obj_1)
-                            self.result += str(thela)
+                            theta = cal_angel(obj_1)
+                            self.result += 'angel:'
+
+                            self.result += str(theta)
                             self.info_obj[obj_i].setText(self.result)
                         # 选择下一个控件显示
                             obj_i += 1
