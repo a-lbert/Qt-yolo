@@ -202,10 +202,10 @@
     </configuration>
     <list>
       <item itemvalue="Python.TuXiangChuLi" />
-      <item itemvalue="Python.crc" />
       <item itemvalue="Python.main" />
       <item itemvalue="Python.moment" />
       <item itemvalue="Python.saliency" />
+      <item itemvalue="Python.crc" />
     </list>
     <recent_temporary>
       <list>
