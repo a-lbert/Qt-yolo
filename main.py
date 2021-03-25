@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QPalette, QBrush, QPixmap
 from crcmod import *
+from crc import *
 from binascii import *
 import binascii
 from PIL import Image
@@ -70,7 +71,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.dataset = None
         self.weights = 'yolov5s.pt'
         self.i = 0
-        self.weights = './3_1.pt'
+        self.weights = '/home/sz2/work/Qt-yolo/3_1.pt'
         self.timer_camera = QtCore.QTimer()  # 初始化定时器
         self.timer_camera.timeout.connect(self.show_image)
         # self.timer_camera.timeout.connect(self.receive_data)
@@ -95,9 +96,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.fx = 0
         self.fy = 0
         self.run_thread = 1
-
-        self.detect()
         self.open_serial()
+        self.detect()
+
         #up_thread = Thread(target=self.update_video, args=([]), daemon=True)
         #up_thread.start()
 
@@ -118,6 +119,15 @@ class MainWin(QMainWindow, Ui_MainWindow):
         RGB_pic = QtGui.QImage(RGB_pic.data, RGB_pic.shape[1], RGB_pic.shape[0], QtGui.QImage.Format_RGB888)
         show.setScaledContents(Scaled)
         show.setPixmap(QtGui.QPixmap.fromImage(RGB_pic))
+#分割数据，格式化输出
+    def split_data(self, i):
+
+        low = hex(i % 256)
+        low = "{:#04X}".format(int(low, 16))
+        high = hex(int(i / 256))
+        high = "{:#04X}".format(int(high, 16))
+        return high+low
+
 
     def receive_data(self):
         self.info_serial.setText('等待接受数据')
@@ -149,6 +159,26 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 self.receive_data_label.setText(str(data.decode('iso-8859-1')))
 
         pass
+
+    # def mycrc32(szString):
+    #     m_pdwCrc32Table = [0 for x in range(0, 256)]
+    #
+    #     dwPolynomial = 0xEDB88320;
+    #     dwCrc = 0
+    #     for i in range(0, 255):
+    #         dwCrc = i
+    #         for j in [8, 7, 6, 5, 4, 3, 2, 1]:
+    #             if dwCrc & 1:
+    #                 dwCrc = (dwCrc >> 1) ^ dwPolynomial
+    #             else:
+    #                 dwCrc >>= 1
+    #         m_pdwCrc32Table[i] = dwCrc
+    #     dwCrc32 = 0xFFFFFFFFL
+    #     for i in szString:
+    #         b = ord(i)
+    #         dwCrc32 = ((dwCrc32) >> 8) ^ m_pdwCrc32Table[(b) ^ ((dwCrc32) & 0x000000FF)]
+    #     dwCrc32 = dwCrc32 ^ 0xFFFFFFFFL
+    #     return dwCrc32
 
     def open_serial(self):
         self.serial.port = str('/dev/ttyTHS0')
@@ -183,7 +213,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         print('检测结果')
         # print(self.info)
         print(self.data_to_send)
-        print(type(self.data_to_send))
+        #print(type(self.data_to_send))
         self.send_data_label.setText(str(self.data_to_send))
         # self.send_data_label.setText(str(self.data_to_send))
         # self.imu_label.setText(str(self.gyro))
@@ -269,10 +299,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 s += '%gx%g ' % img.shape[2:]  # print string
                 gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
                 # 显示原图
-                print('保存图片')
-                cv2.imwrite('./a-color.jpg', im0)
+                #print('保存图片')
+                #cv2.imwrite('./a-color.jpg', im0)
                 # self.show_pic(im0,self.ShowLabel)
-                cv2.imwrite('./a-depth.jpg', img_depth)
+                #cv2.imwrite('./a-depth.jpg', img_depth)
                 depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(img_depth, alpha=0.03), cv2.COLORMAP_JET)
                 self.show_pic(depth_colormap, self.depth_label)
 
@@ -309,13 +339,12 @@ class MainWin(QMainWindow, Ui_MainWindow):
                                 fire_i = fire_i%2
                             self.show_pic(obj_1, self.fire[fire_i], True)
                             fire_i+=1
-                        else:
-                            if (obj_i > 3):
-                                obj_i = obj_i % 3
-                                self.show_pic(obj_1, self.label_obj[obj_i], True)
-                            if self.i%5 == 0:
-                                cv2.imwrite(os.path.join(S_path, 'pipe_'+str(int(self.i/5))+'.jpg'), obj_1)
-                                print('保存图片')
+
+
+
+                            # if self.i%5 == 0:
+                            #     cv2.imwrite(os.path.join(S_path, 'pipe_'+str(int(self.i/5))+'.jpg'), obj_1)
+                            #     print('保存图片')
                         # if(self.i%10==10):
                         #     img_to_region=Image.fromarray(im0)
                         #     box = (int(xyxy[0]),int(xyxy[1]),int(xyxy[2]),int(xyxy[3]))
@@ -330,6 +359,15 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         # z为深度，x指向双目相机，y向下，右手坐标系
                         z = depth.get_distance(pixel_x, pixel_y)
                         x, y = [(pixel_x - self.ppx) * z / self.fx, (pixel_y - self.ppy) * z / self.fy]
+
+
+                        self.data_to_send += self.split_data(int(1000*x))
+                        self.data_to_send += self.split_data(int(1000*y))
+                        self.data_to_send += self.split_data(int(1000*z))
+
+
+
+
                         print('识别出目标：{} 像素坐标：（{},{}）实际坐标（mm）：({:.3f},{:.3f},{:.3f})'.format(
                             names[int(cls)], pixel_x, pixel_y, x * 1000, y * 1000, z * 1000
                         ))
@@ -342,10 +380,16 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         if names[int(cls)] == 'pipe':
                             print('计算角度')
                             theta = cal_angel(obj_1)
+                            if (obj_i > 3):
+                                obj_i = obj_i % 3
+                            self.show_pic(obj_1, self.label_obj[obj_i], True)
+                            self.data_to_send += self.split_data(int(theta))
                             self.result += 'angel:'
 
                             self.result += str(theta)
                             self.info_obj[obj_i].setText(self.result)
+
+
                         # 选择下一个控件显示
                             obj_i += 1
                         # depth_point=rs.rs2_deproject_pixel_to_point(intrin,[x,y],z)
@@ -364,32 +408,26 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         # print('depth_point:%s' % str(depth_point2))
                         #
                         #
-                        # self.info += str(z)+'米'+'\n'
-                        # self.data_to_send = ''
-                        # li=[3.2,4.3,z,49,99,5]
-                        # for i in li:
-                        #     i=int(i*100)
-                        #     low=hex(i%256)
-                        #     low= "{:02X}".format(int(low,16))
-                        #     high=hex(int(i/256))
-                        #     high= "{:02X}".format(int(high,16))
-                        #     self.data_to_send +=low
-                        #     self.data_to_send += high
-                        # for i in range(len(self.data_to_send)):
-                        #     print(self.data_to_send[i])
-                        #
-                        # #self.send_data()
-                        # crc=binascii.crc32(binascii.a2b_hex(self.data_to_send)) & 0xffffffff
-                        # print('crc:%d'%crc)
-                        # #self.serial_bytes=bytes(self.data_to_send)
-                        # #print(self.data_to_send)
+                        #self.info += str(z)+'米'+'\n'
+
+
+
+
+
+                        #crc=binascii.crc32(binascii.a2b_hex(self.data_to_send)) & 0xffffffff
+                        #print('crc:%d'%crc)
+                        #self.serial_bytes=bytes(self.data_to_send)
+                        #print(self.data_to_send)
 
                 # self.fps=1/(t2 - t1)
                 print('处理完成，当前帧率(%.3ffps)' % self.fps)
                 # 显示处理结果
                 # cv2.putText(im0,'%.3ffps' % (1/(t2 - t1)),(0,25),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),3)
-
+                #crc = CRC(self.data_to_send,4)
+                #print("crc:",crc)
                 self.show_pic(im0, self.yolo_label)
+                self.send_data()
+                self.data_to_send = ''
                 # self.info_lab.setText(str(int(self.fps)))
                 self.imu_label.setText(str(self.gyro))
                 self.info_result.setText(self.result)
