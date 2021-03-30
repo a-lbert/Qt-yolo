@@ -29,13 +29,18 @@ def cal_angel(img):
 	#cv2.imshow("thresh", thresh)
 	blur = cv2.medianBlur(thresh, 5)  # 模板大小3*3
 	#cv2.imshow("blur", blur)
+
+
 	moment = cv2.moments(blur)
+	rows, cols = img.shape[:2]
+	area = rows * cols - moment['m00'] / 255
+	width = area / rows
 	w_x, w_y = moment['m10'] / moment['m00'], moment['m01'] / moment['m00']
 	a = moment['m20'] / moment['m00'] - w_x * w_x
 	b = moment['m11'] / moment['m00'] - w_x * w_y
 	c = moment['m02'] / moment['m00'] - w_y * w_y
 	theta = cv2.fastAtan2(2 * b, (a - c)) / 2
-	return theta
+	return theta,width
 
 def cal_moments(path):
 
@@ -63,7 +68,7 @@ def cal_moments(path):
 	# 图片对象、文本、像素、字体、字体大小、颜色、字体粗细
 	#img = cv2.putText(img, res, (1100, 1164), font, 5.5, (0, 0, 255), 2, )
 	img = cv2.putText(img, res, (50, 30), font, 1.2, (0, 0, 255), 1)
-	#cv2.imshow("result",img)
+	cv2.imshow("result",img)
 
 	save_path = '../bbb/'+path[-6:]
 	print(save_path)
@@ -74,7 +79,7 @@ def cal_moments(path):
 	#
 	# #theta = fastAtan2(2 * b, (a - c)) / 2; /
 	#print(moment)
-	#cv2.waitKey(0)
+	cv2.waitKey(0)
 
 
 
@@ -82,7 +87,7 @@ if __name__ == "__main__":
     #img = cv2.imread('pics/7.png')
 
     # func(img)
-    bianli('../aaa')
+    #bianli('../aaa')
 	#saliency('/home/sz2/aaa/pipe1.jpg')
 	#saliency('pics/7.png')
-	#cal_moments('pics/7.png')
+	cal_moments('pics/7.png')

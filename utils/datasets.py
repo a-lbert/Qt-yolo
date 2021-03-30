@@ -219,6 +219,7 @@ class LoadWebcam:  # for inference
     def __len__(self):
         return 0
 
+
 # class LoadStreams:  # multiple IP or RTSP cameras
 #     def __init__(self, sources='streams.txt', img_size=640):
 #         self.mode = 'images'
@@ -295,29 +296,28 @@ def accel_data(accel):
     return np.asarray([accel.x, accel.y, accel.z])
 
 
-
 class LoadStreams:  # multiple IP or RTSP cameras
     # sources='0'
     def __init__(self, sources='streams.txt', img_size=640):
         self.mode = 'images'
         self.img_size = img_size
-        self.j=0
+        self.j = 0
 
         if os.path.isfile(sources):
             with open(sources, 'r') as f:
                 sources = [x.strip() for x in f.read().splitlines() if len(x.strip())]
         else:
             sources = [sources]
-        #此处sources=1
+        # 此处sources=1
         n = len(sources)
-        #print('n,sources',n)
+        # print('n,sources',n)
         self.imgs = [None] * n
         self.imgs_depth = [None] * n
-        self.depth=[None] * n
-        self.gyro=[None]*3
+        self.depth = [None] * n
+        self.gyro = [None] * 3
         self.sources = sources
         self.intrin = [None] * n
-        self.get_intrin=1
+        self.get_intrin = 1
 
         for i, s in enumerate(sources):
             # Start the thread to read frames from the video stream
@@ -334,7 +334,7 @@ class LoadStreams:  # multiple IP or RTSP cameras
             self.profile = self.pipeline.start(self.config)
             self.align_to = rs.stream.color
             self.align = rs.align(self.align_to)
-            #self.pipeline.start(self.config)
+            # self.pipeline.start(self.config)
             w = 1280
             h = 720
             fps = 30
@@ -344,7 +344,7 @@ class LoadStreams:  # multiple IP or RTSP cameras
             aligned_frames = self.align.process(frames)
             depth_frame = aligned_frames.get_depth_frame()
             color_frame = aligned_frames.get_color_frame()
-            #color_frame = frames.get_color_frame()
+            # color_frame = frames.get_color_frame()
             color_image = np.asanyarray(color_frame.get_data())
             self.imgs[i] = color_image
             thread = Thread(target=self.update, args=([i, self.pipeline]), daemon=True)
@@ -367,39 +367,41 @@ class LoadStreams:  # multiple IP or RTSP cameras
             n += 1
             frames = self.pipeline.wait_for_frames()
             accel = accel_data(frames[2].as_motion_frame().get_motion_data())
-            self.gyro[index]=accel
+            self.gyro[index] = accel
 
             aligned_frames = self.align.process(frames)
 
             depth_frame = aligned_frames.get_depth_frame().as_depth_frame()
-            #2D和3D之间的转换矩阵,intrinsics内部参数，extrinsics外部参数
-            #depth_intrin = depth_frame.profile.as_video_stream_profile().intrinsics
+            # 2D和3D之间的转换矩阵,intrinsics内部参数，extrinsics外部参数
+            # depth_intrin = depth_frame.profile.as_video_stream_profile().intrinsics
 
             color_frame = aligned_frames.get_color_frame()
-            #初运行获取内参
-            if self.get_intrin==1:
+            # 初运行获取内参
+            if self.get_intrin == 1:
                 color_profile = color_frame.get_profile()
                 cvsprofile = rs.video_stream_profile(color_profile)
                 color_intrin = cvsprofile.get_intrinsics()
-                #color_intrin <class 'pyrealsense2.pyrealsense2.intrinsics'>
-                #depth_intrin [ 1280x720  p[649.443 364.288]  f[918.361 918.693]  Inverse Brown Conrady [0 0 0 0 0] ]
-                #color_intrin [ 1280x720  p[649.443 364.288]  f[918.361 918.693]  Inverse Brown Conrady [0 0 0 0 0] ]
+                # color_intrin <class 'pyrealsense2.pyrealsense2.intrinsics'>
+                # depth_intrin [ 1280x720  p[649.443 364.288]  f[918.361 918.693]  Inverse Brown Conrady [0 0 0 0 0] ]
+                # color_intrin [ 1280x720  p[649.443 364.288]  f[918.361 918.693]  Inverse Brown Conrady [0 0 0 0 0] ]
 
                 color_intrin_part = [color_intrin.ppx, color_intrin.ppy, color_intrin.fx, color_intrin.fy]
+                #print(color_intrin_part)
+                #[639.3590698242188, 356.5952453613281, 911.184326171875, 911.697265625]
 
-                #print(depth_frame.get_distance(200, 200))
-                #内参矩阵与深度图
-                #self.intrin[index]=depth_intrin
-                self.intrin[index]=color_intrin_part
-                self.get_intrin=0
+                # print(depth_frame.get_distance(200, 200))
+                # 内参矩阵与深度图
+                # self.intrin[index]=depth_intrin
+                self.intrin[index] = color_intrin_part
+                self.get_intrin = 0
                 print('获取内参矩阵')
-            self.depth[index]=depth_frame
-            #彩色图
+            self.depth[index] = depth_frame
+            # 彩色图
             color_image = np.asanyarray(color_frame.get_data())
             self.imgs[index] = color_image
-            #深度图像
+            # 深度图像
             depth_image = np.asanyarray(depth_frame.get_data())
-            self.imgs_depth[index]=depth_image
+            self.imgs_depth[index] = depth_image
 
             time.sleep(0.01)
 
@@ -414,10 +416,10 @@ class LoadStreams:  # multiple IP or RTSP cameras
     def __next__(self):
 
         img0 = self.imgs.copy()
-        #img_dep=self.imgs_depth
-        #Rgb_img = self.imgs.copy()
+        # img_dep=self.imgs_depth
+        # Rgb_img = self.imgs.copy()
 
-        #print(Dep.get_distance(200, 200))
+        # print(Dep.get_distance(200, 200))
         if cv2.waitKey(1) == ord('q'):  # q to quit
 
             cv2.destroyAllWindows()
@@ -429,9 +431,9 @@ class LoadStreams:  # multiple IP or RTSP cameras
         # Convert
         img = img[:, :, :, ::-1].transpose(0, 3, 1, 2)  # BGR to RGB, to bsx3x416x416
         img = np.ascontiguousarray(img)
-        #img_dep=np.ascontiguousarray(img_dep)
-        return self.sources, img, img0,self.imgs_depth,self.depth[0],self.gyro[0],self.intrin[0], None
-        #return self.sources, self.imgs, self.imgs, self.imgs_depth, self.depth, self.gyro, self.intrin, None
+        # img_dep=np.ascontiguousarray(img_dep)
+        return self.sources, img, img0, self.imgs_depth, self.depth[0], self.gyro[0], self.intrin[0], None
+        # return self.sources, self.imgs, self.imgs, self.imgs_depth, self.depth, self.gyro, self.intrin, None
 
     def __len__(self):
         return 0  # 1E12 frames = 32 streams at 30 FPS for 30 years
@@ -573,7 +575,7 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
                 cache_path, nf, nm, ne, nd, n)
         if nf == 0:
             s = 'WARNING: No labels found in %s. See %s' % (os.path.dirname(file) + os.sep, help_url)
-            #print(s)
+            # print(s)
             assert not augment, '%s. Can not train without labels.' % s
 
         # Cache images into memory for faster training (WARNING: large datasets may exceed system RAM)

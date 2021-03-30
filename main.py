@@ -379,14 +379,18 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         )) + '\n'
                         if names[int(cls)] == 'pipe':
                             print('计算角度')
-                            theta = cal_angel(obj_1)
+                            theta,width = cal_angel(obj_1)
+                            width = width*z * 1000/self.fx
                             if (obj_i > 3):
                                 obj_i = obj_i % 3
                             self.show_pic(obj_1, self.label_obj[obj_i], True)
                             self.data_to_send += self.split_data(int(theta))
                             self.result += 'angel:'
 
-                            self.result += str(theta)
+                            self.result += str(int(theta))
+                            self.result += 'width:'
+                            self.result += str(int(width))
+
                             self.info_obj[obj_i].setText(self.result)
 
 
