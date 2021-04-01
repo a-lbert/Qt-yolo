@@ -37,7 +37,7 @@ from utils.general import (
     check_img_size, non_max_suppression, apply_classifier, scale_coords, xyxy2xywh, plot_one_box, strip_optimizer)
 from utils.torch_utils import select_device, load_classifier, time_synchronized
 
-#from TuXiangChuLi import cal_angel
+# from TuXiangChuLi import cal_angel
 from moment import cal_angel
 
 
@@ -86,8 +86,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
         # 选择显示控件
         self.label_obj = [self.label_obj1, self.label_obj2, self.label_obj3
                           ]
-        self.fire = [self.fire1,self.fire2
-                      ]
+        self.fire = [self.fire1, self.fire2
+                     ]
         self.info_obj = [self.info_obj1, self.info_obj2, self.info_obj3,
                          self.info_obj4, self.info_obj5]
         self.update_intrin = 1
@@ -98,15 +98,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.run_thread = 1
         self.open_serial()
         self.detect()
-
-        #up_thread = Thread(target=self.update_video, args=([]), daemon=True)
-        #up_thread.start()
-
-        # self.show_image()
-        # self.yolo_thread=YoloThread()
-        # self.yolo_thread.emit_pic.connect(self.update_ui)
-        # self.yolo_thread.start()
-        # self.yolo_thread.exec()
 
     # 调整图片以显示
     def adapt_img(self, img):
@@ -119,15 +110,15 @@ class MainWin(QMainWindow, Ui_MainWindow):
         RGB_pic = QtGui.QImage(RGB_pic.data, RGB_pic.shape[1], RGB_pic.shape[0], QtGui.QImage.Format_RGB888)
         show.setScaledContents(Scaled)
         show.setPixmap(QtGui.QPixmap.fromImage(RGB_pic))
-#分割数据，格式化输出
+
+    # 分割数据，格式化输出
     def split_data(self, i):
 
         low = hex(i % 256)
         low = "{:#04X}".format(int(low, 16))
         high = hex(int(i / 256))
         high = "{:#04X}".format(int(high, 16))
-        return high+low
-
+        return high + low
 
     def receive_data(self):
         self.info_serial.setText('等待接受数据')
@@ -160,8 +151,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
         pass
 
-
-
     def open_serial(self):
         self.serial.port = str('/dev/ttyTHS0')
         self.serial.baudrate = int(9600)
@@ -191,16 +180,12 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.open_serial_button.setEnabled(True)
         self.close_serial_button.setEnabled(False)
 
-    def send_data(self,data):
+    def send_data(self, data):
 
-        #print(type(self.data_to_send))
+
         self.send_data_label.setText(str(data))
-        # self.send_data_label.setText(str(self.data_to_send))
-        # self.imu_label.setText(str(self.gyro))
-        # self.info_lab.setText(str(int(self.fps)))
-        if self.serial.isOpen():
-            # self.info_serial.setText(self.data_to_send)
 
+        if self.serial.isOpen():
             if data != '':
                 self.send_data_label.setText(str(data))
                 data = (data + '\r\n').encode('utf-8')
@@ -210,28 +195,28 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
     def update_video(self):
 
-        i=0
+        i = 0
 
         while True:
             t1 = time_synchronized()
-            if i==0:
+            if i == 0:
                 time.sleep(0.5)
-            elif i==1:
+            elif i == 1:
                 time.sleep(0.03)
                 self.show_pic(img_video[0], self.ShowLabel)
 
-            img_video=LoadStreams.video(self.dataset)
+            img_video = LoadStreams.video(self.dataset)
 
-            i=1
+            i = 1
             t2 = time_synchronized()
             self.fps = 1 / (t2 - t1)
             self.fps = (self.fps // 2) * 2
             self.info_lab.setText(str(int(self.fps)))
-            #print('子线程显示图像')
+            # print('子线程显示图像')
 
     def show_image(self):
         self.i += 1
-        #Save_path = './inference/output'
+        # Save_path = './inference/output'
         S_path = '/home/limeng/Qt-yolo/data_to-cal'
         print('当前获取第{}帧'.format(self.i))
         t = time.time()
@@ -278,11 +263,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
                 s += '%gx%g ' % img.shape[2:]  # print string
                 gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
-                # 显示原图
-                #print('保存图片')
-                #cv2.imwrite('./a-color.jpg', im0)
-                # self.show_pic(im0,self.ShowLabel)
-                #cv2.imwrite('./a-depth.jpg', img_depth)
+
                 depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(img_depth, alpha=0.03), cv2.COLORMAP_JET)
                 self.show_pic(depth_colormap, self.depth_label)
 
@@ -296,9 +277,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         s += '%g %ss, ' % (n, names[int(c)])  # add to string
 
                     self.info = ''
-                    #xuanzekongjian
+                    # xuanzekongjian
                     obj_i = 0;
-                    fire_i=0;
+                    fire_i = 0;
                     for *xyxy, conf, cls in det:
                         # Add bbox to image
                         label = '%s %.2f' % (names[int(cls)], conf)
@@ -315,9 +296,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         # z为深度，x指向双目相机，y向下，右手坐标系
                         z = depth.get_distance(pixel_x, pixel_y)
                         x, y = [(pixel_x - self.ppx) * z / self.fx, (pixel_y - self.ppy) * z / self.fy]
-                        self.data_to_send += self.split_data(int(1000*x))
-                        self.data_to_send += self.split_data(int(1000*y))
-                        self.data_to_send += self.split_data(int(1000*z))
+                        self.data_to_send += self.split_data(int(1000 * x))
+                        self.data_to_send += self.split_data(int(1000 * y))
+                        self.data_to_send += self.split_data(int(1000 * z))
                         print('识别出目标：{} 像素坐标：（{},{}）实际坐标（mm）：({:.3f},{:.3f},{:.3f})'.format(
                             names[int(cls)], pixel_x, pixel_y, x * 1000, y * 1000, z * 1000
                         ))
@@ -329,14 +310,14 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         )) + '\n'
                         if names[int(cls)] == 'pipe':
                             print('计算角度')
-                            theta,width = cal_angel(obj_1)
-                            width = width*z * 1000/self.fx
+                            theta, width = cal_angel(obj_1)
+                            width = width * z * 1000 / self.fx
                             if (obj_i > 3):
                                 obj_i = obj_i % 3
                             self.show_pic(obj_1, self.label_obj[obj_i], True)
                             self.data_to_send += self.split_data(int(width))
                             self.data_to_send += self.split_data(int(theta))
-                            #表示物体种类，留做接口
+                            # 表示物体种类，留做接口
                             self.data_to_send += '0X00'
                             crc = binascii.crc32(self.data_to_send.encode()) & 0xffffffff
                             self.data_to_send += self.split_data(crc)
@@ -353,54 +334,16 @@ class MainWin(QMainWindow, Ui_MainWindow):
                             crc = binascii.crc32(self.data_to_send.encode()) & 0xffffffff
                             self.data_to_send += self.split_data(crc)
                             self.send_data(self.data_to_send)
+                            self.data_to_send = ''
                             if (fire_i > 2):
                                 fire_i = fire_i % 2
                             self.show_pic(obj_1, self.fire[fire_i], True)
                             fire_i += 1
 
 
-
-
-
-                        # depth_point=rs.rs2_deproject_pixel_to_point(intrin,[x,y],z)
-                        # depth_point1 = rs.rs2_deproject_pixel_to_point(intrin, [x+10, y + 10], z)
-                        # depth_point2 = rs.rs2_deproject_pixel_to_point(intrin, [x+10, y - 10], z)
-                        #
-                        # p1 = np.array(depth_point) - np.array(depth_point1)
-                        # p2 = np.array(depth_point) - np.array(depth_point2)
-                        # c = np.cross(p1, p2)
-                        # c /= np.linalg.norm(c)
-                        # d = np.array([0, 0, 1])
-                        # coscd = -c.dot(d) / (np.linalg.norm(c) * np.linalg.norm(d))
-                        # print(np.arccos(coscd) * 180 / np.pi)
-                        # print('depth_point:%s'%str(depth_point))
-                        # print('depth_point:%s' % str(depth_point1))
-                        # print('depth_point:%s' % str(depth_point2))
-                        #
-                        #
-                        #self.info += str(z)+'米'+'\n'
-
-
-
-
-
-                        # crc=binascii.crc32(binascii.a2b_hex(self.data_to_send)) & 0xffffffff
-                        # print('crc:%d'%crc)
-                        #crc = binascii.crc32(self.data_to_send.encode()) & 0xffffffff
-
-                        #self.serial_bytes=bytes(self.data_to_send)
-                        #print(self.data_to_send)
-
-                # self.fps=1/(t2 - t1)
                 print('处理完成，当前帧率(%.3ffps)' % self.fps)
-                # 显示处理结果
-                # cv2.putText(im0,'%.3ffps' % (1/(t2 - t1)),(0,25),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),3)
-                #crc = CRC(self.data_to_send,4)
-                #print("crc:",crc)
                 self.show_pic(im0, self.yolo_label)
 
-
-                # self.info_lab.setText(str(int(self.fps)))
                 self.imu_label.setText(str(self.gyro))
                 self.info_result.setText(self.result)
 
@@ -457,9 +400,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
         if msg.exec_() == QtWidgets.QMessageBox.RejectRole:
             event.ignore()
         else:
-            # if self.cap.isOpened():
-            #     self.cap.release()
-            # sys.exit(app.exec_())
 
             event.accept()
 

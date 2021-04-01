@@ -26,10 +26,8 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="saliency">
-      <change afterPath="$PROJECT_DIR$/crc_test.py" afterDir="false" />
+    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="串口发送方式调整 以及串口格式完善 还差解析接受信息进行发送">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SignalSlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/SignalSlot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -417,7 +415,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615950205031</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="串口发送方式调整 以及串口格式完善 还差解析接受信息进行发送">
+      <created>1617180997342</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1617180997342</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -463,7 +468,8 @@
     <MESSAGE value="show" />
     <MESSAGE value="shunxutiaozheng" />
     <MESSAGE value="saliency" />
-    <option name="LAST_COMMIT_MESSAGE" value="saliency" />
+    <MESSAGE value="串口发送方式调整 以及串口格式完善 还差解析接受信息进行发送" />
+    <option name="LAST_COMMIT_MESSAGE" value="串口发送方式调整 以及串口格式完善 还差解析接受信息进行发送" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -476,12 +482,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>131</line>
+          <line>122</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>111</line>
+          <line>102</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
