@@ -39,7 +39,7 @@ from utils.torch_utils import select_device, load_classifier, time_synchronized
 
 # from TuXiangChuLi import cal_angel
 from moment import cal_angel
-
+from crc import calc_crc16
 
 def accel_data(accel):
     return np.asarray([accel.x, accel.y, accel.z])
@@ -220,8 +220,19 @@ class MainWin(QMainWindow, Ui_MainWindow):
         S_path = '/home/limeng/Qt-yolo/data_to-cal'
         print('当前获取第{}帧'.format(self.i))
         t = time.time()
+        rgb_path = '../exp/c/' + 'rgb' + str(self.i) + '.jpg'
+        dep_path = '../exp/c/' + 'dep' + str(self.i) + '.jpg'
+        dep_txt_path = '../exp/c/' + 'dep' + str(self.i) + '.txt'
+        print(rgb_path,dep_path)
         with torch.no_grad():
             path, img, im0s, img_depth, depth, self.gyro, intrin, vid_cap = next(self.dataset)
+            # test_depth = np.asanyarray(depth.get_data())
+            # print('type:', type(test_depth), type(depth),test_depth.shape)
+
+
+            # depth.get_data(): #<class 'pyrealsense2.pyrealsense2.BufData'>
+            #print('type:',type(img_depth),type(depth))
+            # type: # <class 'list'>    <class 'pyrealsense2.pyrealsense2.depth_frame'>
             # cv2.imwrite('./test.jpg', img)
 
             if self.update_intrin == 1:
@@ -230,6 +241,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 self.fx = intrin[2]
                 self.fy = intrin[3]
                 self.update_intrin = 0
+
                 print('更新内参')
                 # cv2.imwrite('./test.jpg', img)
 
@@ -265,6 +277,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
 
                 depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(img_depth, alpha=0.03), cv2.COLORMAP_JET)
+                # print('type:', type(depth_colormap),depth_colormap.shape)
+                # type: #<class 'numpy.ndarray'> (720, 1280, 3)
+                # print('type:', type(im0s[0]), im0s[0].shape)
+                # type: #<class 'numpy.ndarray'> (720, 1280, 3)
                 self.show_pic(depth_colormap, self.depth_label)
 
                 if det is not None and len(det):
@@ -280,6 +296,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
                     # xuanzekongjian
                     obj_i = 0;
                     fire_i = 0;
+                    #cv2.imwrite(save_path, img)
+                    test_depth = np.asanyarray(depth.get_data())
                     for *xyxy, conf, cls in det:
                         # Add bbox to image
                         label = '%s %.2f' % (names[int(cls)], conf)
@@ -288,7 +306,13 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         _c0 = (int(xyxy[0]) // 8 + 1) * 8
                         _c2 = (int(xyxy[2]) // 8 + 1) * 8
                         obj_1 = im0s[0][_c1:_c3, _c0:_c2]
+                        obi_depth = img_depth[_c1:_c3, _c0:_c2]
+                        test_depth = test_depth[_c1:_c3, _c0:_c2]
 
+                        # if self.i%5 ==0:
+                        #     cv2.imwrite(rgb_path,obj_1)
+                        #     cv2.imwrite(dep_path,obi_depth)
+                        #     np.savetxt(dep_txt_path, test_depth, fmt="%d", delimiter=",")
                         plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=3)
                         # self.info += str(round(depth.get_distance(int(xyxy[1].item()),int(xyxy[2].item())), 6)) + '\n'
                         pixel_x, pixel_y = int((xyxy[0].item() + xyxy[2].item()) / 2), int(
@@ -319,7 +343,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
                             self.data_to_send += self.split_data(int(theta))
                             # 表示物体种类，留做接口
                             self.data_to_send += '0X00'
-                            crc = binascii.crc32(self.data_to_send.encode()) & 0xffffffff
+                            crc = calc_crc16(self.data_to_send)
+
+
                             self.data_to_send += self.split_data(crc)
 
                             self.result += 'angel:'
@@ -331,7 +357,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         elif names[int(cls)] == 'fire':
                             self.data_to_send += '0X01'
 
-                            crc = binascii.crc32(self.data_to_send.encode()) & 0xffffffff
+                            crc = calc_crc16(self.data_to_send)
                             self.data_to_send += self.split_data(crc)
                             self.send_data(self.data_to_send)
                             self.data_to_send = ''

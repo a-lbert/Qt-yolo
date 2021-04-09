@@ -90,4 +90,4 @@ if __name__ == "__main__":
     #bianli('../aaa')
 	#saliency('/home/sz2/aaa/pipe1.jpg')
 	#saliency('pics/7.png')
-	cal_moments('pics/7.png')
+	cal_moments('../exp/a/dep10.jpg')

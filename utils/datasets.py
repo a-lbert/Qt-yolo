@@ -5,7 +5,7 @@ import random
 import shutil
 import time
 from pathlib import Path
-from threading import Thread
+from threading import Thread,Lock
 
 import cv2
 import numpy as np
@@ -318,6 +318,7 @@ class LoadStreams:  # multiple IP or RTSP cameras
         self.sources = sources
         self.intrin = [None] * n
         self.get_intrin = 1
+        self.lock = Lock()
 
         for i, s in enumerate(sources):
             # Start the thread to read frames from the video stream
@@ -409,16 +410,18 @@ class LoadStreams:  # multiple IP or RTSP cameras
         return self
 
     def video(self):
+        self.lock.acquire()
 
         img0 = self.imgs.copy()
+        self.lock.release()
         return img0
 
     def __next__(self):
-
+        self.lock.acquire()
         img0 = self.imgs.copy()
+        self.lock.release()
         # img_dep=self.imgs_depth
         # Rgb_img = self.imgs.copy()
-
         # print(Dep.get_distance(200, 200))
         if cv2.waitKey(1) == ord('q'):  # q to quit
 
