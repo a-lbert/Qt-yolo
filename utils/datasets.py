@@ -418,7 +418,7 @@ class LoadStreams:  # multiple IP or RTSP cameras
 
     def __next__(self):
         self.lock.acquire()
-        img0 = self.imgs.copy()
+        img1 = self.imgs.copy()
         self.lock.release()
         # img_dep=self.imgs_depth
         # Rgb_img = self.imgs.copy()
@@ -428,14 +428,15 @@ class LoadStreams:  # multiple IP or RTSP cameras
             cv2.destroyAllWindows()
             raise StopIteration
         # Letterbox
-        img = [letterbox(x, new_shape=self.img_size, auto=self.rect)[0] for x in img0]
+        img = [letterbox(x, new_shape=self.img_size, auto=self.rect)[0] for x in img1]
         # Stack
         img = np.stack(img, 0)
         # Convert
         img = img[:, :, :, ::-1].transpose(0, 3, 1, 2)  # BGR to RGB, to bsx3x416x416
         img = np.ascontiguousarray(img)
         # img_dep=np.ascontiguousarray(img_dep)
-        return self.sources, img, img0, self.imgs_depth, self.depth[0], self.gyro[0], self.intrin[0], None
+        return self.sources, img, img1, self.imgs_depth, self.depth[0], self.gyro[0], self.intrin[0]
+        #return self.sources, img, self.imgs_depth, self.depth[0], self.gyro[0], self.intrin[0]
         # return self.sources, self.imgs, self.imgs, self.imgs_depth, self.depth, self.gyro, self.intrin, None
 
     def __len__(self):

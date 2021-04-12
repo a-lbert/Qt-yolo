@@ -81,7 +81,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.close_serial_button.clicked.connect(self.close_serial)
         self.serial_timer = QTimer(self)
         self.serial_timer.timeout.connect(self.receive_data)
-
+        self.img_video = [None]
+        self.img =''
+        self.pred = ''
         self.is_hex = 1  # 16jinzhi
         # 选择显示控件
         self.label_obj = [self.label_obj1, self.label_obj2, self.label_obj3
@@ -199,52 +201,25 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
         while True:
             t1 = time_synchronized()
+
+
+            self.img_video = LoadStreams.video(self.dataset)
             if i == 0:
-                time.sleep(0.5)
+                time.sleep(0.05)
             elif i == 1:
                 time.sleep(0.03)
-                self.show_pic(img_video[0], self.ShowLabel)
-
-            img_video = LoadStreams.video(self.dataset)
-
+                self.show_pic(self.img_video[0], self.ShowLabel)
             i = 1
             t2 = time_synchronized()
             self.fps = 1 / (t2 - t1)
             self.fps = (self.fps // 2) * 2
             self.info_lab.setText(str(int(self.fps)))
             # print('子线程显示图像')
+    def run_yolo(self):
 
-    def show_image(self):
-        self.i += 1
-        # Save_path = './inference/output'
-        S_path = '/home/limeng/Qt-yolo/data_to-cal'
-        print('当前获取第{}帧'.format(self.i))
-        t = time.time()
-        rgb_path = '../exp/c/' + 'rgb' + str(self.i) + '.jpg'
-        dep_path = '../exp/c/' + 'dep' + str(self.i) + '.jpg'
-        dep_txt_path = '../exp/c/' + 'dep' + str(self.i) + '.txt'
-        print(rgb_path,dep_path)
-        with torch.no_grad():
-            path, img, im0s, img_depth, depth, self.gyro, intrin, vid_cap = next(self.dataset)
-            # test_depth = np.asanyarray(depth.get_data())
-            # print('type:', type(test_depth), type(depth),test_depth.shape)
-
-
-            # depth.get_data(): #<class 'pyrealsense2.pyrealsense2.BufData'>
-            #print('type:',type(img_depth),type(depth))
-            # type: # <class 'list'>    <class 'pyrealsense2.pyrealsense2.depth_frame'>
-            # cv2.imwrite('./test.jpg', img)
-
-            if self.update_intrin == 1:
-                self.ppx = intrin[0]
-                self.ppy = intrin[1]
-                self.fx = intrin[2]
-                self.fy = intrin[3]
-                self.update_intrin = 0
-
-                print('更新内参')
-                # cv2.imwrite('./test.jpg', img)
-
+        print('进入多线程')
+        while True:
+            img = self.img
             img = torch.from_numpy(img).to(self.device)
             t0 = time.time()
             img = img.half() if self.device.type != 'cpu' else img.float()  # uint8 to fp16/32
@@ -256,14 +231,59 @@ class MainWin(QMainWindow, Ui_MainWindow):
             pred = self.model(img, augment=False)[0]
 
             # Apply NMS
-            pred = non_max_suppression(pred, 0.4, 0.5, classes=None, agnostic=False)
+            self.pred = non_max_suppression(pred, 0.4, 0.5, classes=None, agnostic=False)
+            print('pred',self.pred)
             t2 = time_synchronized()
+    def show_image(self):
+        self.i += 1
+        # Save_path = './inference/output'
+        S_path = '/home/limeng/Qt-yolo/data_to-cal'
+        #print('当前获取第{}帧'.format(self.i))
+        t = time.time()
+        rgb_path = '../exp/c/' + 'rgb' + str(self.i) + '.jpg'
+        dep_path = '../exp/c/' + 'dep' + str(self.i) + '.jpg'
+        dep_txt_path = '../exp/c/' + 'dep' + str(self.i) + '.txt'
+        #print(rgb_path,dep_path)
+        with torch.no_grad():
+            path, img, im0s, img_depth, depth, self.gyro, intrin = next(self.dataset)
+            #path, img, img_depth, depth, self.gyro, intrin = next(self.dataset)
+            self.img = img
+
+            self.show_pic(im0s[0], self.ShowLabel)
+            # test_depth = np.asanyarray(depth.get_data())
+
+            if self.update_intrin == 1:
+                self.ppx = intrin[0]
+                self.ppy = intrin[1]
+                self.fx = intrin[2]
+                self.fy = intrin[3]
+                self.update_intrin = 0
+                up_thread = Thread(target=self.run_yolo, daemon=True)
+                up_thread.start()
+
+                print('更新内参')
+                # cv2.imwrite('./test.jpg', img)
+
+            # img = torch.from_numpy(img).to(self.device)
+            # t0 = time.time()
+            # img = img.half() if self.device.type != 'cpu' else img.float()  # uint8 to fp16/32
+            # img /= 255.0  # 0 - 255 to 0.0 - 1.0
+            # if img.ndimension() == 3:
+            #     img = img.unsqueeze(0)
+            # # Inference
+            # t1 = time_synchronized()
+            # pred = self.model(img, augment=False)[0]
+            #
+            # # Apply NMS
+            # pred = non_max_suppression(pred, 0.4, 0.5, classes=None, agnostic=False)
+            # t2 = time_synchronized()
+            # self.run_yolo()
 
             names = self.model.module.names if hasattr(self.model, 'module') else self.model.names
             colors = [[random.randint(0, 255) for _ in range(3)] for _ in range(len(names))]
 
             # Process detections
-            for i, det in enumerate(pred):  # detections per image
+            for i, det in enumerate(self.pred):  # detections per image
                 if self.webcam:  # batch_size >= 1
                     p, s, im0, img_depth = path[i], '%g: ' % i, im0s[i].copy(), img_depth[i].copy()
                 else:
@@ -272,10 +292,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 save_path = str(Path('inference/output') / Path(p).name)
                 txt_path = str(Path('inference/output') / Path(p).stem) + (
                     '_%g' % self.dataset.frame if self.dataset.mode == 'video' else '')
-
                 s += '%gx%g ' % img.shape[2:]  # print string
                 gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
-
                 depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(img_depth, alpha=0.03), cv2.COLORMAP_JET)
                 # print('type:', type(depth_colormap),depth_colormap.shape)
                 # type: #<class 'numpy.ndarray'> (720, 1280, 3)
@@ -315,59 +333,61 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         #     np.savetxt(dep_txt_path, test_depth, fmt="%d", delimiter=",")
                         plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=3)
                         # self.info += str(round(depth.get_distance(int(xyxy[1].item()),int(xyxy[2].item())), 6)) + '\n'
-                        pixel_x, pixel_y = int((xyxy[0].item() + xyxy[2].item()) / 2), int(
-                            (xyxy[1].item() + xyxy[3]) / 2)
-                        # z为深度，x指向双目相机，y向下，右手坐标系
-                        z = depth.get_distance(pixel_x, pixel_y)
-                        x, y = [(pixel_x - self.ppx) * z / self.fx, (pixel_y - self.ppy) * z / self.fy]
-                        self.data_to_send += self.split_data(int(1000 * x))
-                        self.data_to_send += self.split_data(int(1000 * y))
-                        self.data_to_send += self.split_data(int(1000 * z))
-                        print('识别出目标：{} 像素坐标：（{},{}）实际坐标（mm）：({:.3f},{:.3f},{:.3f})'.format(
-                            names[int(cls)], pixel_x, pixel_y, x * 1000, y * 1000, z * 1000
-                        ))
-                        self.info += names[int(cls)] + ':'
-                        self.result = ''
-                        self.result += names[int(cls)] + ':'
-                        self.result += str('({:.0f},{:.0f},{:.0f})'.format(
-                            x * 1000, y * 1000, z * 1000
-                        )) + '\n'
-                        if names[int(cls)] == 'pipe':
-                            print('计算角度')
-                            theta, width = cal_angel(obj_1)
-                            width = width * z * 1000 / self.fx
-                            if (obj_i > 3):
-                                obj_i = obj_i % 3
-                            self.show_pic(obj_1, self.label_obj[obj_i], True)
-                            self.data_to_send += self.split_data(int(width))
-                            self.data_to_send += self.split_data(int(theta))
-                            # 表示物体种类，留做接口
-                            self.data_to_send += '0X00'
-                            crc = calc_crc16(self.data_to_send)
+                #  ji suan guo cheng
+                #         pixel_x, pixel_y = int((xyxy[0].item() + xyxy[2].item()) / 2), int(
+                #             (xyxy[1].item() + xyxy[3]) / 2)
+                #         # z为深度，x指向双目相机，y向下，右手坐标系
+                #         z = depth.get_distance(pixel_x, pixel_y)
+                #         x, y = [(pixel_x - self.ppx) * z / self.fx, (pixel_y - self.ppy) * z / self.fy]
+                #         self.data_to_send += self.split_data(int(1000 * x))
+                #         self.data_to_send += self.split_data(int(1000 * y))
+                #         self.data_to_send += self.split_data(int(1000 * z))
+                #         print('识别出目标：{} 像素坐标：（{},{}）实际坐标（mm）：({:.3f},{:.3f},{:.3f})'.format(
+                #             names[int(cls)], pixel_x, pixel_y, x * 1000, y * 1000, z * 1000
+                #         ))
+                #         self.info += names[int(cls)] + ':'
+                #         self.result = ''
+                #         self.result += names[int(cls)] + ':'
+                #         self.result += str('({:.0f},{:.0f},{:.0f})'.format(
+                #             x * 1000, y * 1000, z * 1000
+                #         )) + '\n'
+                #         if names[int(cls)] == 'pipe':
+                #             print('计算角度')
+                #             theta, width = cal_angel(obj_1)
+                #             width = width * z * 1000 / self.fx
+                #             if (obj_i > 3):
+                #                 obj_i = obj_i % 3
+                #             self.show_pic(obj_1, self.label_obj[obj_i], True)
+                #             self.data_to_send += self.split_data(int(width))
+                #             self.data_to_send += self.split_data(int(theta))
+                #             # 表示物体种类，留做接口
+                #             self.data_to_send += '0X00'
+                #             crc = calc_crc16(self.data_to_send)
+                #
+                #
+                #             self.data_to_send += self.split_data(crc)
+                #
+                #             self.result += 'angel:'
+                #             self.result += str(int(theta))
+                #             self.result += 'width:'
+                #             self.result += str(int(width))
+                #             self.info_obj[obj_i].setText(self.result)
+                #             obj_i += 1
+                #         elif names[int(cls)] == 'fire':
+                #             self.data_to_send += '0X01'
+                #
+                #             crc = calc_crc16(self.data_to_send)
+                #             self.data_to_send += self.split_data(crc)
+                #             self.send_data(self.data_to_send)
+                #             self.data_to_send = ''
+                #             if (fire_i > 2):
+                #                 fire_i = fire_i % 2
+                #             self.show_pic(obj_1, self.fire[fire_i], True)
+                #             fire_i += 1
+                #
+                #
+                # print('处理完成，当前帧率(%.3ffps)' % self.fps)
 
-
-                            self.data_to_send += self.split_data(crc)
-
-                            self.result += 'angel:'
-                            self.result += str(int(theta))
-                            self.result += 'width:'
-                            self.result += str(int(width))
-                            self.info_obj[obj_i].setText(self.result)
-                            obj_i += 1
-                        elif names[int(cls)] == 'fire':
-                            self.data_to_send += '0X01'
-
-                            crc = calc_crc16(self.data_to_send)
-                            self.data_to_send += self.split_data(crc)
-                            self.send_data(self.data_to_send)
-                            self.data_to_send = ''
-                            if (fire_i > 2):
-                                fire_i = fire_i % 2
-                            self.show_pic(obj_1, self.fire[fire_i], True)
-                            fire_i += 1
-
-
-                print('处理完成，当前帧率(%.3ffps)' % self.fps)
                 self.show_pic(im0, self.yolo_label)
 
                 self.imu_label.setText(str(self.gyro))
@@ -411,9 +431,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
         # Run inference
         img = torch.zeros((1, 3, imgsz, imgsz), device=self.device)  # init img
         _ = self.model(img.half() if half else img) if self.device.type != 'cpu' else None  # run once
+
         self.timer_camera.start(30)
-        up_thread = Thread(target=self.update_video, args=(), daemon=True)
-        up_thread.start()
+
+
 
     def closeEvent(self, event):
         ok = QtWidgets.QPushButton()

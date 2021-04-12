@@ -26,10 +26,7 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="串口发送方式调整 以及串口格式完善 还差解析接受信息进行发送">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="串口发送方式调整 以及串口格式完善 还差解析接受信息进行发送" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -195,11 +192,11 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.crc_test" />
       <item itemvalue="Python.main" />
       <item itemvalue="Python.minAreaRect" />
       <item itemvalue="Python.moment" />
       <item itemvalue="Python.saliency" />
-      <item itemvalue="Python.crc_test" />
     </list>
     <recent_temporary>
       <list>
