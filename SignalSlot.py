@@ -5,12 +5,12 @@
 # Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
-import PySide2
-import os
-dirname = os.path.dirname(PySide2.__file__)
-plugin_path = os.path.join(dirname, 'plugins', 'platforms')
-os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = plugin_path
-from PySide2 import QtWidgets,QtCore
+# import PySide2
+# import os
+# dirname = os.path.dirname(PySide2.__file__)
+# plugin_path = os.path.join(dirname, 'plugins', 'platforms')
+# os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = plugin_path
+# from PySide2 import QtWidgets,QtCore
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
