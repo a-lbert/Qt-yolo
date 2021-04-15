@@ -40,7 +40,7 @@ from utils.torch_utils import select_device, load_classifier, time_synchronized
 # from TuXiangChuLi import cal_angel
 from moment import cal_angel
 from crc import calc_crc16
-
+# yongyu chejian shiyan
 def accel_data(accel):
     return np.asarray([accel.x, accel.y, accel.z])
 
