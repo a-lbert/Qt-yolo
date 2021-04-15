@@ -81,8 +81,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
         self.timer_ui.timeout.connect(self.update_ui)
 
-        #self.timer_camera.start(40)
-        self.timer_ui.start(29)
+        self.timer_camera.start(120)
+        # self.timer_ui.start(29)
         # self.timer_camera.timeout.connect(self.receive_data)
         self.serial = serial.Serial()
         self.data_to_send = ''
@@ -108,8 +108,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.run_thread = 1
         self.open_serial()
         self.detect()
-
-
+        self.test_img = None
     # 调整图片以显示
     def adapt_img(self, img):
         RGB_pic = cv2.cvtColor(img.copy(), cv2.COLOR_BGR2RGB)
@@ -227,14 +226,23 @@ class MainWin(QMainWindow, Ui_MainWindow):
         i = 0
 
         while True:
+            self.img_video = LoadStreams.video(self.dataset)
+            cv2.imwrite('./ttt.jpg',self.img_video)
+            img_video = cv2.imread('./ttt.jpg')
+            self.test_img = cv2.imread('./a-color.jpg')
             t1 = time_synchronized()
             if i == 0:
                 time.sleep(0.5)
             elif i == 1:
                 time.sleep(0.03)
-                self.show_pic(self.img_video[0], self.ShowLabel)
+                self.show_pic(img_video, self.ShowLabel,Scaled=False)
+                # self.show_pic(self.test_img, self.ShowLabel)
 
-            self.img_video = LoadStreams.video(self.dataset)
+
+
+            print('**************************************')
+            print('self.img_video',type(self.img_video),self.img_video.shape)
+            print('self.test_img',type(self.test_img),self.test_img.shape)
 
             i = 1
             t2 = time_synchronized()
@@ -448,8 +456,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
         # Run inference
         img = torch.zeros((1, 3, imgsz, imgsz), device=self.device)  # init img
         _ = self.model(img.half() if half else img) if self.device.type != 'cpu' else None  # run once
-        # up_thread = Thread(target=self.update_video, args=(), daemon=True)
-        # up_thread.start()
+        up_thread = Thread(target=self.update_video, args=(), daemon=True)
+        up_thread.start()
 
     def closeEvent(self, event):
         ok = QtWidgets.QPushButton()

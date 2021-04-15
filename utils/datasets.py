@@ -302,7 +302,7 @@ pipeline = rs.pipeline()
 #  different resolutions of color and depth streams
 config = rs.config()
 config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
-config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
+config.enable_stream(rs.stream.color, 1280, 720, rs.format.bgr8, 30)
 
 # Start streaming
 profile = pipeline.start(config)
@@ -336,6 +336,7 @@ class LoadStreams:  # multiple IP or RTSP cameras
         # print('n,sources',n)
         self.imgs = [None] * n
         self.imgs_depth = [None] * n
+        self.img2video = None
         self.depth = [None] * n
         self.gyro = [None] * 3
         self.sources = sources
@@ -411,6 +412,8 @@ class LoadStreams:  # multiple IP or RTSP cameras
             self.depth[index] = depth_frame
             # 彩色图
             color_image = np.asanyarray(color_frame.get_data())
+            self.img2video = color_image
+            print(self.img2video.shape)
             self.imgs[index] = color_image
             # 深度图像
             depth_image = np.asanyarray(depth_frame.get_data())
@@ -422,16 +425,16 @@ class LoadStreams:  # multiple IP or RTSP cameras
         return self
 
     def video(self):
-        self.lock.acquire()
-
-        img0 = self.imgs.copy()
-        self.lock.release()
-        return img0
+        # self.lock.acquire()
+        #
+        # img0 = self.imgs.copy()
+        # self.lock.release()
+        return self.img2video
 
     def __next__(self):
-        self.lock.acquire()
+
         img0 = self.imgs.copy()
-        self.lock.release()
+
         # img_dep=self.imgs_depth
         # Rgb_img = self.imgs.copy()
         # print(Dep.get_distance(200, 200))
