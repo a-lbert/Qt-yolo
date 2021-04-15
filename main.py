@@ -50,7 +50,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MainWin, self).__init__()
         self.setupUi(self)
-
+        self.index=0;
         self.__flag_work = 0
         self.x = 0
         self.count = 0
@@ -81,6 +81,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
         self.timer_ui.timeout.connect(self.update_ui)
 
+        #self.timer_camera.start(40)
+        self.timer_ui.start(29)
         # self.timer_camera.timeout.connect(self.receive_data)
         self.serial = serial.Serial()
         self.data_to_send = ''
@@ -192,11 +194,11 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def send_data(self, data):
 
 
-        self.send_data_label.setText(str(data))
+        #self.send_data_label.setText(str(data))
 
         if self.serial.isOpen():
             if data != '':
-                self.send_data_label.setText(str(data))
+                # self.send_data_label.setText(str(data))
                 data = (data + '\r\n').encode('utf-8')
                 num = self.serial.write(data)
                 self.info_serial.setText(str(num))
@@ -205,11 +207,19 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
         self.img_video = LoadStreams.video(self.dataset)
         self.show_pic(self.img_video[0], self.ShowLabel)
+        #self.show_image()
         t = time_synchronized()
         self.fps = 1 / (t - self.last_time)
         self.fps = (self.fps // 2) * 2
         self.info_lab.setText(str(int(self.fps)))
         self.last_time = time_synchronized()
+        self.index+=1;
+        if(self.index==5):
+            self.index=0
+            t1=time.time()
+            self.show_image()
+            t2=time.time()
+            print(t2-t1)
 
 
     def update_video(self):
@@ -222,7 +232,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 time.sleep(0.5)
             elif i == 1:
                 time.sleep(0.03)
-                # self.show_pic(img_video[0], self.ShowLabel)
+                self.show_pic(self.img_video[0], self.ShowLabel)
 
             self.img_video = LoadStreams.video(self.dataset)
 
@@ -236,12 +246,12 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def show_image(self):
         self.i += 1
         # Save_path = './inference/output'
-        S_path = '/home/limeng/Qt-yolo/data_to-cal'
-        print('当前获取第{}帧'.format(self.i))
-        t = time.time()
-        rgb_path = '../exp/c/' + 'rgb' + str(self.i) + '.jpg'
-        dep_path = '../exp/c/' + 'dep' + str(self.i) + '.jpg'
-        dep_txt_path = '../exp/c/' + 'dep' + str(self.i) + '.txt'
+        #S_path = '/home/limeng/Qt-yolo/data_to-cal'
+        #print('当前获取第{}帧'.format(self.i))
+        #t = time.time()
+        # rgb_path = '../exp/c/' + 'rgb' + str(self.i) + '.jpg'
+        # dep_path = '../exp/c/' + 'dep' + str(self.i) + '.jpg'
+        # dep_txt_path = '../exp/c/' + 'dep' + str(self.i) + '.txt'
         # print(rgb_path,dep_path)
         with torch.no_grad():
             path, img, im0s, img_depth, depth, self.gyro, intrin, vid_cap = next(self.dataset)
@@ -262,6 +272,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 self.update_intrin = 0
 
                 print('更新内参')
+
                 # cv2.imwrite('./test.jpg', img)
 
             img = torch.from_numpy(img).to(self.device)
@@ -271,12 +282,12 @@ class MainWin(QMainWindow, Ui_MainWindow):
             if img.ndimension() == 3:
                 img = img.unsqueeze(0)
             # Inference
-            t1 = time_synchronized()
+            #t1 = time_synchronized()
             pred = self.model(img, augment=False)[0]
 
             # Apply NMS
             pred = non_max_suppression(pred, 0.4, 0.5, classes=None, agnostic=False)
-            t2 = time_synchronized()
+            #t2 = time_synchronized()
 
             names = self.model.module.names if hasattr(self.model, 'module') else self.model.names
             colors = [[random.randint(0, 255) for _ in range(3)] for _ in range(len(names))]
@@ -355,7 +366,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
                             print('计算角度')
                             theta, width = cal_angel(obj_1)
                             width = width * z * 1000 / self.fx
-                            if (obj_i > 3):
+                            if (obj_i > 2):
                                 obj_i = obj_i % 3
                             self.show_pic(obj_1, self.label_obj[obj_i], True)
                             self.data_to_send += self.split_data(int(width))
@@ -373,27 +384,34 @@ class MainWin(QMainWindow, Ui_MainWindow):
                             self.result += str(int(width))
                             self.info_obj[obj_i].setText(self.result)
                             obj_i += 1
+
+                            self.send_data_label.setText(str(self.data_to_send))
+                            self.data_to_send = ''
+
                         elif names[int(cls)] == 'fire':
                             self.data_to_send += '0X01'
 
                             crc = calc_crc16(self.data_to_send)
                             self.data_to_send += self.split_data(crc)
-                            self.send_data(self.data_to_send)
+                            #self.send_data(self.data_to_send)
+                            self.send_data_label.setText(str(self.data_to_send))
                             self.data_to_send = ''
-                            if (fire_i > 2):
+
+                            if (fire_i > 1):
+
                                 fire_i = fire_i % 2
                             self.show_pic(obj_1, self.fire[fire_i], True)
                             fire_i += 1
 
 
-                print('处理完成，当前帧率(%.3ffps)' % self.fps)
+                #print('处理完成，当前帧率(%.3ffps)' % self.fps)
                 self.show_pic(im0, self.yolo_label)
 
                 self.imu_label.setText(str(self.gyro))
                 self.info_result.setText(self.result)
-
-                if cv2.waitKey(1) == ord('q'):  # q to quit
-                    raise StopIteration
+                #
+                # if cv2.waitKey(1) == ord('q'):  # q to quit
+                #     raise StopIteration
 
     def detect(self, save_img=False):
         out, source, weights, view_img, save_txt, imgsz = \
@@ -415,13 +433,13 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
         # Set Dataloader
         vid_path, vid_writer = None, None
-        if self.webcam:
-            view_img = True
-            cudnn.benchmark = True  # set True to speed up constant image size inference
-            self.dataset = LoadStreams(source, img_size=imgsz)
-        else:
-            save_img = True
-            self.dataset = LoadImages(source, img_size=imgsz)
+        # if self.webcam:
+        view_img = True
+        cudnn.benchmark = True  # set True to speed up constant image size inference
+        self.dataset = LoadStreams(source, img_size=imgsz)
+        # else:
+        #     save_img = True
+        #     self.dataset = LoadImages(source, img_size=imgsz)
 
         # Get names and colors
         names = self.model.module.names if hasattr(self.model, 'module') else self.model.names
@@ -430,8 +448,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
         # Run inference
         img = torch.zeros((1, 3, imgsz, imgsz), device=self.device)  # init img
         _ = self.model(img.half() if half else img) if self.device.type != 'cpu' else None  # run once
-        self.timer_camera.start(50)
-        self.timer_ui.start(30)
         # up_thread = Thread(target=self.update_video, args=(), daemon=True)
         # up_thread.start()
 

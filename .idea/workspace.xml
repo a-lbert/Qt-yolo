@@ -26,7 +26,11 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="串口发送方式调整 以及串口格式完善 还差解析接受信息进行发送" />
+    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="commit">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/datasets.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/datasets.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,7 +65,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/librealsense/wrappers/python/examples/align-depth2color.py" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RunManager" selected="Python.main">
@@ -78,6 +82,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="align-depth2color" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Qt-yolo" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/bin/python3.6" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/librealsense/wrappers/python/examples" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/librealsense/wrappers/python/examples/align-depth2color.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -114,7 +139,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="$PROJECT_DIR$/../miniconda3/envs/torch/bin/python" />
+      <option name="SDK_HOME" value="/usr/bin/python3.6" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -170,41 +195,20 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="saliency" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="Qt-yolo" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="$PROJECT_DIR$/../miniconda3/envs/torch/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/saliency.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Python.crc_test" />
       <item itemvalue="Python.main" />
       <item itemvalue="Python.minAreaRect" />
       <item itemvalue="Python.moment" />
-      <item itemvalue="Python.saliency" />
+      <item itemvalue="Python.align-depth2color" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.align-depth2color" />
         <item itemvalue="Python.crc_test" />
         <item itemvalue="Python.minAreaRect" />
         <item itemvalue="Python.moment" />
-        <item itemvalue="Python.saliency" />
       </list>
     </recent_temporary>
   </component>
@@ -470,6 +474,52 @@
     <option name="LAST_COMMIT_MESSAGE" value="串口发送方式调整 以及串口格式完善 还差解析接受信息进行发送" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
+  <component name="WindowStateProjectService">
+    <state x="450" y="294" width="1084" height="746" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1618303241333">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state x="450" y="294" width="1084" height="746" key="#com.intellij.execution.impl.EditConfigurationsDialog/65.24.1855.1056@65.24.1855.1056" timestamp="1618303241333" />
+    <state x="789" y="511" width="406" height="193" key="#com.jetbrains.python.refactoring.move.PyMakeFunctionTopLevelDialog" timestamp="1618385308042">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state x="789" y="511" width="406" height="193" key="#com.jetbrains.python.refactoring.move.PyMakeFunctionTopLevelDialog/65.24.1855.1056@65.24.1855.1056" timestamp="1618385308042" />
+    <state x="775" y="338" width="424" height="454" key="FileChooserDialogImpl" timestamp="1618303145879">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state x="775" y="338" width="424" height="454" key="FileChooserDialogImpl/65.24.1855.1056@65.24.1855.1056" timestamp="1618303145879" />
+    <state width="1828" height="232" key="GridCell.Tab.0.bottom" timestamp="1618448421692">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state width="1828" height="232" key="GridCell.Tab.0.bottom/65.24.1855.1056@65.24.1855.1056" timestamp="1618448421692" />
+    <state width="1828" height="232" key="GridCell.Tab.0.center" timestamp="1618448421691">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state width="1828" height="232" key="GridCell.Tab.0.center/65.24.1855.1056@65.24.1855.1056" timestamp="1618448421691" />
+    <state width="1828" height="232" key="GridCell.Tab.0.left" timestamp="1618448421691">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state width="1828" height="232" key="GridCell.Tab.0.left/65.24.1855.1056@65.24.1855.1056" timestamp="1618448421691" />
+    <state width="1828" height="232" key="GridCell.Tab.0.right" timestamp="1618448421691">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state width="1828" height="232" key="GridCell.Tab.0.right/65.24.1855.1056@65.24.1855.1056" timestamp="1618448421691" />
+    <state width="1828" height="348" key="GridCell.Tab.1.bottom" timestamp="1618304752921">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state width="1828" height="348" key="GridCell.Tab.1.bottom/65.24.1855.1056@65.24.1855.1056" timestamp="1618304752921" />
+    <state width="1828" height="348" key="GridCell.Tab.1.center" timestamp="1618304752920">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state width="1828" height="348" key="GridCell.Tab.1.center/65.24.1855.1056@65.24.1855.1056" timestamp="1618304752920" />
+    <state width="1828" height="348" key="GridCell.Tab.1.left" timestamp="1618304752919">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state width="1828" height="348" key="GridCell.Tab.1.left/65.24.1855.1056@65.24.1855.1056" timestamp="1618304752919" />
+    <state width="1828" height="348" key="GridCell.Tab.1.right" timestamp="1618304752920">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state width="1828" height="348" key="GridCell.Tab.1.right/65.24.1855.1056@65.24.1855.1056" timestamp="1618304752920" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
@@ -477,16 +527,6 @@
           <url>file://$PROJECT_DIR$/post_process.py</url>
           <line>45</line>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>122</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>102</line>
-          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

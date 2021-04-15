@@ -296,6 +296,33 @@ def accel_data(accel):
     return np.asarray([accel.x, accel.y, accel.z])
 
 
+pipeline = rs.pipeline()
+
+#Create a config and configure the pipeline to stream
+#  different resolutions of color and depth streams
+config = rs.config()
+config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
+config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
+
+# Start streaming
+profile = pipeline.start(config)
+
+# Getting the depth sensor's depth scale (see rs-align example for explanation)
+depth_sensor = profile.get_device().first_depth_sensor()
+depth_scale = depth_sensor.get_depth_scale()
+print("Depth Scale is: " , depth_scale)
+
+# We will be removing the background of objects more than
+#  clipping_distance_in_meters meters away
+clipping_distance_in_meters = 1 #1 meter
+clipping_distance = clipping_distance_in_meters / depth_scale
+
+# Create an align object
+# rs.align allows us to perform alignment of depth frames to others frames
+# The "align_to" is the stream type to which we plan to align depth frames.
+align_to = rs.stream.color
+align = rs.align(align_to)
+frames = pipeline.wait_for_frames()
 class LoadStreams:  # multiple IP or RTSP cameras
     # sources='0'
     def __init__(self, sources='streams.txt', img_size=640):
@@ -303,11 +330,7 @@ class LoadStreams:  # multiple IP or RTSP cameras
         self.img_size = img_size
         self.j = 0
 
-        if os.path.isfile(sources):
-            with open(sources, 'r') as f:
-                sources = [x.strip() for x in f.read().splitlines() if len(x.strip())]
-        else:
-            sources = [sources]
+        sources = [sources]
         # 此处sources=1
         n = len(sources)
         # print('n,sources',n)
@@ -319,39 +342,27 @@ class LoadStreams:  # multiple IP or RTSP cameras
         self.intrin = [None] * n
         self.get_intrin = 1
         self.lock = Lock()
-
-        for i, s in enumerate(sources):
             # Start the thread to read frames from the video stream
-            print('%g/%g: %s... ' % (i + 1, n, s), end='')
-            # Configure depth and color streams
-            self.pipeline = rs.pipeline()
-            self.config = rs.config()
-            # self.config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
-            self.config.enable_stream(rs.stream.depth, 1280, 720, rs.format.z16, 30)
-            # self.config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
-            self.config.enable_stream(rs.stream.color, 1280, 720, rs.format.bgr8, 30)
-            # self.config.enable_stream(rs.stream.color, 1920, 1080, rs.format.bgr8, 30)
-            self.config.enable_stream(rs.stream.accel)
-            self.profile = self.pipeline.start(self.config)
-            self.align_to = rs.stream.color
-            self.align = rs.align(self.align_to)
-            # self.pipeline.start(self.config)
-            w = 1280
-            h = 720
-            fps = 30
-            frames = self.pipeline.wait_for_frames()
-            accel = accel_data(frames[2].as_motion_frame().get_motion_data())
+        print('%g/%g: %s... ' % (1, n, 0), end='')
+        # Configure depth and color streams
 
-            aligned_frames = self.align.process(frames)
-            depth_frame = aligned_frames.get_depth_frame()
-            color_frame = aligned_frames.get_color_frame()
-            # color_frame = frames.get_color_frame()
-            color_image = np.asanyarray(color_frame.get_data())
-            self.imgs[i] = color_image
-            thread = Thread(target=self.update, args=([i, self.pipeline]), daemon=True)
+        # self.pipeline.start(self.config)
+        w = 1280
+        h = 720
+        fps = 30
 
-            print(' success (%gx%g at %.2f FPS).' % (w, h, fps))
-            thread.start()
+        #accel = accel_data(frames[2].as_motion_frame().get_motion_data())
+
+        aligned_frames = align.process(frames)
+        depth_frame = aligned_frames.get_depth_frame()
+        color_frame = aligned_frames.get_color_frame()
+        # color_frame = frames.get_color_frame()
+        color_image = np.asanyarray(color_frame.get_data())
+        self.imgs[0] = color_image
+        thread = Thread(target=self.update, args=([0, pipeline]), daemon=True)
+
+        print(' success (%gx%g at %.2f FPS).' % (w, h, fps))
+        thread.start()
 
         print('')  # newline
 
@@ -364,13 +375,14 @@ class LoadStreams:  # multiple IP or RTSP cameras
     def update(self, index, pipeline):
         # Read next stream frame in a daemon thread
         n = 0
+        print(1)
         while True:
             n += 1
-            frames = self.pipeline.wait_for_frames()
-            accel = accel_data(frames[2].as_motion_frame().get_motion_data())
-            self.gyro[index] = accel
+            frames = pipeline.wait_for_frames()
+            #accel = accel_data(frames[2].as_motion_frame().get_motion_data())
+            #gyro[index] = accel
 
-            aligned_frames = self.align.process(frames)
+            aligned_frames = align.process(frames)
 
             depth_frame = aligned_frames.get_depth_frame().as_depth_frame()
             # 2D和3D之间的转换矩阵,intrinsics内部参数，extrinsics外部参数
