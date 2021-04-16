@@ -210,7 +210,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def update_ui(self):
 
         self.img_video = LoadStreams.video(self.dataset)
-        self.show_pic(self.img_video[0], self.ShowLabel)
+        self.show_pic(self.img_video, self.ShowLabel)
         #self.show_image()
         t = time_synchronized()
         self.fps = 1 / (t - self.last_time)

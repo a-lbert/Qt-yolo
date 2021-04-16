@@ -413,7 +413,7 @@ class LoadStreams:  # multiple IP or RTSP cameras
             # 彩色图
             color_image = np.asanyarray(color_frame.get_data())
             self.img2video = color_image
-            print(self.img2video.shape)
+            #print(self.img2video.shape)
             self.imgs[index] = color_image
             # 深度图像
             depth_image = np.asanyarray(depth_frame.get_data())
