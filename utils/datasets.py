@@ -310,7 +310,7 @@ profile = pipeline.start(config)
 # Getting the depth sensor's depth scale (see rs-align example for explanation)
 depth_sensor = profile.get_device().first_depth_sensor()
 depth_scale = depth_sensor.get_depth_scale()
-print("Depth Scale is: " , depth_scale)
+# print("Depth Scale is: " , depth_scale)
 
 # We will be removing the background of objects more than
 #  clipping_distance_in_meters meters away
@@ -323,6 +323,7 @@ clipping_distance = clipping_distance_in_meters / depth_scale
 align_to = rs.stream.color
 align = rs.align(align_to)
 frames = pipeline.wait_for_frames()
+
 class LoadStreams:  # multiple IP or RTSP cameras
     # sources='0'
     def __init__(self, sources='streams.txt', img_size=640):
@@ -376,7 +377,6 @@ class LoadStreams:  # multiple IP or RTSP cameras
     def update(self, index, pipeline):
         # Read next stream frame in a daemon thread
         n = 0
-        print(1)
         while True:
             n += 1
             frames = pipeline.wait_for_frames()

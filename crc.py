@@ -4,12 +4,12 @@ import sys
 def calc_crc16(string):
     #data = bytearray.fromhex(string)
     data = string.encode()
-    print(data)
+    #print(data)
 
     crc = 0xFFFF
     for pos in data:
         crc ^= pos
-        print('pos',pos)
+
         for i in range(8):
             if ((crc & 1) != 0):
                 crc >>= 1

@@ -26,8 +26,10 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="commit">
+    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="tijiao">
+      <change beforePath="$PROJECT_DIR$/crc.py" beforeDir="false" afterPath="$PROJECT_DIR$/crc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/moment.py" beforeDir="false" afterPath="$PROJECT_DIR$/moment.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/datasets.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/datasets.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -423,7 +425,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617180997342</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="tijiao">
+      <created>1618532789038</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1618532789038</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -470,7 +479,8 @@
     <MESSAGE value="shunxutiaozheng" />
     <MESSAGE value="saliency" />
     <MESSAGE value="串口发送方式调整 以及串口格式完善 还差解析接受信息进行发送" />
-    <option name="LAST_COMMIT_MESSAGE" value="串口发送方式调整 以及串口格式完善 还差解析接受信息进行发送" />
+    <MESSAGE value="tijiao" />
+    <option name="LAST_COMMIT_MESSAGE" value="tijiao" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
   <component name="WindowStateProjectService">
@@ -486,22 +496,22 @@
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
     <state x="775" y="338" width="424" height="454" key="FileChooserDialogImpl/65.24.1855.1056@65.24.1855.1056" timestamp="1618303145879" />
-    <state width="1828" height="232" key="GridCell.Tab.0.bottom" timestamp="1618532686904">
+    <state width="1828" height="232" key="GridCell.Tab.0.bottom" timestamp="1618537699215">
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
-    <state width="1828" height="232" key="GridCell.Tab.0.bottom/65.24.1855.1056@65.24.1855.1056" timestamp="1618532686904" />
-    <state width="1828" height="232" key="GridCell.Tab.0.center" timestamp="1618532686902">
+    <state width="1828" height="232" key="GridCell.Tab.0.bottom/65.24.1855.1056@65.24.1855.1056" timestamp="1618537699215" />
+    <state width="1828" height="232" key="GridCell.Tab.0.center" timestamp="1618537699214">
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
-    <state width="1828" height="232" key="GridCell.Tab.0.center/65.24.1855.1056@65.24.1855.1056" timestamp="1618532686902" />
-    <state width="1828" height="232" key="GridCell.Tab.0.left" timestamp="1618532686902">
+    <state width="1828" height="232" key="GridCell.Tab.0.center/65.24.1855.1056@65.24.1855.1056" timestamp="1618537699214" />
+    <state width="1828" height="232" key="GridCell.Tab.0.left" timestamp="1618537699213">
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
-    <state width="1828" height="232" key="GridCell.Tab.0.left/65.24.1855.1056@65.24.1855.1056" timestamp="1618532686902" />
-    <state width="1828" height="232" key="GridCell.Tab.0.right" timestamp="1618532686903">
+    <state width="1828" height="232" key="GridCell.Tab.0.left/65.24.1855.1056@65.24.1855.1056" timestamp="1618537699213" />
+    <state width="1828" height="232" key="GridCell.Tab.0.right" timestamp="1618537699214">
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
-    <state width="1828" height="232" key="GridCell.Tab.0.right/65.24.1855.1056@65.24.1855.1056" timestamp="1618532686903" />
+    <state width="1828" height="232" key="GridCell.Tab.0.right/65.24.1855.1056@65.24.1855.1056" timestamp="1618537699214" />
     <state width="1828" height="348" key="GridCell.Tab.1.bottom" timestamp="1618304752921">
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
@@ -518,6 +528,10 @@
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
     <state width="1828" height="348" key="GridCell.Tab.1.right/65.24.1855.1056@65.24.1855.1056" timestamp="1618304752920" />
+    <state x="587" y="298" width="800" height="534" key="Vcs.Push.Dialog.v2" timestamp="1618532791855">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state x="587" y="298" width="800" height="534" key="Vcs.Push.Dialog.v2/65.24.1855.1056@65.24.1855.1056" timestamp="1618532791855" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

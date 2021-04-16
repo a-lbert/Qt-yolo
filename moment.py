@@ -40,7 +40,7 @@ def cal_angel(img):
 	b = moment['m11'] / moment['m00'] - w_x * w_y
 	c = moment['m02'] / moment['m00'] - w_y * w_y
 	theta = cv2.fastAtan2(2 * b, (a - c)) / 2
-	return theta,width
+	return theta, width
 
 def cal_moments(path):
 
