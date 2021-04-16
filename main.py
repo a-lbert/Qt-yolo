@@ -40,7 +40,7 @@ from utils.torch_utils import select_device, load_classifier, time_synchronized
 # from TuXiangChuLi import cal_angel
 from moment import cal_angel
 from crc import calc_crc16
-# yongyu chejian shiyan
+
 def accel_data(accel):
     return np.asarray([accel.x, accel.y, accel.z])
 
@@ -74,6 +74,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.weights = './3_1.pt'
         self.img_video = None
         self.timer_camera = QtCore.QTimer()  # 初始化定时器
+        self.timer_serial = QtCore.QTimer()
 
         self.timer_camera.timeout.connect(self.show_image)
 
@@ -81,9 +82,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
         self.timer_ui.timeout.connect(self.update_ui)
 
-        self.timer_camera.start(120)
-        # self.timer_ui.start(29)
-        # self.timer_camera.timeout.connect(self.receive_data)
+        #self.timer_camera.start(40)
+        self.timer_ui.start(29)
+        self.timer_serial.timeout.connect(self.receive_data)
+        #self.timer_serial.start(30)
         self.serial = serial.Serial()
         self.data_to_send = ''
         self.open_serial_button.clicked.connect(self.open_serial)
@@ -108,7 +110,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.run_thread = 1
         self.open_serial()
         self.detect()
-        self.test_img = None
+        self.Send = 0
+
+
     # 调整图片以显示
     def adapt_img(self, img):
         RGB_pic = cv2.cvtColor(img.copy(), cv2.COLOR_BGR2RGB)
@@ -139,27 +143,25 @@ class MainWin(QMainWindow, Ui_MainWindow):
             return None
         if num > 0:
             data = self.serial.read(num)
-            # print('SHUJU%s'%type(data))
+            print('SHUJU%s'%type(data))
+
             if self.is_hex == 1:
                 out_s = ''
                 for i in range(0, len(data)):
                     out_s = out_s + '{:02X}'.format(data[i])
+                self.receive_data_label.setText(out_s)
                 # for i in range(0, len(out_s)):
                 #     print(out_s[i])
                 if out_s[:4] == '55AA':
-                    if out_s[4:6] == '01':
-                        print('01')
-                        self.send_data()
-                    elif out_s[4:6] == '02':
-                        print('02')
-                    print('ok')
+
+                    self.Send = 1
                 print(out_s)
             else:
                 for i in range(len(data)):
                     print(data[i])
-                self.receive_data_label.setText(str(data.decode('iso-8859-1')))
+                # self.receive_data_label.setText(str(data.decode('iso-8859-1')))
 
-        pass
+
 
     def open_serial(self):
         self.serial.port = str('/dev/ttyTHS0')
@@ -190,17 +192,20 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.open_serial_button.setEnabled(True)
         self.close_serial_button.setEnabled(False)
 
-    def send_data(self, data):
+    def send_data(self, data, isFire = 0):
 
 
         #self.send_data_label.setText(str(data))
 
-        if self.serial.isOpen():
-            if data != '':
-                # self.send_data_label.setText(str(data))
-                data = (data + '\r\n').encode('utf-8')
-                num = self.serial.write(data)
-                self.info_serial.setText(str(num))
+        if self.Send == 1 or isFire == 1:
+
+            if self.serial.isOpen():
+                if data != '':
+                    self.send_data_label.setText(str(data))
+                    data = (data + '\r\n').encode('utf-8')
+                    num = self.serial.write(data)
+                    self.info_serial.setText(str(num))
+                    self.Send = 0
         self.data_to_send = ''
     def update_ui(self):
 
@@ -212,7 +217,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.fps = (self.fps // 2) * 2
         self.info_lab.setText(str(int(self.fps)))
         self.last_time = time_synchronized()
-        self.index+=1;
+        self.index+=1
+        self.receive_data()
         if(self.index==5):
             self.index=0
             t1=time.time()
@@ -226,23 +232,14 @@ class MainWin(QMainWindow, Ui_MainWindow):
         i = 0
 
         while True:
-            self.img_video = LoadStreams.video(self.dataset)
-            cv2.imwrite('./ttt.jpg',self.img_video)
-            img_video = cv2.imread('./ttt.jpg')
-            self.test_img = cv2.imread('./a-color.jpg')
             t1 = time_synchronized()
             if i == 0:
                 time.sleep(0.5)
             elif i == 1:
                 time.sleep(0.03)
-                self.show_pic(img_video, self.ShowLabel,Scaled=False)
-                # self.show_pic(self.test_img, self.ShowLabel)
+                self.show_pic(self.img_video[0], self.ShowLabel)
 
-
-
-            print('**************************************')
-            print('self.img_video',type(self.img_video),self.img_video.shape)
-            print('self.test_img',type(self.test_img),self.test_img.shape)
+            self.img_video = LoadStreams.video(self.dataset)
 
             i = 1
             t2 = time_synchronized()
@@ -393,8 +390,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
                             self.info_obj[obj_i].setText(self.result)
                             obj_i += 1
 
-                            self.send_data_label.setText(str(self.data_to_send))
-                            self.data_to_send = ''
+
+                            self.send_data(self.data_to_send)
 
                         elif names[int(cls)] == 'fire':
                             self.data_to_send += '0X01'
@@ -402,8 +399,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
                             crc = calc_crc16(self.data_to_send)
                             self.data_to_send += self.split_data(crc)
                             #self.send_data(self.data_to_send)
-                            self.send_data_label.setText(str(self.data_to_send))
-                            self.data_to_send = ''
+                            self.send_data(self.data_to_send,1)
 
                             if (fire_i > 1):
 
@@ -456,8 +452,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
         # Run inference
         img = torch.zeros((1, 3, imgsz, imgsz), device=self.device)  # init img
         _ = self.model(img.half() if half else img) if self.device.type != 'cpu' else None  # run once
-        up_thread = Thread(target=self.update_video, args=(), daemon=True)
-        up_thread.start()
+        # up_thread = Thread(target=self.update_video, args=(), daemon=True)
+        # up_thread.start()
 
     def closeEvent(self, event):
         ok = QtWidgets.QPushButton()
