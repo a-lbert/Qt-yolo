@@ -38,7 +38,7 @@ from utils.general import (
 from utils.torch_utils import select_device, load_classifier, time_synchronized
 
 # from TuXiangChuLi import cal_angel
-from moment import cal_angel
+from moment import *
 from crc import calc_crc16
 
 
@@ -90,9 +90,12 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.serial = serial.Serial()
         self.data_to_send = ''
         self.open_serial_button.clicked.connect(self.open_serial)
+
         self.close_serial_button.clicked.connect(self.close_serial)
         self.serial_timer = QTimer(self)
         self.serial_timer.timeout.connect(self.receive_data)
+        # noinspection PyInterpreter
+        self.testButton.clicked.connect(self.show_image)
 
         self.is_hex = 1  # 16jinzhi
         # 选择显示控件
@@ -216,12 +219,12 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.last_time = time_synchronized()
         self.index += 1
         self.receive_data()
-        if self.index == 5:
-            self.index = 0
-            t1 = time.time()
-            self.show_image()
-            t2 = time.time()
-            # print('cost', int((t2 - t1)*1000), 'ms')
+        # if self.index == 5:
+        #     self.index = 0
+        #     t1 = time.time()
+        #     self.show_image()
+        #     t2 = time.time()
+        #     # print('cost', int((t2 - t1)*1000), 'ms')
 
     def update_video(self):
 
@@ -250,7 +253,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         # S_path = '/home/limeng/Qt-yolo/data_to-cal'
         # print('当前获取第{}帧'.format(self.i))
         # t = time.time()
-        # rgb_path = '../exp/c/' + 'rgb' + str(self.i) + '.jpg'
+        #rgb_path = '../exp/c/' + 'rgb' + str(self.i) + '.jpg'
         # dep_path = '../exp/c/' + 'dep' + str(self.i) + '.jpg'
         # dep_txt_path = '../exp/c/' + 'dep' + str(self.i) + '.txt'
         # print(rgb_path,dep_path)
@@ -337,6 +340,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         _c0 = (int(xyxy[0]) // 8 + 1) * 8
                         _c2 = (int(xyxy[2]) // 8 + 1) * 8
                         obj_1 = im0s[0][_c1:_c3, _c0:_c2]
+
                         obi_depth = img_depth[_c1:_c3, _c0:_c2]
                         test_depth = test_depth[_c1:_c3, _c0:_c2]
 
@@ -349,7 +353,21 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         pixel_x, pixel_y = int((xyxy[0].item() + xyxy[2].item()) / 2), int(
                             (xyxy[1].item() + xyxy[3]) / 2)
                         # z为深度，x指向双目相机，y向下，右手坐标系
-                        z = depth.get_distance(pixel_x, pixel_y)
+                        z = 0 #初始距离值
+                        z_i = 0 #统计有效像素个数
+                        for i in range(-1, 2):
+                            for j in range(-1, 2):
+                                _z = depth.get_distance(pixel_x + i*5, pixel_y + j*5)
+                                if _z != 0:
+                                    z += _z
+                                    z_i += 1
+                        # print(z,z_i,z/z_i)
+                        # print('..................................')
+                        if z_i == 0:
+                            z = depth.get_distance(pixel_x, pixel_y)
+                        else:
+                            z = z / z_i
+                        #z = depth.get_distance(pixel_x, pixel_y)
                         x, y = [(pixel_x - self.ppx) * z / self.fx, (pixel_y - self.ppy) * z / self.fy]
                         self.data_to_send += self.split_data(int(1000 * x))
                         self.data_to_send += self.split_data(int(1000 * y))
@@ -365,8 +383,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         )) + '\n'
                         if names[int(cls)] == 'pipe':
                             # print('计算角度')
-                            theta, width = cal_angel(obj_1)
+                            theta, width = cal_ang(obj_1)
                             width = width * z * 1000 / self.fx
+                            # rgb_path = '../exp/250/' + str(int(theta)) + '_'+ str(int(width))+ '.jpg'
+                            # cv2.imwrite(rgb_path, obj_1)
                             if (obj_i > 2):
                                 obj_i = obj_i % 3
                             self.show_pic(obj_1, self.label_obj[obj_i], True)
