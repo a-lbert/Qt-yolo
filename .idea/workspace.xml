@@ -26,14 +26,10 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="修正requirements_py35.txt">
-      <change beforePath="$PROJECT_DIR$/.idea/Qt-yolo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Qt-yolo.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="改进角度以及宽度计算方法：&#10;截取部分图像-&gt;二值化、反转-&gt;闭操作-&gt;轮廓检测-&gt;计算二阶矩-&gt;计算宽度（二阶矩面积处以图像高度）以及角度">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SignalSlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/SignalSlot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SignalSlot.ui" beforeDir="false" afterPath="$PROJECT_DIR$/SignalSlot.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/moment.py" beforeDir="false" afterPath="$PROJECT_DIR$/moment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shiyan.py" beforeDir="false" afterPath="$PROJECT_DIR$/shiyan.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,10 +74,10 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="/usr/bin/designer" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.externalTools" />
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.moment">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="Qt-yolo" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -145,10 +141,32 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="shiyan" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Qt-yolo" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/../miniconda3/envs/torch/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/shiyan.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.moment" />
+        <item itemvalue="Python.shiyan" />
+        <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
   </component>
@@ -371,7 +389,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618532789038</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="改进角度以及宽度计算方法：&#10;截取部分图像-&gt;二值化、反转-&gt;闭操作-&gt;轮廓检测-&gt;计算二阶矩-&gt;计算宽度（二阶矩面积处以图像高度）以及角度">
+      <created>1620376618075</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1620376618075</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -385,7 +410,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/master" />
+                        <option value="master" />
                       </list>
                     </value>
                   </entry>
@@ -419,7 +444,8 @@
     <MESSAGE value="saliency" />
     <MESSAGE value="串口发送方式调整 以及串口格式完善 还差解析接受信息进行发送" />
     <MESSAGE value="tijiao" />
-    <option name="LAST_COMMIT_MESSAGE" value="tijiao" />
+    <MESSAGE value="改进角度以及宽度计算方法：&#10;截取部分图像-&gt;二值化、反转-&gt;闭操作-&gt;轮廓检测-&gt;计算二阶矩-&gt;计算宽度（二阶矩面积处以图像高度）以及角度" />
+    <option name="LAST_COMMIT_MESSAGE" value="改进角度以及宽度计算方法：&#10;截取部分图像-&gt;二值化、反转-&gt;闭操作-&gt;轮廓检测-&gt;计算二阶矩-&gt;计算宽度（二阶矩面积处以图像高度）以及角度" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
   <component name="XDebuggerManager">

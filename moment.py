@@ -85,6 +85,7 @@ def ceshi(path):
     print(path)
     font = cv2.FONT_HERSHEY_DUPLEX  # 设置字体
     img = cv2.imread(path)
+    cv2.imshow('im',img)
     rows, cols = img.shape[:2]
     row = int(rows / 9)
     img= img[1 * row:8 * row, :]
@@ -210,8 +211,8 @@ if __name__ == "__main__":
     # cal_angel(img)
 
     # func(img)
-    bianli('../exp/250/')
+    #bianli('../exp/250/')
     # saliency('/home/sz2/aaa/pipe1.jpg')
     # saliency('pics/7.png')
     #cal_moments('../exp/500/80_95.jpg')
-    # ceshi('../exp/500/62_93.jpg')
+    ceshi('../exp/500/62_93.jpg')
