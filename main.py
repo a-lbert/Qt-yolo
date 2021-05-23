@@ -51,7 +51,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MainWin, self).__init__()
         self.setupUi(self)
-        self.index = 0;
+        self.index = 0
         self.__flag_work = 0
         self.x = 0
         self.count = 0
@@ -135,6 +135,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         low = "{:#04X}".format(int(low, 16))
         high = hex(int(i / 256))
         high = "{:#04X}".format(int(high, 16))
+
         return high + low
 
     def receive_data(self):
@@ -165,6 +166,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
     def open_serial(self):
         self.serial.port = str('/dev/ttyTHS0')
+        #self.serial.port = str('/dev/ttyUSB0')
+
         self.serial.baudrate = int(9600)
         self.serial.bytesize = int(8)
         self.serial.stopbits = int(1)
@@ -219,12 +222,12 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.last_time = time_synchronized()
         self.index += 1
         self.receive_data()
-        # if self.index == 5:
-        #     self.index = 0
-        #     t1 = time.time()
-        #     self.show_image()
-        #     t2 = time.time()
-        #     # print('cost', int((t2 - t1)*1000), 'ms')
+        if self.index == 5:
+            self.index = 0
+            t1 = time.time()
+            self.show_image()
+            t2 = time.time()
+            # print('cost', int((t2 - t1)*1000), 'ms')
 
     def update_video(self):
 
@@ -428,6 +431,82 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 #
                 # if cv2.waitKey(1) == ord('q'):  # q to quit
                 #     raise StopIteration
+    def breathe(self):
+        data1 = ('0x550x00' + '\r\n').encode('utf-8')
+        data2 = ('0x550x01' + '\r\n').encode('utf-8')
+
+        flag_1 = 1
+        while True:
+            if flag_1 == 1:
+                #num = self.serial.write(data1)
+                #print('data1:',data1)
+                flag_1 = 0
+            else:
+                #num = self.serial.write(data2)
+                #print('data2:', data2)
+                flag_1 = 1
+
+            time.sleep(1)
+            #print('breathe thread is running', num)
+    #重新连接
+    def udp_reconnect(self,f_connect_required):
+        print('udp_reconnect is working')
+
+        if f_connect_required:
+            try:
+                #建立连接,返回f_send，f_connect_Required
+                return 1, 0
+            except:
+                pass
+
+    #发送数据
+    def udp_send(self,i):
+        print('udp_send is working',i)
+    # 多线程执行函数
+    def udp(self):
+        f1_connect_required = 1
+        f2_connect_required = 1
+        f3_connect_required = 1
+        f1_send = 0
+        f2_send = 0
+        f3_send = 0
+        i = 0
+        while True :
+            i += 1
+            #一段时间重新建立UDP连接
+            if i % 2 == 0:
+                i = 0
+                f1_send,f1_connect_required = self.udp_reconnect(1)
+            #获得图像
+            udp_img = LoadStreams.video(self.dataset)
+            # 此处进行传输
+            try:
+                if f1_send:
+                    self.udp_send(1)
+            except:
+                f1_send = 0
+                f1_connect_required =1
+                # 关闭连接
+            #
+            # try:
+            #     if f2_send:
+            #         self.udp_send(2)
+            # except:
+            #     f2_send = 0
+            #     f2_connect_required =1
+            #     # 关闭连接
+            #
+            # try:
+            #     if f3_send:
+            #         self.udp_send(1)
+            # except:
+            #     f3_send = 0
+            #     f3_connect_required =1
+            #     # 关闭连接
+            #print('udp_img type:',type(udp_img))
+            time.sleep(1)
+            #print('udp thread is running')
+
 
     def detect(self, save_img=False):
         out, source, weights, view_img, save_txt, imgsz = \
@@ -466,6 +545,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
         _ = self.model(img.half() if half else img) if self.device.type != 'cpu' else None  # run once
         # up_thread = Thread(target=self.update_video, args=(), daemon=True)
         # up_thread.start()
+        breathe_thread = Thread(target = self.breathe,args = (), daemon = True)
+        breathe_thread.start()
+        udp_thread = Thread(target = self.udp,args = (), daemon = True)
+        udp_thread.start()
 
     def closeEvent(self, event):
         ok = QtWidgets.QPushButton()
