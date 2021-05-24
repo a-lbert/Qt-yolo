@@ -24,6 +24,7 @@ from pathlib import Path
 
 from SignalSlot import *
 import serial
+import socket
 import serial.tools.list_ports
 from threading import Thread
 import cv2
@@ -84,7 +85,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.timer_ui.timeout.connect(self.update_ui)
 
         # self.timer_camera.start(40)
+
         self.timer_ui.start(29)
+
         self.timer_serial.timeout.connect(self.receive_data)
         # self.timer_serial.start(30)
         self.serial = serial.Serial()
@@ -105,6 +108,15 @@ class MainWin(QMainWindow, Ui_MainWindow):
                      ]
         self.info_obj = [self.info_obj1, self.info_obj2, self.info_obj3,
                          self.info_obj4, self.info_obj5]
+        sock0 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        address0 = ('192.168.31.100', 8888)
+        sock1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        address1 = ('192.168.31.120', 8888)
+        sock2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        address2 = ('192.168.31.100', 8888)
+        self.sock = [sock0, sock1, sock2]
+        self.address = [address0, address1, address2]
+        #print(self.sock,self.address,'.................')
         self.update_intrin = 1
         self.last_time = 0
         self.ppx = 0
@@ -449,43 +461,92 @@ class MainWin(QMainWindow, Ui_MainWindow):
             time.sleep(1)
             #print('breathe thread is running', num)
     #重新连接
-    def udp_reconnect(self,f_connect_required):
-        print('udp_reconnect is working')
+    def udp_reconnect(self,f_connect_required, index):
+
 
         if f_connect_required:
+            sock = self.sock[index]
+            address = self.address[index]
+            # print(sock)
             try:
                 #建立连接,返回f_send，f_connect_Required
-                return 1, 0
+                sock.connect(address)
+                print('udp_reconnect is working........',index)
+
             except:
-                pass
+                print('connect failed', index)
+                return 0, 1
+        return 1, 0
 
     #发送数据
     def udp_send(self,i):
+
         print('udp_send is working',i)
     # 多线程执行函数
     def udp(self):
+        f0_connect_required = 1
         f1_connect_required = 1
         f2_connect_required = 1
-        f3_connect_required = 1
+        f0_send = 0
         f1_send = 0
         f2_send = 0
-        f3_send = 0
+
+        #print(sock, address)
         i = 0
+        # f0_send,f0_connect_required = self.udp_reconnect(f0_connect_required,0)
+        # f1_send,f1_connect_required = self.udp_reconnect(f1_connect_required,1)
+        f2_send,f2_connect_required = self.udp_reconnect(f2_connect_required,2)
         while True :
             i += 1
             #一段时间重新建立UDP连接
-            if i % 2 == 0:
+            if i % 30 == 0:
+                print(time.time())
                 i = 0
-                f1_send,f1_connect_required = self.udp_reconnect(1)
+                print('connecting all......')
+                # (f0_send, f0_connect_required) = self.udp_reconnect(f0_connect_required, 0)
+                # (f1_send,f1_connect_required) = self.udp_reconnect(f1_connect_required, 1)
+                (f2_send, f2_connect_required) = self.udp_reconnect(f2_connect_required, 2)
+
+
             #获得图像
             udp_img = LoadStreams.video(self.dataset)
+            #print(udp_img)
+            _, img_encode = cv2.imencode('.jpg', udp_img)
+            #print(type(img_encode))
+            data = np.array(img_encode)
+
+            stringData = data.tobytes()
             # 此处进行传输
-            try:
-                if f1_send:
-                    self.udp_send(1)
-            except:
-                f1_send = 0
-                f1_connect_required =1
+            if f0_send:
+
+                try:
+                    self.sock[0].send((str(len(stringData)).ljust(16)).encode('utf-8'))
+                    self.sock[0].send(stringData)
+
+                except:
+                    f0_send = 0
+                    f0_connect_required =1
+
+            if f1_send:
+
+                try:
+                    self.sock[1].send((str(len(stringData)).ljust(16)).encode('utf-8'))
+                    self.sock[1].send(stringData)
+
+                except:
+                    f1_send = 0
+                    f1_connect_required = 1
+
+            if f2_send:
+
+                try:
+                    self.sock[2].send((str(len(stringData)).ljust(16)).encode('utf-8'))
+                    self.sock[2].send(stringData)
+
+                except:
+                    f2_send = 0
+                    f2_connect_required = 1
+
                 # 关闭连接
             #
             # try:
@@ -504,7 +565,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
             #     f3_connect_required =1
             #     # 关闭连接
             #print('udp_img type:',type(udp_img))
-            time.sleep(1)
+            time.sleep(0.005)
             #print('udp thread is running')
 
 

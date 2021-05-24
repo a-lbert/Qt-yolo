@@ -21,15 +21,17 @@
         <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="BRANCH:origin/V1.0" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:origin/master" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </select>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="改进角度以及宽度计算方法：&#10;截取部分图像-&gt;二值化、反转-&gt;闭操作-&gt;轮廓检测-&gt;计算二阶矩-&gt;计算宽度（二阶矩面积处以图像高度）以及角度">
+      <change beforePath="$PROJECT_DIR$/.idea/Qt-yolo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Qt-yolo.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/moment.py" beforeDir="false" afterPath="$PROJECT_DIR$/moment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shiyan.py" beforeDir="false" afterPath="$PROJECT_DIR$/shiyan.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SignalSlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/SignalSlot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,10 +76,10 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="preferences.externalTools" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Qt-yolo0519" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.moment">
+  <component name="RunManager" selected="Python.main">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="Qt-yolo" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -99,14 +101,35 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Qt-yolo" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/miniconda3/envs/3.5/bin/python" />
+      <option name="SDK_HOME" value="$PROJECT_DIR$/../miniconda3/envs/torch/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../Qt-yolo0519" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../Qt-yolo0519/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="Qt-yolo" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/bin/python3.6" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -162,11 +185,17 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.main" />
+      <item itemvalue="Python.moment" />
+      <item itemvalue="Python.shiyan" />
+      <item itemvalue="Python.main (1)" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main (1)" />
         <item itemvalue="Python.moment" />
         <item itemvalue="Python.shiyan" />
-        <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
   </component>
@@ -447,6 +476,40 @@
     <MESSAGE value="改进角度以及宽度计算方法：&#10;截取部分图像-&gt;二值化、反转-&gt;闭操作-&gt;轮廓检测-&gt;计算二阶矩-&gt;计算宽度（二阶矩面积处以图像高度）以及角度" />
     <option name="LAST_COMMIT_MESSAGE" value="改进角度以及宽度计算方法：&#10;截取部分图像-&gt;二值化、反转-&gt;闭操作-&gt;轮廓检测-&gt;计算二阶矩-&gt;计算宽度（二阶矩面积处以图像高度）以及角度" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="450" y="294" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1621820337686">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state x="450" y="294" key="#com.intellij.execution.impl.EditConfigurationsDialog/65.24.1855.1056@65.24.1855.1056" timestamp="1621820337686" />
+    <state x="775" y="394" width="424" height="454" key="FileChooserDialogImpl" timestamp="1621826081336">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state x="775" y="394" width="424" height="454" key="FileChooserDialogImpl/65.24.1855.1056@65.24.1855.1056" timestamp="1621826081336" />
+    <state width="1828" height="174" key="GridCell.Tab.0.bottom" timestamp="1621827199530">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state width="1828" height="174" key="GridCell.Tab.0.bottom/65.24.1855.1056@65.24.1855.1056" timestamp="1621827199530" />
+    <state width="1828" height="174" key="GridCell.Tab.0.center" timestamp="1621827199529">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state width="1828" height="174" key="GridCell.Tab.0.center/65.24.1855.1056@65.24.1855.1056" timestamp="1621827199529" />
+    <state width="1828" height="174" key="GridCell.Tab.0.left" timestamp="1621827199528">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state width="1828" height="174" key="GridCell.Tab.0.left/65.24.1855.1056@65.24.1855.1056" timestamp="1621827199528" />
+    <state width="1828" height="174" key="GridCell.Tab.0.right" timestamp="1621827199529">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state width="1828" height="174" key="GridCell.Tab.0.right/65.24.1855.1056@65.24.1855.1056" timestamp="1621827199529" />
+    <state x="474" y="271" key="SettingsEditor" timestamp="1621820323486">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state x="474" y="271" key="SettingsEditor/65.24.1855.1056@65.24.1855.1056" timestamp="1621820323486" />
+    <state x="-333" y="433" width="928" height="802" key="dock-window-1" timestamp="1621826408622">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state x="-333" y="433" width="928" height="802" key="dock-window-1/65.24.1855.1056@65.24.1855.1056" timestamp="1621826408622" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
