@@ -450,11 +450,11 @@ class MainWin(QMainWindow, Ui_MainWindow):
         flag_1 = 1
         while True:
             if flag_1 == 1:
-                #num = self.serial.write(data1)
+                num = self.serial.write(data1)
                 #print('data1:',data1)
                 flag_1 = 0
             else:
-                #num = self.serial.write(data2)
+                num = self.serial.write(data2)
                 #print('data2:', data2)
                 flag_1 = 1
 
@@ -500,7 +500,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
             i += 1
             #一段时间重新建立UDP连接
             if i % 30 == 0:
-                print(time.time())
+                #print(time.time())
                 i = 0
                 print('connecting all......')
                 # (f0_send, f0_connect_required) = self.udp_reconnect(f0_connect_required, 0)
