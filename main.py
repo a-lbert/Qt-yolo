@@ -111,12 +111,12 @@ class MainWin(QMainWindow, Ui_MainWindow):
         sock0 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         address0 = ('192.168.31.100', 8888)
         sock1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        address1 = ('192.168.31.120', 8888)
+        address1 = ('192.168.31.2', 8888)
         sock2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        address2 = ('192.168.31.100', 8888)
+        address2 = ('192.168.31.100', 7777)
         self.sock = [sock0, sock1, sock2]
         self.address = [address0, address1, address2]
-        #print(self.sock,self.address,'.................')
+        # print(self.sock,self.address,'.................')
         self.update_intrin = 1
         self.last_time = 0
         self.ppx = 0
@@ -178,7 +178,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
     def open_serial(self):
         self.serial.port = str('/dev/ttyTHS0')
-        #self.serial.port = str('/dev/ttyUSB0')
+        # self.serial.port = str('/dev/ttyUSB0')
 
         self.serial.baudrate = int(9600)
         self.serial.bytesize = int(8)
@@ -268,7 +268,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         # S_path = '/home/limeng/Qt-yolo/data_to-cal'
         # print('当前获取第{}帧'.format(self.i))
         # t = time.time()
-        #rgb_path = '../exp/c/' + 'rgb' + str(self.i) + '.jpg'
+        # rgb_path = '../exp/c/' + 'rgb' + str(self.i) + '.jpg'
         # dep_path = '../exp/c/' + 'dep' + str(self.i) + '.jpg'
         # dep_txt_path = '../exp/c/' + 'dep' + str(self.i) + '.txt'
         # print(rgb_path,dep_path)
@@ -368,11 +368,11 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         pixel_x, pixel_y = int((xyxy[0].item() + xyxy[2].item()) / 2), int(
                             (xyxy[1].item() + xyxy[3]) / 2)
                         # z为深度，x指向双目相机，y向下，右手坐标系
-                        z = 0 #初始距离值
-                        z_i = 0 #统计有效像素个数
+                        z = 0  # 初始距离值
+                        z_i = 0  # 统计有效像素个数
                         for i in range(-1, 2):
                             for j in range(-1, 2):
-                                _z = depth.get_distance(pixel_x + i*5, pixel_y + j*5)
+                                _z = depth.get_distance(pixel_x + i * 5, pixel_y + j * 5)
                                 if _z != 0:
                                     z += _z
                                     z_i += 1
@@ -382,7 +382,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
                             z = depth.get_distance(pixel_x, pixel_y)
                         else:
                             z = z / z_i
-                        #z = depth.get_distance(pixel_x, pixel_y)
+                        # z = depth.get_distance(pixel_x, pixel_y)
                         x, y = [(pixel_x - self.ppx) * z / self.fx, (pixel_y - self.ppy) * z / self.fy]
                         self.data_to_send += self.split_data(int(1000 * x))
                         self.data_to_send += self.split_data(int(1000 * y))
@@ -443,6 +443,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 #
                 # if cv2.waitKey(1) == ord('q'):  # q to quit
                 #     raise StopIteration
+
     def breathe(self):
         data1 = ('0x550x00' + '\r\n').encode('utf-8')
         data2 = ('0x550x01' + '\r\n').encode('utf-8')
@@ -451,81 +452,150 @@ class MainWin(QMainWindow, Ui_MainWindow):
         while True:
             if flag_1 == 1:
                 num = self.serial.write(data1)
-                #print('data1:',data1)
+                # print('data1:',data1)
                 flag_1 = 0
             else:
                 num = self.serial.write(data2)
-                #print('data2:', data2)
+                # print('data2:', data2)
                 flag_1 = 1
 
             time.sleep(1)
-            #print('breathe thread is running', num)
-    #重新连接
-    def udp_reconnect(self,f_connect_required, index):
+            # print('breathe thread is running', num)
 
+    # 重新连接
+    def udp_reconnect(self, f_connect_required, index):
 
         if f_connect_required:
+
+            self.sock[index] = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
             sock = self.sock[index]
+            sock.setblocking(1)
+
             address = self.address[index]
             # print(sock)
             try:
-                #建立连接,返回f_send，f_connect_Required
+                # 建立连接,返回f_send，f_connect_Required
+                # sock.close()
+                # time.sleep(1)
+                # print('closing socket')
                 sock.connect(address)
-                print('udp_reconnect is working........',index)
+
+
+                print('connecting sock %d' % index)
 
             except:
-                print('connect failed', index)
-                return 0, 1
-        return 1, 0
+                print('connecting sock %d failed' % index)
+                return 0, 1, 0
+        return 1, 0, 1
 
-    #发送数据
-    def udp_send(self,i):
+    # 发送数据
+    def udp_send(self, i):
 
-        print('udp_send is working',i)
+        print('udp_send is working', i)
+
     # 多线程执行函数
-    def udp(self):
-        f0_connect_required = 1
-        f1_connect_required = 1
+    def udp2(self):
+
         f2_connect_required = 1
-        f0_send = 0
-        f1_send = 0
+
         f2_send = 0
+        f2_connected = 0
 
-        #print(sock, address)
+
+        # print(sock, address)
         i = 0
-        # f0_send,f0_connect_required = self.udp_reconnect(f0_connect_required,0)
-        # f1_send,f1_connect_required = self.udp_reconnect(f1_connect_required,1)
-        f2_send,f2_connect_required = self.udp_reconnect(f2_connect_required,2)
-        while True :
+
+        f2_send, f2_connect_required, f2_connected = self.udp_reconnect(f2_connect_required, 2)
+        # sock = self.sock[2]
+        # address = self.address[2]
+        # sock.connect(address)
+
+        while True:
             i += 1
-            #一段时间重新建立UDP连接
+            # 一段时间重新建立UDP连接
             if i % 30 == 0:
-                #print(time.time())
+                # print(time.time())
                 i = 0
-                print('connecting all......')
+
                 # (f0_send, f0_connect_required) = self.udp_reconnect(f0_connect_required, 0)
-                # (f1_send,f1_connect_required) = self.udp_reconnect(f1_connect_required, 1)
-                (f2_send, f2_connect_required) = self.udp_reconnect(f2_connect_required, 2)
 
+                f2_send, f2_connect_required, f2_connected = self.udp_reconnect(f2_connect_required, 2)
 
-            #获得图像
+            # 获得图像
             udp_img = LoadStreams.video(self.dataset)
-            #print(udp_img)
+            # print(udp_img)
             _, img_encode = cv2.imencode('.jpg', udp_img)
-            #print(type(img_encode))
+            # print(type(img_encode))
             data = np.array(img_encode)
 
             stringData = data.tobytes()
             # 此处进行传输
-            if f0_send:
+
+
+            if f2_send:
 
                 try:
-                    self.sock[0].send((str(len(stringData)).ljust(16)).encode('utf-8'))
-                    self.sock[0].send(stringData)
+                    print('sending1')
+
+                    self.sock[2].send((str(len(stringData)).ljust(16)).encode('utf-8'))
+                    print('sending2')
+                    # self.sock[2].settimeout(2)
+
+                    self.sock[2].send(stringData)
+                    print('sending3')
 
                 except:
-                    f0_send = 0
-                    f0_connect_required =1
+                    if f2_connected:
+
+                        # print('closing2')
+                        self.sock[2].close()
+                    f2_send = 0
+                    f2_connect_required = 1
+
+
+            time.sleep(0.005)
+            # print('udp thread is running')
+
+    def udp1(self):
+
+        f1_connect_required = 1
+
+
+        f1_send = 0
+
+        f1_connected = 0
+
+
+        # print(sock, address)
+        i = 0
+        # f0_send,f0_connect_required = self.udp_reconnect(f0_connect_required,0)
+        f1_send,f1_connect_required, f1_connected = self.udp_reconnect(f1_connect_required,1)
+
+        # sock = self.sock[2]
+        # address = self.address[2]
+        # sock.connect(address)
+
+        while True:
+            i += 1
+            # 一段时间重新建立UDP连接
+            if i % 30 == 0:
+                # print(time.time())
+                i = 0
+
+                # (f0_send, f0_connect_required) = self.udp_reconnect(f0_connect_required, 0)
+                f1_send, f1_connect_required, f1_connected = self.udp_reconnect(f1_connect_required, 1)
+
+
+            # 获得图像
+            udp_img = LoadStreams.video(self.dataset)
+            # print(udp_img)
+            _, img_encode = cv2.imencode('.jpg', udp_img)
+            # print(type(img_encode))
+            data = np.array(img_encode)
+
+            stringData = data.tobytes()
+            # 此处进行传输
 
             if f1_send:
 
@@ -534,42 +604,17 @@ class MainWin(QMainWindow, Ui_MainWindow):
                     self.sock[1].send(stringData)
 
                 except:
+                    if f1_connected:
+                        self.sock[1].close()
+                        print('closing1')
+
                     f1_send = 0
                     f1_connect_required = 1
 
-            if f2_send:
 
-                try:
-                    self.sock[2].send((str(len(stringData)).ljust(16)).encode('utf-8'))
-                    self.sock[2].send(stringData)
-
-                except:
-                    f2_send = 0
-                    f2_connect_required = 1
-
-                # 关闭连接
-            #
-            # try:
-            #     if f2_send:
-            #         self.udp_send(2)
-            # except:
-            #     f2_send = 0
-            #     f2_connect_required =1
-            #     # 关闭连接
-            #
-            # try:
-            #     if f3_send:
-            #         self.udp_send(1)
-            # except:
-            #     f3_send = 0
-            #     f3_connect_required =1
-            #     # 关闭连接
-            #print('udp_img type:',type(udp_img))
             time.sleep(0.005)
-            #print('udp thread is running')
-
-
     def detect(self, save_img=False):
+
         out, source, weights, view_img, save_txt, imgsz = \
             'inference/output', '0', self.weights, False, False, 640
         self.webcam = source == '0' or source.startswith('rtsp') or source.startswith('http') or source.endswith('.txt')
@@ -582,6 +627,11 @@ class MainWin(QMainWindow, Ui_MainWindow):
         half = self.device.type != 'cpu'  # half precision only supported on CUDA
 
         # Load model
+        self.dataset = LoadStreams(source, img_size=imgsz)
+        udp2_thread = Thread(target=self.udp2, args=(), daemon=True)
+        udp2_thread.start()
+        udp1_thread = Thread(target=self.udp1, args=(), daemon=True)
+        udp1_thread.start()
         self.model = attempt_load(weights, map_location=self.device)  # load FP32 model
         imgsz = check_img_size(imgsz, s=self.model.stride.max())  # check img_size
         if half:
@@ -592,7 +642,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         # if self.webcam:
         view_img = True
         cudnn.benchmark = True  # set True to speed up constant image size inference
-        self.dataset = LoadStreams(source, img_size=imgsz)
+
         # else:
         #     save_img = True
         #     self.dataset = LoadImages(source, img_size=imgsz)
@@ -606,10 +656,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
         _ = self.model(img.half() if half else img) if self.device.type != 'cpu' else None  # run once
         # up_thread = Thread(target=self.update_video, args=(), daemon=True)
         # up_thread.start()
-        breathe_thread = Thread(target = self.breathe,args = (), daemon = True)
+        breathe_thread = Thread(target=self.breathe, args=(), daemon=True)
         breathe_thread.start()
-        udp_thread = Thread(target = self.udp,args = (), daemon = True)
-        udp_thread.start()
+        # udp_thread = Thread(target=self.udp, args=(), daemon=True)
+        # udp_thread.start()
 
     def closeEvent(self, event):
         ok = QtWidgets.QPushButton()
