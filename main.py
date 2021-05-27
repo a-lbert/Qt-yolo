@@ -627,17 +627,15 @@ class MainWin(QMainWindow, Ui_MainWindow):
         half = self.device.type != 'cpu'  # half precision only supported on CUDA
 
         # Load model
-        self.dataset = LoadStreams(source, img_size=imgsz)
-        udp2_thread = Thread(target=self.udp2, args=(), daemon=True)
-        udp2_thread.start()
-        udp1_thread = Thread(target=self.udp1, args=(), daemon=True)
-        udp1_thread.start()
+
+
         self.model = attempt_load(weights, map_location=self.device)  # load FP32 model
         imgsz = check_img_size(imgsz, s=self.model.stride.max())  # check img_size
         if half:
             self.model.half()  # to FP16
 
         # Set Dataloader
+        self.dataset = LoadStreams(source, img_size=imgsz)
         vid_path, vid_writer = None, None
         # if self.webcam:
         view_img = True
@@ -658,8 +656,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
         # up_thread.start()
         breathe_thread = Thread(target=self.breathe, args=(), daemon=True)
         breathe_thread.start()
-        # udp_thread = Thread(target=self.udp, args=(), daemon=True)
-        # udp_thread.start()
+        udp2_thread = Thread(target=self.udp2, args=(), daemon=True)
+        udp2_thread.start()
+        udp1_thread = Thread(target=self.udp1, args=(), daemon=True)
+        udp1_thread.start()
 
     def closeEvent(self, event):
         ok = QtWidgets.QPushButton()

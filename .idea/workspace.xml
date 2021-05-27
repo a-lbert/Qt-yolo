@@ -26,8 +26,7 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="呼吸线程">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="客户端多线程">
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -436,7 +435,14 @@
       <option name="project" value="LOCAL" />
       <updated>1621851312888</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="客户端多线程">
+      <created>1622086126880</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1622086126880</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -450,7 +456,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/V1.0" />
+                        <option value="V1.0" />
                       </list>
                     </value>
                   </entry>
@@ -487,7 +493,8 @@
     <MESSAGE value="改进角度以及宽度计算方法：&#10;截取部分图像-&gt;二值化、反转-&gt;闭操作-&gt;轮廓检测-&gt;计算二阶矩-&gt;计算宽度（二阶矩面积处以图像高度）以及角度" />
     <MESSAGE value="UDP Thread" />
     <MESSAGE value="呼吸线程" />
-    <option name="LAST_COMMIT_MESSAGE" value="呼吸线程" />
+    <MESSAGE value="客户端多线程" />
+    <option name="LAST_COMMIT_MESSAGE" value="客户端多线程" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
   <component name="WindowStateProjectService">
@@ -499,30 +506,30 @@
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
     <state x="775" y="394" width="424" height="454" key="FileChooserDialogImpl/65.24.1855.1056@65.24.1855.1056" timestamp="1621826081336" />
-    <state width="1828" height="174" key="GridCell.Tab.0.bottom" timestamp="1622085936699">
+    <state width="1828" height="174" key="GridCell.Tab.0.bottom" timestamp="1622086299549">
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
-    <state width="1828" height="174" key="GridCell.Tab.0.bottom/65.24.1855.1056@65.24.1855.1056" timestamp="1622085936699" />
-    <state width="1828" height="174" key="GridCell.Tab.0.center" timestamp="1622085936697">
+    <state width="1828" height="174" key="GridCell.Tab.0.bottom/65.24.1855.1056@65.24.1855.1056" timestamp="1622086299549" />
+    <state width="1828" height="174" key="GridCell.Tab.0.center" timestamp="1622086299548">
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
-    <state width="1828" height="174" key="GridCell.Tab.0.center/65.24.1855.1056@65.24.1855.1056" timestamp="1622085936697" />
-    <state width="1828" height="174" key="GridCell.Tab.0.left" timestamp="1622085936696">
+    <state width="1828" height="174" key="GridCell.Tab.0.center/65.24.1855.1056@65.24.1855.1056" timestamp="1622086299548" />
+    <state width="1828" height="174" key="GridCell.Tab.0.left" timestamp="1622086299547">
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
-    <state width="1828" height="174" key="GridCell.Tab.0.left/65.24.1855.1056@65.24.1855.1056" timestamp="1622085936696" />
-    <state width="1828" height="174" key="GridCell.Tab.0.right" timestamp="1622085936698">
+    <state width="1828" height="174" key="GridCell.Tab.0.left/65.24.1855.1056@65.24.1855.1056" timestamp="1622086299547" />
+    <state width="1828" height="174" key="GridCell.Tab.0.right" timestamp="1622086299549">
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
-    <state width="1828" height="174" key="GridCell.Tab.0.right/65.24.1855.1056@65.24.1855.1056" timestamp="1622085936698" />
+    <state width="1828" height="174" key="GridCell.Tab.0.right/65.24.1855.1056@65.24.1855.1056" timestamp="1622086299549" />
     <state x="474" y="271" key="SettingsEditor" timestamp="1621820323486">
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
     <state x="474" y="271" key="SettingsEditor/65.24.1855.1056@65.24.1855.1056" timestamp="1621820323486" />
-    <state x="587" y="398" width="800" height="501" key="Vcs.Push.Dialog.v2" timestamp="1621851360756">
+    <state x="587" y="426" width="800" height="501" key="Vcs.Push.Dialog.v2" timestamp="1622086135797">
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
-    <state x="587" y="398" width="800" height="501" key="Vcs.Push.Dialog.v2/65.24.1855.1056@65.24.1855.1056" timestamp="1621851360756" />
+    <state x="587" y="426" width="800" height="501" key="Vcs.Push.Dialog.v2/65.24.1855.1056@65.24.1855.1056" timestamp="1622086135797" />
     <state x="-333" y="433" width="928" height="802" key="dock-window-1" timestamp="1621826408622">
       <screen x="65" y="24" width="1855" height="1056" />
     </state>
