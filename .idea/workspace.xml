@@ -182,8 +182,8 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.main" />
       <item itemvalue="Python.main (1)" />
+      <item itemvalue="Python.main" />
       <item itemvalue="Python.moment" />
       <item itemvalue="Python.shiyan" />
     </list>
