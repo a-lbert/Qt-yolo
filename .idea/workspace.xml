@@ -26,7 +26,9 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="客户端多线程">
+    <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="测试环境">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crc.py" beforeDir="false" afterPath="$PROJECT_DIR$/crc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -75,7 +77,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Qt-yolo0519" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.crc">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="Qt-yolo" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -97,7 +99,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="crc" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Qt-yolo" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/../miniconda3/envs/torch/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/crc.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="Qt-yolo" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -118,14 +141,14 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Qt-yolo" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="/usr/bin/python3.6" />
+      <option name="SDK_HOME" value="$USER_HOME$/miniconda3/envs/3.6/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -139,7 +162,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="moment" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="moment" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="Qt-yolo" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -186,11 +209,12 @@
       <item itemvalue="Python.main (1)" />
       <item itemvalue="Python.moment" />
       <item itemvalue="Python.shiyan" />
+      <item itemvalue="Python.crc" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main (1)" />
-        <item itemvalue="Python.moment" />
+        <item itemvalue="Python.crc" />
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.shiyan" />
       </list>
     </recent_temporary>
@@ -496,44 +520,6 @@
     <MESSAGE value="客户端多线程" />
     <option name="LAST_COMMIT_MESSAGE" value="客户端多线程" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="450" y="294" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1621820337686">
-      <screen x="65" y="24" width="1855" height="1056" />
-    </state>
-    <state x="450" y="294" key="#com.intellij.execution.impl.EditConfigurationsDialog/65.24.1855.1056@65.24.1855.1056" timestamp="1621820337686" />
-    <state x="775" y="394" width="424" height="454" key="FileChooserDialogImpl" timestamp="1621826081336">
-      <screen x="65" y="24" width="1855" height="1056" />
-    </state>
-    <state x="775" y="394" width="424" height="454" key="FileChooserDialogImpl/65.24.1855.1056@65.24.1855.1056" timestamp="1621826081336" />
-    <state width="1828" height="174" key="GridCell.Tab.0.bottom" timestamp="1622086299549">
-      <screen x="65" y="24" width="1855" height="1056" />
-    </state>
-    <state width="1828" height="174" key="GridCell.Tab.0.bottom/65.24.1855.1056@65.24.1855.1056" timestamp="1622086299549" />
-    <state width="1828" height="174" key="GridCell.Tab.0.center" timestamp="1622086299548">
-      <screen x="65" y="24" width="1855" height="1056" />
-    </state>
-    <state width="1828" height="174" key="GridCell.Tab.0.center/65.24.1855.1056@65.24.1855.1056" timestamp="1622086299548" />
-    <state width="1828" height="174" key="GridCell.Tab.0.left" timestamp="1622086299547">
-      <screen x="65" y="24" width="1855" height="1056" />
-    </state>
-    <state width="1828" height="174" key="GridCell.Tab.0.left/65.24.1855.1056@65.24.1855.1056" timestamp="1622086299547" />
-    <state width="1828" height="174" key="GridCell.Tab.0.right" timestamp="1622086299549">
-      <screen x="65" y="24" width="1855" height="1056" />
-    </state>
-    <state width="1828" height="174" key="GridCell.Tab.0.right/65.24.1855.1056@65.24.1855.1056" timestamp="1622086299549" />
-    <state x="474" y="271" key="SettingsEditor" timestamp="1621820323486">
-      <screen x="65" y="24" width="1855" height="1056" />
-    </state>
-    <state x="474" y="271" key="SettingsEditor/65.24.1855.1056@65.24.1855.1056" timestamp="1621820323486" />
-    <state x="587" y="426" width="800" height="501" key="Vcs.Push.Dialog.v2" timestamp="1622086135797">
-      <screen x="65" y="24" width="1855" height="1056" />
-    </state>
-    <state x="587" y="426" width="800" height="501" key="Vcs.Push.Dialog.v2/65.24.1855.1056@65.24.1855.1056" timestamp="1622086135797" />
-    <state x="-333" y="433" width="928" height="802" key="dock-window-1" timestamp="1621826408622">
-      <screen x="65" y="24" width="1855" height="1056" />
-    </state>
-    <state x="-333" y="433" width="928" height="802" key="dock-window-1/65.24.1855.1056@65.24.1855.1056" timestamp="1621826408622" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

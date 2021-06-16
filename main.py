@@ -144,9 +144,11 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def split_data(self, i):
 
         low = hex(i % 256)
-        low = "{:#04X}".format(int(low, 16))
+        #low = "{:#04X}".format(int(low, 16))
+        low = "{:02X}".format(int(low, 16))
         high = hex(int(i / 256))
-        high = "{:#04X}".format(int(high, 16))
+        #high = "{:#04X}".format(int(high, 16))
+        high = "{:02X}".format(int(high, 16))
 
         return high + low
 
@@ -216,6 +218,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
             if self.serial.isOpen():
                 if data != '':
                     self.send_data_label.setText(str(data))
+                    #print('data',data)
                     data = (data + '\r\n').encode('utf-8')
                     num = self.serial.write(data)
                     self.info_serial.setText(str(num))
@@ -408,7 +411,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
                             self.data_to_send += self.split_data(int(width))
                             self.data_to_send += self.split_data(int(theta))
                             # 表示物体种类，留做接口
-                            self.data_to_send += '0X00'
+                            self.data_to_send += '00'
                             crc = calc_crc16(self.data_to_send)
                             self.data_to_send += self.split_data(crc)
                             self.result += 'angel:'
@@ -423,10 +426,13 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
                         elif names[int(cls)] == 'fire':
 
-                            self.data_to_send += '0X01'
+                            self.data_to_send += '01'
+                            print('data before crc:', self.data_to_send)
 
                             crc = calc_crc16(self.data_to_send)
+                            print('crc:',crc,'crc after split',self.split_data(crc))
                             self.data_to_send += self.split_data(crc)
+                            print('data:', self.data_to_send)
                             # self.send_data(self.data_to_send)
                             self.send_data(self.data_to_send, 1)
 

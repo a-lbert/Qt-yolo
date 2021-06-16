@@ -1,24 +1,24 @@
 import os
 import sys
-
 def calc_crc16(string):
-    #data = bytearray.fromhex(string)
-    data = string.encode()
+    data = bytearray.fromhex(string)
     #print(data)
+
 
     crc = 0xFFFF
     for pos in data:
         crc ^= pos
 
         for i in range(8):
-            if ((crc & 1) != 0):
+            if ((crc & 0x01) != 0):
                 crc >>= 1
                 crc ^= 0xA001
             else:
                 crc >>= 1
+    #print('crc:',crc,(crc & 0xff) << 8,crc >> 8)
 
-
-    return ((crc & 0xff) << 8) + (crc >> 8)
+    return crc
+    # return ((crc & 0xff) << 8) + (crc >> 8)
 
 class CRC:
     """循环冗余检验
@@ -122,9 +122,12 @@ class CRC:
 
 
 if __name__ == "__main__":
-    import numpy as np
-
-    m = np.array([1, 1, 0, 0, 1, 1])  # 发送数据比特序列
-    m = list(m)  # 转化为列表类型
-    crc = CRC(m, 4)
-    crc.print_format()
+    # import numpy as np
+    #
+    # m = np.array([1, 1, 0, 0, 1, 1])  # 发送数据比特序列
+    # m = list(m)  # 转化为列表类型
+    # crc = CRC(m, 4)
+    # crc.print_format()
+    # crc_res = calc_crc16('0009002A00CE01')
+    crc_res = calc_crc16('0018000C015801')
+    print(crc_res,"{:02X}".format(crc_res))
