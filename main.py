@@ -223,7 +223,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
                     num = self.serial.write(data)
                     self.info_serial.setText(str(num))
                     self.Send = 0
-        self.data_to_send = ''
+        #self.data_to_send = ''
 
     def update_ui(self):
 
@@ -345,6 +345,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         s += '%g %ss, ' % (n, names[int(c)])  # add to string
 
                     self.info = ''
+                    self.data_to_send = ''
                     # xuanzekongjian
                     obj_i = 0;
                     fire_i = 0;
@@ -424,17 +425,20 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
 
 
+
                         elif names[int(cls)] == 'fire':
 
                             self.data_to_send += '01'
-                            print('data before crc:', self.data_to_send)
+                            #print('data before crc:', self.data_to_send)
+                            print('self.data_to_send',self.data_to_send)
 
                             crc = calc_crc16(self.data_to_send)
-                            print('crc:',crc,'crc after split',self.split_data(crc))
+                            #print('crc:',crc,'crc after split',self.split_data(crc))
                             self.data_to_send += self.split_data(crc)
-                            print('data:', self.data_to_send)
+                            #print('data:', self.data_to_send)
                             # self.send_data(self.data_to_send)
                             self.send_data(self.data_to_send, 1)
+
 
                             if (fire_i > 1):
                                 fire_i = fire_i % 2

@@ -1,7 +1,7 @@
 import os
 import sys
 def calc_crc16(string):
-    data = bytearray.fromhex(string)
+    data = bytes.fromhex(string)
     #print(data)
 
 
