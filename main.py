@@ -161,7 +161,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
             return None
         if num > 0:
             data = self.serial.read(num)
-            print('SHUJU%s' % type(data))
+            #print('SHUJU%s' % type(data))
 
             if self.is_hex == 1:
                 out_s = ''
@@ -172,7 +172,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 #     print(out_s[i])
                 if out_s[:4] == '55AA':
                     self.Send = 1
-                print(out_s)
+                #print(out_s)
             else:
                 for i in range(len(data)):
                     print(data[i])
@@ -430,7 +430,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
                             self.data_to_send += '01'
                             #print('data before crc:', self.data_to_send)
-                            print('self.data_to_send',self.data_to_send)
+                            #print('self.data_to_send',self.data_to_send)
 
                             crc = calc_crc16(self.data_to_send)
                             #print('crc:',crc,'crc after split',self.split_data(crc))
