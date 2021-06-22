@@ -428,7 +428,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
                         elif names[int(cls)] == 'fire':
 
-                            self.data_to_send += '01'
+                            self.data_to_send += '00'
                             #print('data before crc:', self.data_to_send)
                             #print('self.data_to_send',self.data_to_send)
 
@@ -455,8 +455,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 #     raise StopIteration
 
     def breathe(self):
-        data1 = ('0x550x00' + '\r\n').encode('utf-8')
-        data2 = ('0x550x01' + '\r\n').encode('utf-8')
+        data1 = ('5500' + '\r\n').encode('utf-8')
+        data2 = ('5501' + '\r\n').encode('utf-8')
+
 
         flag_1 = 1
         while True:
