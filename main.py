@@ -143,10 +143,15 @@ class MainWin(QMainWindow, Ui_MainWindow):
     # 分割数据，格式化输出
     def split_data(self, i):
 
-        low = hex(i % 256)
+        abs_i = abs(i)
+        low = abs_i % 256
         #low = "{:#04X}".format(int(low, 16))
-        low = "{:02X}".format(int(low, 16))
-        high = hex(int(i / 256))
+        low = "{:02X}".format(low)
+        if i < 0:
+
+            high = hex(int(abs_i / 256) | 0x80)
+        else:
+            high = hex(int(abs_i / 256))
         #high = "{:#04X}".format(int(high, 16))
         high = "{:02X}".format(int(high, 16))
 
@@ -388,7 +393,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
                             z = z / z_i
                         # z = depth.get_distance(pixel_x, pixel_y)
                         x, y = [(pixel_x - self.ppx) * z / self.fx, (pixel_y - self.ppy) * z / self.fy]
+                        #print(self.data_to_send,1)
                         self.data_to_send += self.split_data(int(1000 * x))
+                        #print(self.data_to_send, 2)
                         self.data_to_send += self.split_data(int(1000 * y))
                         self.data_to_send += self.split_data(int(1000 * z))
                         # print('识别出目标：{} 像素坐标：（{},{}）实际坐标（mm）：({:.3f},{:.3f},{:.3f})'.format(
@@ -413,6 +420,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
                             self.data_to_send += self.split_data(int(theta))
                             # 表示物体种类，留做接口
                             self.data_to_send += '00'
+                            print('crc..........',self.data_to_send)
                             crc = calc_crc16(self.data_to_send)
                             self.data_to_send += self.split_data(crc)
                             self.result += 'angel:'
