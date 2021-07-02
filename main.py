@@ -280,7 +280,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         # rgb_path = '../exp/c/' + 'rgb' + str(self.i) + '.jpg'
         # dep_path = '../exp/c/' + 'dep' + str(self.i) + '.jpg'
         # dep_txt_path = '../exp/c/' + 'dep' + str(self.i) + '.txt'
-        # print(rgb_path,dep_path)
+
         with torch.no_grad():
             path, img, im0s, img_depth, depth, self.gyro, intrin, vid_cap = next(self.dataset)
             # test_depth = np.asanyarray(depth.get_data())
