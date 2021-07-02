@@ -149,11 +149,11 @@ class MainWin(QMainWindow, Ui_MainWindow):
         low = "{:02X}".format(low)
         if i < 0:
 
-            high = hex(int(abs_i / 256) | 0x80)
+            high = int(abs_i / 256) | 0x80
         else:
-            high = hex(int(abs_i / 256))
+            high = int(abs_i / 256)
         #high = "{:#04X}".format(int(high, 16))
-        high = "{:02X}".format(int(high, 16))
+        high = "{:02X}".format(high)
 
         return high + low
 
@@ -224,7 +224,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 if data != '':
                     self.send_data_label.setText(str(data))
                     #print('data',data)
-                    data = (data + '\r\n').encode('utf-8')
+                    #data = (data + '\r\n').encode('utf-8')
+                    num = self.serial.write(bytes.fromhex(data))
                     num = self.serial.write(data)
                     self.info_serial.setText(str(num))
                     self.Send = 0
@@ -463,18 +464,18 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 #     raise StopIteration
 
     def breathe(self):
-        data1 = ('5500' + '\r\n').encode('utf-8')
-        data2 = ('5501' + '\r\n').encode('utf-8')
+        # data1 = ('5500' + '\r\n').encode('utf-8')
+        # data2 = ('5501' + '\r\n').encode('utf-8')
 
 
         flag_1 = 1
         while True:
             if flag_1 == 1:
-                num = self.serial.write(data1)
+                num = self.serial.write(bytes.fromhex('5500'))
                 # print('data1:',data1)
                 flag_1 = 0
             else:
-                num = self.serial.write(data2)
+                num = self.serial.write(bytes.fromhex('5501'))
                 # print('data2:', data2)
                 flag_1 = 1
 
