@@ -223,7 +223,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
             if self.serial.isOpen():
                 if data != '':
                     self.send_data_label.setText(str(data))
-                    #print('data',data)
+
                     #data = (data + '\r\n').encode('utf-8')
                     num = self.serial.write(bytes.fromhex(data))
                     num = self.serial.write(data)
