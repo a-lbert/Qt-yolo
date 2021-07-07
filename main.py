@@ -176,6 +176,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 # for i in range(0, len(out_s)):
                 #     print(out_s[i])
                 if out_s[:4] == '55AA':
+                    # 串口发送标志位，置1串口发送数据
                     self.Send = 1
                 #print(out_s)
             else:
@@ -184,8 +185,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 # self.receive_data_label.setText(str(data.decode('iso-8859-1')))
 
     def open_serial(self):
-        self.serial.port = str('/dev/ttyTHS0')
-        # self.serial.port = str('/dev/ttyUSB0')
+        # self.serial.port = str('/dev/ttyTHS0')
+        self.serial.port = str('/dev/ttyUSB0')
 
         self.serial.baudrate = int(9600)
         self.serial.bytesize = int(8)
@@ -217,7 +218,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def send_data(self, data, isFire=0):
 
         # self.send_data_label.setText(str(data))
-
+        # 当目标为火或者发送查询指令的时候，串口发送数据
         if self.Send == 1 or isFire == 1:
 
             if self.serial.isOpen():
@@ -226,9 +227,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
                     #data = (data + '\r\n').encode('utf-8')
                     num = self.serial.write(bytes.fromhex(data))
-                    num = self.serial.write(data)
+                    #num = self.serial.write(data)
                     self.info_serial.setText(str(num))
-                    self.Send = 0
+
+        self.Send = 0
         #self.data_to_send = ''
 
     def update_ui(self):
@@ -421,7 +423,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
                             self.data_to_send += self.split_data(int(theta))
                             # 表示物体种类，留做接口
                             self.data_to_send += '00'
-                            print('crc..........',self.data_to_send)
+                            #print('crc..........',self.data_to_send)
                             crc = calc_crc16(self.data_to_send)
                             self.data_to_send += self.split_data(crc)
                             self.result += 'angel:'
