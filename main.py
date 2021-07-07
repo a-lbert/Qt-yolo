@@ -185,8 +185,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 # self.receive_data_label.setText(str(data.decode('iso-8859-1')))
 
     def open_serial(self):
-        # self.serial.port = str('/dev/ttyTHS0')
-        self.serial.port = str('/dev/ttyUSB0')
+        self.serial.port = str('/dev/ttyTHS0')
+        # self.serial.port = str('/dev/ttyUSB0')
 
         self.serial.baudrate = int(9600)
         self.serial.bytesize = int(8)
