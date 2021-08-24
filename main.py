@@ -41,6 +41,7 @@ from utils.torch_utils import select_device, load_classifier, time_synchronized
 # from TuXiangChuLi import cal_angel
 from moment import *
 from crc import calc_crc16
+from signal import Signal
 
 
 def accel_data(accel):
@@ -48,6 +49,8 @@ def accel_data(accel):
 
 
 class MainWin(QMainWindow, Ui_MainWindow):
+
+    #stop_flag = 0
 
     def __init__(self):
         super(MainWin, self).__init__()
@@ -73,7 +76,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.dataset = None
         self.weights = 'yolov5s.pt'
         self.i = 0
-        self.weights = './3_1.pt'
+
+        self.weights = './szs.pt'
         self.img_video = None
         self.timer_camera = QtCore.QTimer()  # 初始化定时器
         self.timer_serial = QtCore.QTimer()
@@ -98,7 +102,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.serial_timer = QTimer(self)
         self.serial_timer.timeout.connect(self.receive_data)
         # noinspection PyInterpreter
-        self.testButton.clicked.connect(self.show_image)
+        self.testButton.clicked.connect(self.test)
 
         self.is_hex = 1  # 16jinzhi
         # 选择显示控件
@@ -127,6 +131,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.open_serial()
         self.detect()
         self.Send = 0
+        self.test_flag = 0
+        self.test_num = 0
 
     # 调整图片以显示
     def adapt_img(self, img):
@@ -273,7 +279,26 @@ class MainWin(QMainWindow, Ui_MainWindow):
             self.info_lab.setText(str(int(self.fps)))
             # print('子线程显示图像')
 
+    def test(self):
+
+        # path, img, im0s, img_depth, depth, self.gyro, intrin, vid_cap = next(self.dataset)
+        # cv2.imwrite('../img.jpg', im0s[0])
+        # #img_depth = np.asarray(img_depth)
+        # cv2.imwrite('../img_depth.jpg', img_depth[0])
+        # depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(img_depth[0], alpha=0.03), cv2.COLORMAP_BONE)
+        # cv2.imwrite('../depth_colormap.jpg', depth_colormap)
+        # depth = np.asarray(depth.get_data())
+        # #print(type(img), type(img_depth), type(depth))
+        # cv2.imwrite('../depth.jpg', depth)
+        # print('saved...')
+        self.test_flag = 1
+
+
     def show_image(self):
+        if self.test_flag == 1:
+            Signal.stop_flag = bool(1 - Signal.stop_flag)
+            self.test_flag = 0
+
         self.i += 1
         # Save_path = './inference/output'
         # S_path = '/home/limeng/Qt-yolo/data_to-cal'
@@ -336,7 +361,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 s += '%gx%g ' % img.shape[2:]  # print string
                 gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
 
-                depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(img_depth, alpha=0.03), cv2.COLORMAP_JET)
+                depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(img_depth, alpha=0.03), cv2.COLORMAP_BONE)
                 # print('type:', type(depth_colormap),depth_colormap.shape)
                 # type: #<class 'numpy.ndarray'> (720, 1280, 3)
                 # print('type:', type(im0s[0]), im0s[0].shape)
@@ -367,9 +392,24 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         _c0 = (int(xyxy[0]) // 8 + 1) * 8
                         _c2 = (int(xyxy[2]) // 8 + 1) * 8
                         obj_1 = im0s[0][_c1:_c3, _c0:_c2]
-
                         obi_depth = img_depth[_c1:_c3, _c0:_c2]
                         test_depth = test_depth[_c1:_c3, _c0:_c2]
+                        #tt_depth = depth[_c1:_c3, _c0:_c2]
+                        if self.test_flag == 1:
+                            #cv2.imwrite('../depth.jpg', test_depth)
+                            np.savetxt('../data2/depth'+str(self.test_num)+'.txt', test_depth)
+                            self.test_num += 1
+                            #np.savetxt('../tt_depth.txt', tt_depth)
+                            print('saving : depth'+'str(self.test_num)'+'txt')
+                            # cv2.imwrite('../img.jpg', obj_1)
+                            # cv2.imwrite('../img_depth.jpg', obi_depth)
+                            # cv2.imwrite('../color_depth.jpg', depth_colormap[_c1:_c3, _c0:_c2])
+                            # print('ok')
+                            Signal.stop_flag = bool(1 - Signal.stop_flag)
+                            self.test_flag = 0
+
+
+
 
                         # if self.i%5 ==0:
                         #     cv2.imwrite(rgb_path,obj_1)
@@ -691,9 +731,13 @@ class MainWin(QMainWindow, Ui_MainWindow):
         msg.addButton(cancel, QtWidgets.QMessageBox.RejectRole)
         ok.setText(u'确定')
         cancel.setText(u'取消')
+
         if msg.exec_() == QtWidgets.QMessageBox.RejectRole:
             event.ignore()
         else:
+            time.sleep(0.02)
+            Signal.stop_flag = True
+            print('......', Signal.stop_flag)
 
             event.accept()
 
@@ -701,7 +745,11 @@ class MainWin(QMainWindow, Ui_MainWindow):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
+
     mainWindow = MainWin()
+    #print('......', Signal.stop_flag)
+    #Signal.stop_flag = 1
+    #print('......', Signal.stop_flag)
 
     mainWindow.show()
     sys.exit(app.exec_())

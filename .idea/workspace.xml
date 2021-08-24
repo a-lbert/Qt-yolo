@@ -27,8 +27,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eb2cf305-3ffa-465e-ade3-3fe03fbf3bc4" name="Default Changelist" comment="(SZS)">
+      <change afterPath="$PROJECT_DIR$/signal.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/camera.py" beforeDir="false" afterPath="$PROJECT_DIR$/camera.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/datasets.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/datasets.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,6 +101,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="camera" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Qt-yolo" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/../miniconda3/envs/torch/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/camera.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="crc" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Qt-yolo" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -147,7 +171,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/miniconda3/envs/3.6/bin/python" />
+      <option name="SDK_HOME" value="/usr/bin/python3.6" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -203,16 +227,41 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="signal" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Qt-yolo" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/../miniconda3/envs/torch/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/signal.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.main (1)" />
       <item itemvalue="Python.moment" />
       <item itemvalue="Python.main" />
       <item itemvalue="Python.shiyan" />
       <item itemvalue="Python.crc" />
+      <item itemvalue="Python.camera" />
+      <item itemvalue="Python.signal" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.signal" />
+        <item itemvalue="Python.camera" />
         <item itemvalue="Python.crc" />
         <item itemvalue="Python.shiyan" />
       </list>
@@ -479,7 +528,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="V1.0" />
+                        <option value="origin/v2.0" />
                       </list>
                     </value>
                   </entry>
@@ -519,6 +568,28 @@
     <MESSAGE value="客户端多线程" />
     <option name="LAST_COMMIT_MESSAGE" value="客户端多线程" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="450" y="266" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1623810036503">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state x="450" y="266" key="#com.intellij.execution.impl.EditConfigurationsDialog/65.24.1855.1056@65.24.1855.1056" timestamp="1623810036503" />
+    <state width="1828" height="169" key="GridCell.Tab.0.bottom" timestamp="1629775169736">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state width="1828" height="169" key="GridCell.Tab.0.bottom/65.24.1855.1056@65.24.1855.1056" timestamp="1629775169736" />
+    <state width="1828" height="169" key="GridCell.Tab.0.center" timestamp="1629775169733">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state width="1828" height="169" key="GridCell.Tab.0.center/65.24.1855.1056@65.24.1855.1056" timestamp="1629775169733" />
+    <state width="1828" height="169" key="GridCell.Tab.0.left" timestamp="1629775169732">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state width="1828" height="169" key="GridCell.Tab.0.left/65.24.1855.1056@65.24.1855.1056" timestamp="1629775169732" />
+    <state width="1828" height="169" key="GridCell.Tab.0.right" timestamp="1629775169734">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state width="1828" height="169" key="GridCell.Tab.0.right/65.24.1855.1056@65.24.1855.1056" timestamp="1629775169734" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

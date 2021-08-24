@@ -63,7 +63,7 @@ class Ui_MainWindow(QtWidgets.QWidget):
         self.ori = None
         self.pro = None
         self.dataset = None
-        self.weights = 'yolov5s.pt'
+        self.weights = './szs.pt'
         self.i = 0
 
     def set_ui(self):
@@ -243,7 +243,8 @@ class Ui_MainWindow(QtWidgets.QWidget):
             #     modelc = load_classifier(name='resnet101', n=2)  # initialize
             #     modelc.load_state_dict(torch.load('weights/resnet101.pt', map_location=device)['model'])  # load weights
             #     modelc.to(device).eval()
-            path, img, im0s, vid_cap = next(self.dataset)
+            #path, img, im0s, vid_cap = next(self.dataset)
+            path, img, im0s, img_depth, depth, self.gyro, intrin, vid_cap = next(self.dataset)
             img = torch.from_numpy(img).to(self.device)
             t0 = time.time()
             img = img.half() if self.device.type != 'cpu' else img.float()  # uint8 to fp16/32

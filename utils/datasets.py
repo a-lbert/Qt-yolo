@@ -14,8 +14,9 @@ from PIL import Image, ExifTags
 from torch.utils.data import Dataset
 from tqdm import tqdm
 import pyrealsense2 as rs
-
+from signal import Signal
 from utils.general import xyxy2xywh, xywh2xyxy, torch_distributed_zero_first
+
 
 help_url = 'https://github.com/ultralytics/yolov5/wiki/Train-Custom-Data'
 img_formats = ['.bmp', '.jpg', '.jpeg', '.png', '.tif', '.tiff', '.dng']
@@ -361,7 +362,7 @@ class LoadStreams:  # multiple IP or RTSP cameras
         # color_frame = frames.get_color_frame()
         color_image = np.asanyarray(color_frame.get_data())
         self.imgs[0] = color_image
-        thread = Thread(target=self.update, args=([0, pipeline]), daemon=True)
+        thread = Thread(target=self.update, args=([0, pipeline]))#, daemon=True
 
         print(' success (%gx%g at %.2f FPS).' % (w, h, fps))
         thread.start()
@@ -377,49 +378,63 @@ class LoadStreams:  # multiple IP or RTSP cameras
     def update(self, index, pipeline):
         # Read next stream frame in a daemon thread
         n = 0
+        #Signal.stop_flag is not
         while True:
-            n += 1
-            frames = pipeline.wait_for_frames()
-            #accel = accel_data(frames[2].as_motion_frame().get_motion_data())
-            #gyro[index] = accel
+            if Signal.stop_flag is True:
+                try:
+                    pipeline.stop()
+                except RuntimeError:
+                    print('******', Signal.stop_flag)
+                    print('stop pipe')
+                    break
+            else:
+                #print('******', Signal.stop_flag)
+                n += 1
+                frames = pipeline.wait_for_frames()
+                #accel = accel_data(frames[2].as_motion_frame().get_motion_data())
+                #gyro[index] = accel
 
-            aligned_frames = align.process(frames)
+                aligned_frames = align.process(frames)
 
-            depth_frame = aligned_frames.get_depth_frame().as_depth_frame()
-            # 2D和3D之间的转换矩阵,intrinsics内部参数，extrinsics外部参数
-            # depth_intrin = depth_frame.profile.as_video_stream_profile().intrinsics
+                depth_frame = aligned_frames.get_depth_frame().as_depth_frame()
+                # 2D和3D之间的转换矩阵,intrinsics内部参数，extrinsics外部参数
+                # depth_intrin = depth_frame.profile.as_video_stream_profile().intrinsics
 
-            color_frame = aligned_frames.get_color_frame()
-            # 初运行获取内参
-            if self.get_intrin == 1:
-                color_profile = color_frame.get_profile()
-                cvsprofile = rs.video_stream_profile(color_profile)
-                color_intrin = cvsprofile.get_intrinsics()
-                # color_intrin <class 'pyrealsense2.pyrealsense2.intrinsics'>
-                # depth_intrin [ 1280x720  p[649.443 364.288]  f[918.361 918.693]  Inverse Brown Conrady [0 0 0 0 0] ]
-                # color_intrin [ 1280x720  p[649.443 364.288]  f[918.361 918.693]  Inverse Brown Conrady [0 0 0 0 0] ]
+                color_frame = aligned_frames.get_color_frame()
+                # 初运行获取内参
+                if self.get_intrin == 1:
+                    color_profile = color_frame.get_profile()
+                    cvsprofile = rs.video_stream_profile(color_profile)
+                    color_intrin = cvsprofile.get_intrinsics()
+                    # color_intrin <class 'pyrealsense2.pyrealsense2.intrinsics'>
+                    # depth_intrin [ 1280x720  p[649.443 364.288]  f[918.361 918.693]  Inverse Brown Conrady [0 0 0 0 0] ]
+                    # color_intrin [ 1280x720  p[649.443 364.288]  f[918.361 918.693]  Inverse Brown Conrady [0 0 0 0 0] ]
 
-                color_intrin_part = [color_intrin.ppx, color_intrin.ppy, color_intrin.fx, color_intrin.fy]
-                #print(color_intrin_part)
-                #[639.3590698242188, 356.5952453613281, 911.184326171875, 911.697265625]
+                    color_intrin_part = [color_intrin.ppx, color_intrin.ppy, color_intrin.fx, color_intrin.fy]
+                    #print(color_intrin_part)
+                    #[639.3590698242188, 356.5952453613281, 911.184326171875, 911.697265625]
 
-                # print(depth_frame.get_distance(200, 200))
-                # 内参矩阵与深度图
-                # self.intrin[index]=depth_intrin
-                self.intrin[index] = color_intrin_part
-                self.get_intrin = 0
-                print('获取内参矩阵')
-            self.depth[index] = depth_frame
-            # 彩色图
-            color_image = np.asanyarray(color_frame.get_data())
-            self.img2video = color_image
-            #print(self.img2video.shape)
-            self.imgs[index] = color_image
-            # 深度图像
-            depth_image = np.asanyarray(depth_frame.get_data())
-            self.imgs_depth[index] = depth_image
+                    # print(depth_frame.get_distance(200, 200))
+                    # 内参矩阵与深度图
+                    # self.intrin[index]=depth_intrin
+                    self.intrin[index] = color_intrin_part
+                    self.get_intrin = 0
+                    print('获取内参矩阵')
+                self.depth[index] = depth_frame
+                # 彩色图
+                color_image = np.asanyarray(color_frame.get_data())
+                self.img2video = color_image
+                #print(self.img2video.shape)
+                self.imgs[index] = color_image
+                # 深度图像
+                depth_image = np.asanyarray(depth_frame.get_data())
+                self.imgs_depth[index] = depth_image
+                #print(MainWin.stop_flag)
 
-            time.sleep(0.01)
+                time.sleep(0.02)
+
+
+
 
     def __iter__(self):
         return self
