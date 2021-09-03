@@ -297,41 +297,16 @@ def accel_data(accel):
     return np.asarray([accel.x, accel.y, accel.z])
 
 
-pipeline = rs.pipeline()
 
-#Create a config and configure the pipeline to stream
-#  different resolutions of color and depth streams
-config = rs.config()
-config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
-config.enable_stream(rs.stream.color, 1280, 720, rs.format.bgr8, 30)
-
-# Start streaming
-profile = pipeline.start(config)
-
-# Getting the depth sensor's depth scale (see rs-align example for explanation)
-depth_sensor = profile.get_device().first_depth_sensor()
-depth_scale = depth_sensor.get_depth_scale()
-# print("Depth Scale is: " , depth_scale)
-
-# We will be removing the background of objects more than
-#  clipping_distance_in_meters meters away
-clipping_distance_in_meters = 1 #1 meter
-clipping_distance = clipping_distance_in_meters / depth_scale
-
-# Create an align object
-# rs.align allows us to perform alignment of depth frames to others frames
-# The "align_to" is the stream type to which we plan to align depth frames.
-align_to = rs.stream.color
-align = rs.align(align_to)
-frames = pipeline.wait_for_frames()
 
 class LoadStreams:  # multiple IP or RTSP cameras
     # sources='0'
+
+
     def __init__(self, sources='streams.txt', img_size=640):
         self.mode = 'images'
         self.img_size = img_size
         self.j = 0
-
         sources = [sources]
         # 此处sources=1
         n = len(sources)
@@ -353,12 +328,37 @@ class LoadStreams:  # multiple IP or RTSP cameras
         w = 1280
         h = 720
         fps = 30
+        pipeline = rs.pipeline()
 
+        # Create a config and configure the pipeline to stream
+        #  different resolutions of color and depth streams
+        config = rs.config()
+        config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
+        config.enable_stream(rs.stream.color, 1280, 720, rs.format.bgr8, 30)
+
+        # Start streaming
+        profile = pipeline.start(config)
+
+        # # Getting the depth sensor's depth scale (see rs-align example for explanation)
+        # depth_sensor = profile.get_device().first_depth_sensor()
+        # depth_scale = depth_sensor.get_depth_scale()
+        # # print("Depth Scale is: " , depth_scale)
+        #
+        # # We will be removing the background of objects more than
+        # #  clipping_distance_in_meters meters away
+        # clipping_distance_in_meters = 1  # 1 meter
+        # clipping_distance = clipping_distance_in_meters / depth_scale
+
+        # Create an align object
+        # rs.align allows us to perform alignment of depth frames to others frames
+        # The "align_to" is the stream type to which we plan to align depth frames.
+        # align_to = rs.stream.color
+        # align = rs.align(align_to)
+        frames = pipeline.wait_for_frames()
         #accel = accel_data(frames[2].as_motion_frame().get_motion_data())
-
-        aligned_frames = align.process(frames)
-        depth_frame = aligned_frames.get_depth_frame()
-        color_frame = aligned_frames.get_color_frame()
+        # aligned_frames = align.process(frames)
+        # depth_frame = aligned_frames.get_depth_frame()
+        color_frame = frames.get_color_frame()
         # color_frame = frames.get_color_frame()
         color_image = np.asanyarray(color_frame.get_data())
         self.imgs[0] = color_image
@@ -378,13 +378,14 @@ class LoadStreams:  # multiple IP or RTSP cameras
     def update(self, index, pipeline):
         # Read next stream frame in a daemon thread
         n = 0
+        align_to = rs.stream.color
+        align = rs.align(align_to)
         #Signal.stop_flag is not
         while True:
             if Signal.stop_flag is True:
                 try:
                     pipeline.stop()
                 except RuntimeError:
-                    print('******', Signal.stop_flag)
                     print('stop pipe')
                     break
             else:
@@ -433,10 +434,8 @@ class LoadStreams:  # multiple IP or RTSP cameras
 
                 time.sleep(0.02)
 
-
-
-
     def __iter__(self):
+
         return self
 
     def video(self):

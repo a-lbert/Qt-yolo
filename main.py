@@ -79,10 +79,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
         self.weights = './szs.pt'
         self.img_video = None
-        self.timer_camera = QtCore.QTimer()  # 初始化定时器
-        self.timer_serial = QtCore.QTimer()
+        #self.timer_camera = QtCore.QTimer()  # 初始化定时器
+        #self.timer_serial = QtCore.QTimer()
 
-        self.timer_camera.timeout.connect(self.show_image)
+        #self.timer_camera.timeout.connect(self.show_image)
 
         self.timer_ui = QtCore.QTimer()  # 初始化定时器
 
@@ -90,9 +90,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
         # self.timer_camera.start(40)
 
-        self.timer_ui.start(29)
+        self.timer_ui.start(30)
 
-        self.timer_serial.timeout.connect(self.receive_data)
+        #self.timer_serial.timeout.connect(self.receive_data)
         # self.timer_serial.start(30)
         self.serial = serial.Serial()
         self.data_to_send = ''
@@ -243,7 +243,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
         self.img_video = LoadStreams.video(self.dataset)
         self.show_pic(self.img_video, self.ShowLabel)
-        # self.show_image()
         t = time_synchronized()
         self.fps = 1 / (t - self.last_time)
         self.fps = (self.fps // 2) * 2
@@ -251,33 +250,30 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.last_time = time_synchronized()
         self.index += 1
         self.receive_data()
-        if self.index == 5:
+        if self.index == 2:
             self.index = 0
-            t1 = time.time()
+            #t1 = time.time()
             self.show_image()
-            t2 = time.time()
+            #t2 = time.time()
             # print('cost', int((t2 - t1)*1000), 'ms')
 
-    def update_video(self):
-
-        i = 0
-
-        while True:
-            t1 = time_synchronized()
-            if i == 0:
-                time.sleep(0.5)
-            elif i == 1:
-                time.sleep(0.03)
-                self.show_pic(self.img_video[0], self.ShowLabel)
-
-            self.img_video = LoadStreams.video(self.dataset)
-
-            i = 1
-            t2 = time_synchronized()
-            self.fps = 1 / (t2 - t1)
-            self.fps = (self.fps // 2) * 2
-            self.info_lab.setText(str(int(self.fps)))
-            # print('子线程显示图像')
+    # def update_video(self):
+    #
+    #     i = 0
+    #     while True:
+    #         t1 = time_synchronized()
+    #         if i == 0:
+    #             time.sleep(0.5)
+    #         elif i == 1:
+    #             time.sleep(0.03)
+    #             self.show_pic(self.img_video[0], self.ShowLabel)
+    #         self.img_video = LoadStreams.video(self.dataset)
+    #         i = 1
+    #         t2 = time_synchronized()
+    #         self.fps = 1 / (t2 - t1)
+    #         self.fps = (self.fps // 2) * 2
+    #         self.info_lab.setText(str(int(self.fps)))
+    #         # print('子线程显示图像')
 
     def test(self):
 
@@ -295,9 +291,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
 
     def show_image(self):
-        if self.test_flag == 1:
-            Signal.stop_flag = bool(1 - Signal.stop_flag)
-            self.test_flag = 0
 
         self.i += 1
         # Save_path = './inference/output'
@@ -317,35 +310,28 @@ class MainWin(QMainWindow, Ui_MainWindow):
             # print('type:',type(img_depth),type(depth))
             # type: # <class 'list'>    <class 'pyrealsense2.pyrealsense2.depth_frame'>
             # cv2.imwrite('./test.jpg', img)
-
             if self.update_intrin == 1:
                 self.ppx = intrin[0]
                 self.ppy = intrin[1]
                 self.fx = intrin[2]
                 self.fy = intrin[3]
                 self.update_intrin = 0
-
                 print('更新内参')
-
                 # cv2.imwrite('./test.jpg', img)
-
             img = torch.from_numpy(img).to(self.device)
-            t0 = time.time()
             img = img.half() if self.device.type != 'cpu' else img.float()  # uint8 to fp16/32
             img /= 255.0  # 0 - 255 to 0.0 - 1.0
             if img.ndimension() == 3:
                 img = img.unsqueeze(0)
             # Inference
             # t1 = time_synchronized()
-            pred = self.model(img, augment=False)[0]
 
+            pred = self.model(img, augment=False)[0]
             # Apply NMS
             pred = non_max_suppression(pred, 0.4, 0.5, classes=None, agnostic=False)
             # t2 = time_synchronized()
-
             names = self.model.module.names if hasattr(self.model, 'module') else self.model.names
             colors = [[random.randint(0, 255) for _ in range(3)] for _ in range(len(names))]
-
             # Process detections
             for i, det in enumerate(pred):  # detections per image
 
@@ -683,19 +669,16 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
         # Initialize
         self.device = select_device('0')
+        print('select device', self.device)
         if os.path.exists(out):
             shutil.rmtree(out)  # delete output folder
         os.makedirs(out)  # make new output folder
         half = self.device.type != 'cpu'  # half precision only supported on CUDA
-
         # Load model
-
-
         self.model = attempt_load(weights, map_location=self.device)  # load FP32 model
         imgsz = check_img_size(imgsz, s=self.model.stride.max())  # check img_size
         if half:
             self.model.half()  # to FP16
-
         # Set Dataloader
         self.dataset = LoadStreams(source, img_size=imgsz)
         vid_path, vid_writer = None, None
@@ -712,8 +695,12 @@ class MainWin(QMainWindow, Ui_MainWindow):
         colors = [[random.randint(0, 255) for _ in range(3)] for _ in range(len(names))]
 
         # Run inference
-        img = torch.zeros((1, 3, imgsz, imgsz), device=self.device)  # init img
+
+        #img = torch.zeros((1, 3, imgsz, imgsz), device=self.device)  # init img
+        img = torch.zeros((1, 3, 384, 640), device=self.device)  # init img
+        #time:10s
         _ = self.model(img.half() if half else img) if self.device.type != 'cpu' else None  # run once
+
         # up_thread = Thread(target=self.update_video, args=(), daemon=True)
         # up_thread.start()
         breathe_thread = Thread(target=self.breathe, args=(), daemon=True)
@@ -735,22 +722,14 @@ class MainWin(QMainWindow, Ui_MainWindow):
         if msg.exec_() == QtWidgets.QMessageBox.RejectRole:
             event.ignore()
         else:
-            time.sleep(0.02)
+            #time.sleep(0.02)
             Signal.stop_flag = True
-            print('......', Signal.stop_flag)
-
             event.accept()
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-
-
     mainWindow = MainWin()
-    #print('......', Signal.stop_flag)
-    #Signal.stop_flag = 1
-    #print('......', Signal.stop_flag)
-
     mainWindow.show()
     sys.exit(app.exec_())
 
