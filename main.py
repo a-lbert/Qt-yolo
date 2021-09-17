@@ -14,6 +14,8 @@ from PIL import Image
 import numpy as np
 import cv2
 import time
+import numba
+from numba import jit
 import pyrealsense2 as rs
 import argparse
 import os
@@ -46,7 +48,17 @@ from signal import Signal
 
 def accel_data(accel):
     return np.asarray([accel.x, accel.y, accel.z])
-
+#depth_intrin [ 1280x720  p[649.443 364.288]  f[918.361 918.693]
+@jit
+def topoints(depth):
+    data = []
+    height, width = depth.shape
+    for h in range(height):
+        for w in range(width):
+            z = depth[h][w]
+            x, y = (w - 649.443) * z / 918.361, (h - 364.288) * z / 918.693
+            data.append([x, y, z])
+    return np.asarray(data)
 
 class MainWin(QMainWindow, Ui_MainWindow):
 
@@ -290,6 +302,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.test_flag = 1
 
 
+
     def show_image(self):
 
         self.i += 1
@@ -377,21 +390,41 @@ class MainWin(QMainWindow, Ui_MainWindow):
                         _c3 = (int(xyxy[3]) // 8 + 1) * 8
                         _c0 = (int(xyxy[0]) // 8 + 1) * 8
                         _c2 = (int(xyxy[2]) // 8 + 1) * 8
+
                         obj_1 = im0s[0][_c1:_c3, _c0:_c2]
                         obi_depth = img_depth[_c1:_c3, _c0:_c2]
-                        test_depth = test_depth[_c1:_c3, _c0:_c2]
+                        boxcenter = int((_c1+_c3)/2)
+
+                        boxheight = int((_c3-_c1)/10)
+                        test_depth = test_depth[boxcenter-boxheight:boxcenter+boxheight,_c0:_c2]
                         #tt_depth = depth[_c1:_c3, _c0:_c2]
                         if self.test_flag == 1:
                             #cv2.imwrite('../depth.jpg', test_depth)
-                            np.savetxt('../data2/depth'+str(self.test_num)+'.txt', test_depth)
-                            self.test_num += 1
-                            #np.savetxt('../tt_depth.txt', tt_depth)
-                            print('saving : depth'+'str(self.test_num)'+'txt')
-                            # cv2.imwrite('../img.jpg', obj_1)
-                            # cv2.imwrite('../img_depth.jpg', obi_depth)
-                            # cv2.imwrite('../color_depth.jpg', depth_colormap[_c1:_c3, _c0:_c2])
-                            # print('ok')
-                            Signal.stop_flag = bool(1 - Signal.stop_flag)
+                            # np.savetxt('../data/depth'+str(self.test_num)+'.txt', test_depth)
+                            # self.test_num += 1
+                            # #np.savetxt('../tt_depth.txt', tt_depth)
+                            # print('saving : depth'+'str(self.test_num)'+'txt')
+                            # # cv2.imwrite('../img.jpg', obj_1)
+                            # # cv2.imwrite('../img_depth.jpg', obi_depth)
+                            # # cv2.imwrite('../color_depth.jpg', depth_colormap[_c1:_c3, _c0:_c2])
+                            # # print('ok')
+                            # depth = np.loadtxt('../data/depth'+str(self.test_num)+'.txt')
+                            t_test = time.time()
+                            median = np.median(test_depth)
+                            test_depth = np.where(test_depth > 1.2 * median, 0, test_depth)
+                            test_data = topoints(test_depth)
+                            print('trans time',time.time() - t_test)
+
+                            np.savetxt('test_data.txt', test_data)
+                            string = os.popen("/home/sz2/work/findCylind-txt/build/find_Cys 45 50 test_data.txt").read()
+                            #print(string)
+                            print('total',time.time() - t_test)
+                            str_res = string.splitlines()
+                            print(str_res)
+                            if len(str_res) == 5:
+                                self.info_test.setText(str_res[0]+'\n'+str_res[1]+'\n'+str_res[-1])
+
+                            #Signal.stop_flag = bool(1 - Signal.stop_flag)
                             self.test_flag = 0
 
 
