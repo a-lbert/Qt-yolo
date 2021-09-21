@@ -46,23 +46,23 @@ from crc import calc_crc16
 from signal import Signal
 
 
-def accel_data(accel):
-    return np.asarray([accel.x, accel.y, accel.z])
-#depth_intrin [ 1280x720  p[649.443 364.288]  f[918.361 918.693]
+# depth_intrin [ 1280x720  p[649.443 364.288]  f[918.361 918.693]
 @jit
-def topoints(depth):
+def calculatepoints(depth, w0, h0):
     data = []
     height, width = depth.shape
     for h in range(height):
         for w in range(width):
             z = depth[h][w]
-            x, y = (w - 649.443) * z / 918.361, (h - 364.288) * z / 918.693
-            data.append([x, y, z])
+            if z > 0:
+                x, y = (w + w0 - 649.443) * z / 918.361, (h + h0 - 364.288) * z / 918.693
+                data.append([x, y, z])
     return np.asarray(data)
+
 
 class MainWin(QMainWindow, Ui_MainWindow):
 
-    #stop_flag = 0
+    # stop_flag = 0
 
     def __init__(self):
         super(MainWin, self).__init__()
@@ -91,10 +91,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
         self.weights = './szs.pt'
         self.img_video = None
-        #self.timer_camera = QtCore.QTimer()  # 初始化定时器
-        #self.timer_serial = QtCore.QTimer()
+        # self.timer_camera = QtCore.QTimer()  # 初始化定时器
+        # self.timer_serial = QtCore.QTimer()
 
-        #self.timer_camera.timeout.connect(self.show_image)
+        # self.timer_camera.timeout.connect(self.show_image)
 
         self.timer_ui = QtCore.QTimer()  # 初始化定时器
 
@@ -104,7 +104,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
         self.timer_ui.start(30)
 
-        #self.timer_serial.timeout.connect(self.receive_data)
+        # self.timer_serial.timeout.connect(self.receive_data)
         # self.timer_serial.start(30)
         self.serial = serial.Serial()
         self.data_to_send = ''
@@ -163,14 +163,14 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
         abs_i = abs(i)
         low = abs_i % 256
-        #low = "{:#04X}".format(int(low, 16))
+        # low = "{:#04X}".format(int(low, 16))
         low = "{:02X}".format(low)
         if i < 0:
 
             high = int(abs_i / 256) | 0x80
         else:
             high = int(abs_i / 256)
-        #high = "{:#04X}".format(int(high, 16))
+        # high = "{:#04X}".format(int(high, 16))
         high = "{:02X}".format(high)
 
         return high + low
@@ -184,7 +184,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
             return None
         if num > 0:
             data = self.serial.read(num)
-            #print('SHUJU%s' % type(data))
+            # print('SHUJU%s' % type(data))
 
             if self.is_hex == 1:
                 out_s = ''
@@ -196,7 +196,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 if out_s[:4] == '55AA':
                     # 串口发送标志位，置1串口发送数据
                     self.Send = 1
-                #print(out_s)
+                # print(out_s)
             else:
                 for i in range(len(data)):
                     print(data[i])
@@ -243,13 +243,13 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 if data != '':
                     self.send_data_label.setText(str(data))
 
-                    #data = (data + '\r\n').encode('utf-8')
+                    # data = (data + '\r\n').encode('utf-8')
                     num = self.serial.write(bytes.fromhex(data))
-                    #num = self.serial.write(data)
+                    # num = self.serial.write(data)
                     self.info_serial.setText(str(num))
 
         self.Send = 0
-        #self.data_to_send = ''
+        # self.data_to_send = ''
 
     def update_ui(self):
 
@@ -264,9 +264,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.receive_data()
         if self.index == 2:
             self.index = 0
-            #t1 = time.time()
+            # t1 = time.time()
             self.show_image()
-            #t2 = time.time()
+            # t2 = time.time()
             # print('cost', int((t2 - t1)*1000), 'ms')
 
     # def update_video(self):
@@ -300,8 +300,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
         # cv2.imwrite('../depth.jpg', depth)
         # print('saved...')
         self.test_flag = 1
-
-
 
     def show_image(self):
 
@@ -386,20 +384,21 @@ class MainWin(QMainWindow, Ui_MainWindow):
                     for *xyxy, conf, cls in det:
                         # Add bbox to image
                         label = '%s %.2f' % (names[int(cls)], conf)
-                        _c1 = (int(xyxy[1]) // 8 + 1) * 8
-                        _c3 = (int(xyxy[3]) // 8 + 1) * 8
-                        _c0 = (int(xyxy[0]) // 8 + 1) * 8
-                        _c2 = (int(xyxy[2]) // 8 + 1) * 8
+                        y0 = (int(xyxy[1]) // 8 + 1) * 8
+                        y1 = (int(xyxy[3]) // 8 + 1) * 8
+                        x0 = (int(xyxy[0]) // 8 + 1) * 8
+                        x2 = (int(xyxy[2]) // 8 + 1) * 8
 
-                        obj_1 = im0s[0][_c1:_c3, _c0:_c2]
-                        obi_depth = img_depth[_c1:_c3, _c0:_c2]
-                        boxcenter = int((_c1+_c3)/2)
-
-                        boxheight = int((_c3-_c1)/10)
-                        test_depth = test_depth[boxcenter-boxheight:boxcenter+boxheight,_c0:_c2]
-                        #tt_depth = depth[_c1:_c3, _c0:_c2]
+                        obj_1 = im0s[0][y0:y1, x0:x2]
+                        obi_depth = img_depth[y0:y1, x0:x2]
+                        boxcenter = int((y0 + y1) / 2)
+                        boxheight = int((y1 - y0) / 5)
+                        upBound = boxcenter - boxheight
+                        test_depth = test_depth[boxcenter - boxheight:boxcenter, x0:x2]
+                        # test_depth = test_depth[_c1:_c3, _c0:_c2]
+                        # tt_depth = depth[_c1:_c3, _c0:_c2]
                         if self.test_flag == 1:
-                            #cv2.imwrite('../depth.jpg', test_depth)
+                            # cv2.imwrite('../depth.jpg', test_depth)
                             # np.savetxt('../data/depth'+str(self.test_num)+'.txt', test_depth)
                             # self.test_num += 1
                             # #np.savetxt('../tt_depth.txt', tt_depth)
@@ -410,25 +409,29 @@ class MainWin(QMainWindow, Ui_MainWindow):
                             # # print('ok')
                             # depth = np.loadtxt('../data/depth'+str(self.test_num)+'.txt')
                             t_test = time.time()
-                            median = np.median(test_depth)
-                            test_depth = np.where(test_depth > 1.2 * median, 0, test_depth)
-                            test_data = topoints(test_depth)
-                            print('trans time',time.time() - t_test)
+                            pipe_depth = np.where(test_depth < 1500, test_depth, 1500)
+                            mean = pipe_depth.mean()
+                            pipe_depth = np.where(pipe_depth < mean, pipe_depth, 0)
+                            # print(type(pipe_depth),pipe_depth.shape,pipe_depth.dtype)
+                            # <class 'numpy.ndarray'> (120, 320) uint16
+                            try:
+                                pipe_pointClounds = calculatepoints(pipe_depth, x0, upBound)
+                            except IndexError:
+                                pass
+                            print('*' * 20)
+                            print('trans time', time.time() - t_test)
 
-                            np.savetxt('test_data.txt', test_data)
-                            string = os.popen("/home/sz2/work/findCylind-txt/build/find_Cys 45 50 test_data.txt").read()
-                            #print(string)
-                            print('total',time.time() - t_test)
+                            np.savetxt('cache.txt', pipe_pointClounds)
+                            string = os.popen("/home/sz2/work/findCylind-txt/build/find_Cys 52 56 100 cache.txt").read()
+                            # print(string)
+                            print('total', time.time() - t_test)
                             str_res = string.splitlines()
                             print(str_res)
                             if len(str_res) == 5:
-                                self.info_test.setText(str_res[0]+'\n'+str_res[1]+'\n'+str_res[-1])
+                                self.info_test.setText(str_res[0] + '\n' + str_res[1] + '\n' + str_res[-1])
 
-                            #Signal.stop_flag = bool(1 - Signal.stop_flag)
+                            # Signal.stop_flag = bool(1 - Signal.stop_flag)
                             self.test_flag = 0
-
-
-
 
                         # if self.i%5 ==0:
                         #     cv2.imwrite(rgb_path,obj_1)
@@ -455,9 +458,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
                             z = z / z_i
                         # z = depth.get_distance(pixel_x, pixel_y)
                         x, y = [(pixel_x - self.ppx) * z / self.fx, (pixel_y - self.ppy) * z / self.fy]
-                        #print(self.data_to_send,1)
+                        # print(self.data_to_send,1)
                         self.data_to_send += self.split_data(int(1000 * x))
-                        #print(self.data_to_send, 2)
+                        # print(self.data_to_send, 2)
                         self.data_to_send += self.split_data(int(1000 * y))
                         self.data_to_send += self.split_data(int(1000 * z))
                         # print('识别出目标：{} 像素坐标：（{},{}）实际坐标（mm）：({:.3f},{:.3f},{:.3f})'.format(
@@ -482,7 +485,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
                             self.data_to_send += self.split_data(int(theta))
                             # 表示物体种类，留做接口
                             self.data_to_send += '00'
-                            #print('crc..........',self.data_to_send)
+                            # print('crc..........',self.data_to_send)
                             crc = calc_crc16(self.data_to_send)
                             self.data_to_send += self.split_data(crc)
                             self.result += 'angel:'
@@ -493,22 +496,18 @@ class MainWin(QMainWindow, Ui_MainWindow):
                             obj_i += 1
                             self.send_data(self.data_to_send)
 
-
-
-
                         elif names[int(cls)] == 'fire':
 
                             self.data_to_send += '00'
-                            #print('data before crc:', self.data_to_send)
-                            #print('self.data_to_send',self.data_to_send)
+                            # print('data before crc:', self.data_to_send)
+                            # print('self.data_to_send',self.data_to_send)
 
                             crc = calc_crc16(self.data_to_send)
-                            #print('crc:',crc,'crc after split',self.split_data(crc))
+                            # print('crc:',crc,'crc after split',self.split_data(crc))
                             self.data_to_send += self.split_data(crc)
-                            #print('data:', self.data_to_send)
+                            # print('data:', self.data_to_send)
                             # self.send_data(self.data_to_send)
                             self.send_data(self.data_to_send, 1)
-
 
                             if (fire_i > 1):
                                 fire_i = fire_i % 2
@@ -527,7 +526,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def breathe(self):
         # data1 = ('5500' + '\r\n').encode('utf-8')
         # data2 = ('5501' + '\r\n').encode('utf-8')
-
 
         flag_1 = 1
         while True:
@@ -562,7 +560,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 # print('closing socket')
                 sock.connect(address)
 
-
                 print('connecting sock %d' % index)
 
             except:
@@ -582,7 +579,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
         f2_send = 0
         f2_connected = 0
-
 
         # print(sock, address)
         i = 0
@@ -613,7 +609,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
             stringData = data.tobytes()
             # 此处进行传输
 
-
             if f2_send:
 
                 try:
@@ -628,12 +623,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
                 except:
                     if f2_connected:
-
                         # print('closing2')
                         self.sock[2].close()
                     f2_send = 0
                     f2_connect_required = 1
-
 
             time.sleep(0.005)
             # print('udp thread is running')
@@ -642,16 +635,14 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
         f1_connect_required = 1
 
-
         f1_send = 0
 
         f1_connected = 0
 
-
         # print(sock, address)
         i = 0
         # f0_send,f0_connect_required = self.udp_reconnect(f0_connect_required,0)
-        f1_send,f1_connect_required, f1_connected = self.udp_reconnect(f1_connect_required,1)
+        f1_send, f1_connect_required, f1_connected = self.udp_reconnect(f1_connect_required, 1)
 
         # sock = self.sock[2]
         # address = self.address[2]
@@ -666,7 +657,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
                 # (f0_send, f0_connect_required) = self.udp_reconnect(f0_connect_required, 0)
                 f1_send, f1_connect_required, f1_connected = self.udp_reconnect(f1_connect_required, 1)
-
 
             # 获得图像
             udp_img = LoadStreams.video(self.dataset)
@@ -692,8 +682,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
                     f1_send = 0
                     f1_connect_required = 1
 
-
             time.sleep(0.005)
+
     def detect(self, save_img=False):
 
         out, source, weights, view_img, save_txt, imgsz = \
@@ -729,19 +719,21 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
         # Run inference
 
-        #img = torch.zeros((1, 3, imgsz, imgsz), device=self.device)  # init img
+        # img = torch.zeros((1, 3, imgsz, imgsz), device=self.device)  # init img
         img = torch.zeros((1, 3, 384, 640), device=self.device)  # init img
-        #time:10s
+        # time:10s
         _ = self.model(img.half() if half else img) if self.device.type != 'cpu' else None  # run once
 
         # up_thread = Thread(target=self.update_video, args=(), daemon=True)
         # up_thread.start()
+        init_data = np.ones(shape=(10, 20), dtype=np.uint16)
+        calculatepoints(init_data, 1, 1)
         breathe_thread = Thread(target=self.breathe, args=(), daemon=True)
         breathe_thread.start()
-        udp2_thread = Thread(target=self.udp2, args=(), daemon=True)
-        udp2_thread.start()
-        udp1_thread = Thread(target=self.udp1, args=(), daemon=True)
-        udp1_thread.start()
+        # udp2_thread = Thread(target=self.udp2, args=(), daemon=True)
+        # udp2_thread.start()
+        # udp1_thread = Thread(target=self.udp1, args=(), daemon=True)
+        # udp1_thread.start()
 
     def closeEvent(self, event):
         ok = QtWidgets.QPushButton()
@@ -755,7 +747,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         if msg.exec_() == QtWidgets.QMessageBox.RejectRole:
             event.ignore()
         else:
-            #time.sleep(0.02)
+            # time.sleep(0.02)
             Signal.stop_flag = True
             event.accept()
 
